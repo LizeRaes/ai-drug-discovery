@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message UI with WebSocket</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+            justify-content: space-between;
+            overflow: hidden; /* Ensure no scrollbars appear */
+            max-width: 100%;
+        }
+
+        .messages, .empty-area {
+            width: 50%;
+            border-right: 2px solid black;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto; /* Allow scrolling if messages overflow */
+        }
+
+        .empty-area {
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            color: #aaa;
+        }
+
+        .logs {
+            width: 50%;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* User messages */
+        .message {
+            max-width: 60%;
+            padding: 10px;
+            border-radius: 10px;
+            word-wrap: break-word;
+        }
+
+        .user1-msg {
+            background-color: #c1e1ff;
+            align-self: flex-start;
+        }
+
+        .user2-msg {
+            background-color: #e1e1e1;
+            align-self: flex-end;
+        }
+
+        /* iFrame fills the entire logs area */
+        .logs iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Input area */
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-top: 2px solid black;
+        }
+
+        #inputMessage {
+            flex-grow: 1;
+            font-size: 16px;
+            padding: 5px;
+            overflow: hidden; /* Hide any potential overflow */
+            resize: none; /* Disable manual resizing */
+        }
+
+        #sendButton, #micButton {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Left section with user/system messages -->
+    <div class="messages" id="messageArea">
+<!--        <div class="message user1-msg">User 1: Hi there!</div>-->
+<!--        <div class="message user2-msg">User 2: Hello! How are you?</div>-->
+<!--        <div class="message user1-msg">-->
+<!--            &lt;!&ndash; Audio player for base64 encoded song &ndash;&gt;-->
+<!--            <audio controls>-->
+<!--                <source id="audioSource" src="" type="audio/mpeg">-->
+<!--                Your browser does not support the audio element.-->
+<!--            </audio>-->
+<!--        </div>-->
+    </div>
+
+    <!-- Empty area that shows when mic is toggled -->
+    <div class="empty-area" id="emptyArea">
+        <h4>Mic is on, message area is hidden</h4>
+    </div>
+
+    <!-- Right section with fullscreen iFrame -->
+    <div class="logs" id="logsArea">
+        <!-- iFrame takes up the entire logsArea -->
+        <iframe src="web-logger/logger.html" title="Colonne Droite"></iframe>
+    </div>
+</div>
+
+<!-- Input text area with send and mic button -->
+<div class="input-area">
+    <textarea id="inputMessage" class="form-control" placeholder="Type a message..." rows="1"></textarea>
+    <button id="sendButton" class="btn btn-primary">
+        <i class="bi bi-send"></i> Send
+    </button>
+    <button id="micButton" class="btn btn-secondary">
+        <i class="bi bi-mic-fill"></i> Mic
+    </button>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Include the marked.js library via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    let isUser1Turn = true;
+    let micOn = false; // Variable to track mic state
+
+    // Adjust the height of the textarea dynamically based on the text
+    const inputMessage = document.getElementById('inputMessage');
+    const sendButton = document.getElementById('sendButton');
+
+    inputMessage.addEventListener('input', function () {
+        // Reset the height of the textarea to calculate the new height
+        inputMessage.style.height = 'auto';
+        // Set the height according to the scrollHeight (height of the content)
+        inputMessage.style.height = inputMessage.scrollHeight + 'px';
+    });
+
+    // Trigger send button on Enter key press
+    inputMessage.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // Prevent creating a new line
+            sendButton.click(); // Trigger send button
+        }
+    });
+
+    // WebSocket connection
+    const socket = new WebSocket('ws://localhost:8080/my-websocket');  // Change the URL to your WebSocket server address
+
+    // Listen for messages from the WebSocket (this will be the User 2 messages)
+    socket.addEventListener('message', function(event) {
+        // Find the last user2-msg div
+        const lastUser2MessageDiv = document.querySelector('.message.user2-msg:last-child');
+
+        //let text = "";
+        if (lastUser2MessageDiv) {
+            // Append the new WebSocket message to the last User 2 message div
+            text += event.data;
+            lastUser2MessageDiv.innerHTML = marked.parse(text);
+        } else {
+            text = event.data;
+            // If no User 2 message exists, create a new one
+            const messageArea = document.getElementById('messageArea');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message', 'user2-msg');
+
+            newMessage.innerHTML = marked.parse(text);
+            messageArea.appendChild(newMessage);
+        }
+
+        // Scroll to the bottom of the message area
+        const messageArea = document.getElementById('messageArea');
+        messageArea.scrollTop = messageArea.scrollHeight;
+    });
+
+    document.getElementById('sendButton').addEventListener('click', function() {
+        const inputMessageText = inputMessage.value;
+
+        if (inputMessageText) {
+            // Make the POST request to your server
+            fetch('http://localhost:8080/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: inputMessageText
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response; // Assuming the server sends a JSON response
+                    } else {
+                        throw new Error('Failed to send message');
+                    }
+                })
+                .then(data => {
+                    const messageArea = document.getElementById('messageArea');
+
+                    // Success: Display the user message in the messageArea
+                    const newMessage = document.createElement('div');
+                    newMessage.classList.add('message');
+
+                    newMessage.classList.add('user1-msg');
+                    newMessage.textContent = inputMessageText;
+
+                    messageArea.appendChild(newMessage);
+
+                    // Clear input after sending
+                    inputMessage.value = '';
+                    inputMessage.style.height = 'auto'; // Reset the textarea height
+
+                    // Scroll to the bottom of the message area
+                    messageArea.scrollTop = messageArea.scrollHeight;
+                })
+                .catch(error => {
+                    // Handle the error (e.g., show an alert or display an error message)
+                    alert('Error: ' + error.message);
+                });
+        }
+    });
+
+    document.getElementById('micButton').addEventListener('click', function() {
+        micOn = !micOn; // Toggle mic state
+        const messageArea = document.getElementById('messageArea');
+        const emptyArea = document.getElementById('emptyArea');
+
+        if (micOn) {
+            messageArea.style.display = 'none'; // Hide message area
+            emptyArea.style.display = 'flex';  // Show empty area
+        } else {
+            messageArea.style.display = 'flex'; // Show message area
+            emptyArea.style.display = 'none';   // Hide empty area
+        }
+    });
+
+    // Base64 encoded audio string (short example of a base64-encoded WAV file)
+    const base64Audio = "UklGRmQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";  // Replace this with your own base64 string
+
+    document.getElementById('playAudioButton').addEventListener('click', function() {
+        // Get the audio element
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        // Set the audio source using base64 string
+        audioPlayer.src = "data:audio/wav;base64," + base64Audio;
+
+        // Display the audio player (optional, if you want it hidden initially)
+        audioPlayer.style.display = 'block';
+
+        // Play the audio
+        audioPlayer.play();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quarkus Logs</title>
+    <style>
+        #logContainer {
+            height: 90vh;
+            overflow-y: scroll;
+            background-color: black;
+            color: #a9a9a9;
+            font-family: monospace;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="logContainer"></div>
+
+<script>
+    const logContainer = document.getElementById('logContainer');
+    const socket = new WebSocket('ws://localhost:8080/logs');
+
+    socket.onmessage = function(event) {
+        const logMessage = event.data;
+        const logElement = document.createElement('div');
+        logElement.textContent = logMessage;
+        logContainer.appendChild(logElement);
+        logContainer.scrollTop = logContainer.scrollHeight; // Scroll to the bottom
+    };
+
+    socket.onerror = function(error) {
+        console.error('WebSocket Error:', error);
+    };
+
+    socket.onclose = function() {
+        console.log('WebSocket connection closed');
+    };
+</script>
+
+</body>
+</html>

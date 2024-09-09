@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disposition Divisée avec iFrames</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .left, .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .left {
+            background-color: #f8f9fa;
+        }
+        .right {
+            background-color: #e9ecef;
+        }
+        .half {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #dee2e6;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <div class="half" style="background-color: #adb5bd;">
+            <iframe src="webapp/audio-recorder/index.html" title="Haut Gauche"></iframe>
+        </div>
+        <div class="half" style="background-color: #ced4da;">
+            <iframe src="webapp/realtime-printer/writer.html" title="Bas Gauche"></iframe>
+        </div>
+    </div>
+    <div class="right">
+        <div class="half" style="background-color: #6c757d;">
+            <iframe src="webapp/web-logger/logger.html" title="Colonne Droite"></iframe>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+2000;17(2):71-8. doi: 10.1007/BF02482738.
+EGFRvIII as a promising target for antibody-based brain tumor therapy
+C T Kuan 1, C J Wikstrand, D D Bigner
+Affiliations expand
+PMID: 11210174 DOI: 10.1007/BF02482738
+Abstract
+Cell surface receptors are attractive candidates for targeted therapy of cancer. Growth factors and their receptors play important roles in the regulation of cell division, development, and differentiation. Among those, the epidermal growth factor receptor (EGFR) was the first identified to be amplified and/or rearranged in malignant gliomas. The most common rearranged form, EGFR type III variant (EGFRvIII), has a deletion in its extracellular domain that results in the formation of a new, tumor-specific target found in glioblastoma multiforme, as well as in breast, ovarian, prostate, and lung carcinomas. Monoclonal antibodies have been developed with specific activity against this mutant receptor. These antibodies are internalized into the cell after receptor binding. Specific antibodies, either unarmed or armed with cytotoxic agents, including radioisotopes and toxins, have shown a promising role for EGFRvIII as a target for brain tumor therapy.

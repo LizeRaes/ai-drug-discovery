@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Text Word by Word</title>
+    <style>
+        #output {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="output"></div>
+
+<script>
+    // Establish a WebSocket connection
+    const socket = new WebSocket('ws://localhost:8080/my-websocket');
+
+    // Get the output element
+    const output = document.getElementById("output");
+
+    let words = [];
+    let index = 0;
+    let interval;
+
+    // Function to display the next word
+    function displayNextWord() {
+        //if (index < words.length) {
+            output.textContent = output.textContent + words;
+          //  index++;
+        //} else {
+          //  clearInterval(interval); // Stop the interval when all words are displayed
+        //}
+    }
+
+    // Handle incoming messages from the WebSocket
+    socket.onmessage = function(event) {
+        const text = event.data; // Receive text from WebSocket
+        words = text; // Split the text into words
+        displayNextWord();
+    };
+
+    // Handle errors
+    socket.onerror = function(error) {
+        console.error('WebSocket Error:', error);
+    };
+
+    // Handle WebSocket connection close
+    socket.onclose = function() {
+        console.log('WebSocket connection closed');
+    };
+</script>
+
+</body>
+</html>
