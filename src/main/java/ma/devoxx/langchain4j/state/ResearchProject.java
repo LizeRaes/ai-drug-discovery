@@ -8,9 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO works with this annotation????
-@ApplicationScoped
 public class ResearchProject implements Serializable {
+    // TODO Serializable can probably go
     private static final long serialVersionUID = 1L;
 
     final String STEPS = """
@@ -36,6 +35,10 @@ public class ResearchProject implements Serializable {
     public List<Antibody> proposedAntibodies = new ArrayList<>();
 
     public ResearchProject() {
+    }
+
+    public ResearchProject(String diseaseName) {
+        targetDisease = new Disease(diseaseName);
     }
     
     public String toString() {

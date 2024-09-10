@@ -41,9 +41,13 @@ import ma.devoxx.langchain4j.aiservices.DiseasePicker;
 import ma.devoxx.langchain4j.aiservices.FullResearcherService;
 import ma.devoxx.langchain4j.printer.MyService;
 import ma.devoxx.langchain4j.printer.MyWebSocket;
+import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
+import ma.devoxx.langchain4j.state.CustomChatMemory;
+import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.ResearchProject;
 import ma.devoxx.langchain4j.state.ResearchStateMachine;
 import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
+import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 import org.jboss.logging.Logger;
 
@@ -73,7 +77,16 @@ public class StateTextResource {
     MyService myService;
 
     @Inject
-    ResearchProject researchProject;
+    CustomChatMemory customChatMemory;
+
+    @Inject
+    CustomResearchProject cumstomResearchProject;
+
+    @Inject
+    ToolsForDiseasePicker toolsForDiseasePicker;
+
+    @Inject
+    CustomRetrievalAugmentor customRetrievalAugmentor;
 
     StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
             .apiKey(apiKey)
@@ -88,37 +101,16 @@ public class StateTextResource {
         logger.info(message);
         Session session = myWebSocket.getSessionById();
 
-        // TODO I don't think we should buld RAG infrastructure on every call
-        List<Document> documents = loadDocuments(
-                toPath("docs"), glob("*.txt"));
-
-        // Let's create our web search content retriever.
-        WebSearchEngine webSearchEngine = TavilyWebSearchEngine.builder()
-                .apiKey(System.getenv("TAVILY_API_KEY"))
-                .build();
-
-        ContentRetriever webSearchContentRetriever = WebSearchContentRetriever.builder()
-                .webSearchEngine(webSearchEngine)
-                .maxResults(3)
-                .build();
-
-        // Let's create a query router that will route each query to both retrievers.
-        QueryRouter queryRouter = new DefaultQueryRouter(createContentRetriever(documents), webSearchContentRetriever);
-
-        RetrievalAugmentor retrievalAugmentor = DefaultRetrievalAugmentor.builder()
-                .queryRouter(queryRouter)
-                .build();
-
         // TODO watch out with the memory, if we need another memory in later steps
         DiseasePicker diseasePicker = AiServices.builder(DiseasePicker.class)
                 .streamingChatLanguageModel(model)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(20))
+                .chatMemory(customChatMemory.getChatMemory())
                 //.retrievalAugmentor(retrievalAugmentor)
                 //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
-                //.tools(new ToolsForFullResearch())
+                .tools(new ToolsForDiseasePicker())
                 .build();
 
-        if(ResearchStateMachine.getCurrentStep(researchProject).startsWith("1")) {
+        if(ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("1")) {
                 logger.info("IN STEP 1 (define target disease)");
                 diseasePicker.answer(message)
                 .onNext(token -> {
@@ -134,12 +126,12 @@ public class StateTextResource {
                 return Response.ok().build();
         }
 
-        if(ResearchStateMachine.getCurrentStep(researchProject).startsWith("2")) {
+        if(ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("2")) {
                 logger.info("STARTING STEP 2 (find antigen)");
                 AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
                 .streamingChatLanguageModel(model)
-                //.chatMemory(MessageWindowChatMemory.withMaxMessages(20))
-                .retrievalAugmentor(retrievalAugmentor)
+                //.chatMemory(customChatMemory.getChatMemory())
+                .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
                 //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
                 .tools(new ToolsForAntigenFinder())
                 .build();
@@ -149,93 +141,17 @@ public class StateTextResource {
         }
         
         // if something went wrong nonetheless
-        if(ResearchStateMachine.getCurrentStep(researchProject).startsWith("3")) {
-                logger.info("UNEXPECTED STEP: " +ResearchStateMachine.getCurrentStep(researchProject));
+        if(ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("3")) {
+                logger.info("UNEXPECTED STEP: " +ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()));
                 return Response.ok().build();
         }
 
         // execute step 3
         logger.info("STARTING STEP 3 (find antibodies)");
+        // TODO continue to build flow
 
         return Response.ok().build();
         
     }
 
-    private static ContentRetriever createContentRetriever(List<Document> documents) {
-
-        // Here, we create and empty in-memory store for our documents and their embeddings.
-        InMemoryEmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
-
-        // Here, we are ingesting our documents into the store.
-        // Under the hood, a lot of "magic" is happening, but we can ignore it for now.
-        EmbeddingStoreIngestor.ingest(documents, embeddingStore);
-
-        // Lastly, let's create a content retriever from an embedding store.
-        return EmbeddingStoreContentRetriever.from(embeddingStore);
-    }
-
-    public static PathMatcher glob(String glob) {
-        return FileSystems.getDefault().getPathMatcher("glob:" + glob);
-    }
-
-    public static java.nio.file.Path toPath(String relativePath) {
-        try {
-            URL fileUrl = TextResource.class.getClassLoader().getResource(relativePath);
-            return Paths.get(fileUrl.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public RetrievalAugmentor getRetrievalAugmentor() {
-        EmbeddingModel embeddingModel = new BgeSmallEnV15QuantizedEmbeddingModel();
-
-        // Let's create a separate embedding store specifically for biographies.
-        EmbeddingStore<TextSegment> embeddingStore1 =
-                embed(toPath("docs/Hoopers_A._KAMASUTRA._Sex_PositionsBookFi.org_.pdf"), embeddingModel);
-        ContentRetriever biographyContentRetriever = EmbeddingStoreContentRetriever.builder()
-                .embeddingStore(embeddingStore1)
-                .embeddingModel(embeddingModel)
-                .maxResults(2)
-                .minScore(0.6)
-                .build();
-
-        // Additionally, let's create a separate embedding store dedicated to terms of use.
-        EmbeddingStore<TextSegment> embeddingStore2 =
-                embed(toPath("docs/Molecular Targeting andTreatment of Composite EGFR and EGFRvIIIPositive Gliomas Using Boronated Monoclonal Antibodies.pdf"), embeddingModel);
-        ContentRetriever termsOfUseContentRetriever = EmbeddingStoreContentRetriever.builder()
-                .embeddingStore(embeddingStore2)
-                .embeddingModel(embeddingModel)
-                .maxResults(2)
-                .minScore(0.6)
-                .build();
-
-        ChatLanguageModel chatLanguageModel = OpenAiChatModel.builder()
-                .apiKey(apiKey)
-                .build();
-
-        // Let's create a query router.
-        Map<ContentRetriever, String> retrieverToDescription = new HashMap<>();
-        retrieverToDescription.put(biographyContentRetriever, "806 mAb");
-        //retrieverToDescription.put(termsOfUseContentRetriever, "Cetuximab or L8A4");
-        QueryRouter queryRouter = new LanguageModelQueryRouter(chatLanguageModel, retrieverToDescription);
-
-        return DefaultRetrievalAugmentor.builder()
-                .queryRouter(queryRouter)
-                .build();
-    }
-
-    private static EmbeddingStore<TextSegment> embed(java.nio.file.Path documentPath, EmbeddingModel embeddingModel) {
-        DocumentParser documentParser = new TextDocumentParser();
-        Document document = loadDocument(documentPath, documentParser);
-
-        DocumentSplitter splitter = DocumentSplitters.recursive(300, 0);
-        List<TextSegment> segments = splitter.split(document);
-
-        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
-
-        EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
-        embeddingStore.addAll(embeddings, segments);
-        return embeddingStore;
-    }
 }

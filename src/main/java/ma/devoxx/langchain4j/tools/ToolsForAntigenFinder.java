@@ -8,12 +8,12 @@ import java.io.Serializable;
 
 @ApplicationScoped
 public class ToolsForAntigenFinder implements Serializable {
-    @Inject
-    ResearchProject myResearchProject;
+//    @Inject
+//    ResearchProject myResearchProject;
 
     @Tool("store antigen info")
     void storeAntigenInfo(String AntigenName, String AntigenSequence) {
         // TODO
-        myResearchProject.setAntigenInfo(AntigenName,AntigenSequence);
+//        myResearchProject.setAntigenInfo(AntigenName,AntigenSequence);
     }
 }

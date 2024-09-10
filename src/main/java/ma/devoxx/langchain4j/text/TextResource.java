@@ -13,9 +13,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import ma.devoxx.langchain4j.aiservices.FullResearcherService;
-import ma.devoxx.langchain4j.aiservices.rag.CustomRetrievalAugmentor;
+import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.printer.MyService;
 import ma.devoxx.langchain4j.printer.MyWebSocket;
+import ma.devoxx.langchain4j.state.CustomChatMemory;
 import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 import org.jboss.logging.Logger;
 
@@ -31,6 +32,9 @@ public class TextResource {
 
     @Inject
     MyService myService;
+
+    @Inject
+    CustomChatMemory customChatMemory;
 
     @Inject
     ToolsForFullResearch toolsForFullResearch;
@@ -53,7 +57,7 @@ public class TextResource {
 
         FullResearcherService assistant = AiServices.builder(FullResearcherService.class)
                 .streamingChatLanguageModel(streamingModel)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(20))
+                .chatMemory(customChatMemory.getChatMemory())
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
                 //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
                 .tools(toolsForFullResearch)
