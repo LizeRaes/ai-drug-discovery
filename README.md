@@ -19,7 +19,7 @@ You can run your application in dev mode that enables live coding using:
 ./mvnw compile quarkus:dev
 ```
 
-And then, open the `index.html` or `index_2.html` file (located in the resources folder) using your favorite browser (I use Chrome :))
+And then open the application at localhost:8080 in your browser.
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
