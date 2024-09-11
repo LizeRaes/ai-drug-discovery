@@ -2,6 +2,7 @@ package ma.devoxx.langchain4j.dbs;
 
 import java.sql.*;
 import java.io.File;
+import java.util.logging.Logger;
 
 public class PublicProteinDatabase {
 
@@ -87,7 +88,7 @@ public class PublicProteinDatabase {
 
             System.out.println("Database initialized and data inserted.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error while creating protein db: " + e.getMessage());
         }
     }
 

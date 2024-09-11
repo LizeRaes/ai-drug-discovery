@@ -50,6 +50,7 @@ import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
 import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 import org.jboss.logging.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -66,6 +67,7 @@ import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.load
 @Path("/statemessage")
 public class StateTextResource {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(StateTextResource.class);
     Logger logger = Logger.getLogger(TextResource.class);
 
     private final String apiKey = System.getenv("OPENAI_API_KEY");
@@ -83,12 +85,9 @@ public class StateTextResource {
     CustomResearchProject cumstomResearchProject;
 
     @Inject
-    ToolsForDiseasePicker toolsForDiseasePicker;
-
-    @Inject
     CustomRetrievalAugmentor customRetrievalAugmentor;
 
-    StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
+    ChatLanguageModel model = OpenAiChatModel.builder()
             .apiKey(apiKey)
             .modelName(OpenAiChatModelName.GPT_4_O)
             .logRequests(true)
@@ -101,57 +100,58 @@ public class StateTextResource {
         logger.info(message);
         Session session = myWebSocket.getSessionById();
 
-        // TODO watch out with the memory, if we need another memory in later steps
+        // TODO watch out with the memory, check if we need another memory in later steps
         DiseasePicker diseasePicker = AiServices.builder(DiseasePicker.class)
-                .streamingChatLanguageModel(model)
+                .chatLanguageModel(model)
                 .chatMemory(customChatMemory.getChatMemory())
-                //.retrievalAugmentor(retrievalAugmentor)
-                //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
-                .tools(new ToolsForDiseasePicker())
+                .tools(new ToolsForDiseasePicker(cumstomResearchProject))
                 .build();
 
-        if(ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("1")) {
-                logger.info("IN STEP 1 (define target disease)");
-                diseasePicker.answer(message)
-                .onNext(token -> {
-                    System.out.println(token);
-                    myService.sendMessage(session, token);
-                })
-                .onComplete(response -> logger.info("\n\nDone streaming"))
-                .onError(error -> logger.info("Something went wrong: " + error.getMessage()))
-                .start();
-
-                // model will set diseaseName and currentStep = 2 when decided on disease
-
+        if (ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("1")) {
+            logger.info("IN STEP 1 (define target disease)");
+            logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + cumstomResearchProject.getResearchProject().toString());
+            String answer = diseasePicker.answer(message);
+            logger.info("*** Model Answer ***: " + answer);
+            if (ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("1")) {
+                // disease was not finally decided on yet
+                // TODO fix websocket to not be streaming
+                myService.sendMessage(session, answer);
                 return Response.ok().build();
+            }
         }
+        // else: model has set diseaseName and currentStep = 2 when decided on disease
+        logger.info("STATE OF RESEARCH PROJECT AFTER diseasePicker.answer(: " + cumstomResearchProject.getResearchProject().toString());
+        myService.sendMessage(session, "Stored disease " + cumstomResearchProject.getResearchProject().disease);
+        myService.sendMessage(session, "Finding antigen info for " + cumstomResearchProject.getResearchProject().disease);
 
-        if(ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("2")) {
-                logger.info("STARTING STEP 2 (find antigen)");
-                AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
-                .streamingChatLanguageModel(model)
+        logger.info("STARTING STEP 2 (find antigen)");
+        AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
+                .chatLanguageModel(model)
                 //.chatMemory(customChatMemory.getChatMemory())
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
                 //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
-                .tools(new ToolsForAntigenFinder())
+                .tools(new ToolsForAntigenFinder(cumstomResearchProject.getResearchProject()))
                 .build();
 
-                // model will set antigenInfo and currentStep = 3 when decided on antigen
-                // continue with next step
-        }
-        
-        // if something went wrong nonetheless
-        if(ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("3")) {
-                logger.info("UNEXPECTED STEP: " +ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()));
-                return Response.ok().build();
+        String answer = antigenFinder.determineAntigenInfo(cumstomResearchProject.getResearchProject().disease);
+        logger.info("STATE OF RESEARCH PROJECT AFTER antigenFinder.determineAntigenInfo(: " + cumstomResearchProject.getResearchProject().toString());
+
+        // if something went wrong with the antigenFinder
+        if (ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).
+                startsWith("2")) {
+            logger.info("UNEXPECTED STEP: " + ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()));
+            return Response.ok().build();
         }
 
-        // execute step 3
+        // this answer will not be shown to the user
+        myService.sendMessage(session, "Found antigen : " + cumstomResearchProject.getResearchProject().antigenName);
+        myService.sendMessage(session, "with sequence : " + cumstomResearchProject.getResearchProject().antigenSequence);
+
+        // STEP 3
         logger.info("STARTING STEP 3 (find antibodies)");
-        // TODO continue to build flow
-
+        myService.sendMessage(session,"Determining known antibodies for " + cumstomResearchProject.getResearchProject().antigenName);
+        // TODO write consecutive steps, with here and there human as a tool
         return Response.ok().build();
-        
-    }
 
+    }
 }
