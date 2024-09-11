@@ -45,4 +45,4 @@ nb-configuration.xml
 .certs/
 
 # SQLite
-src/main/resources/dbs/
+src/main/resources/dbs/*.db
