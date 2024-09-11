@@ -8,9 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO works with this annotation????
-@ApplicationScoped
+
 public class ResearchProject implements Serializable {
+    // TODO Serializable can probably go
     private static final long serialVersionUID = 1L;
 
     final String STEPS = """
@@ -30,38 +30,49 @@ public class ResearchProject implements Serializable {
     final static String STEP6 = "6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool), then printProjectState";
     final static String FINISHED = "7. Finished";
 
-    public String lastCompletedStep = STEP1;
+    //public String lastCompletedStep = STEP1;
     public String currentStep = STEP1;
-    public Disease targetDisease;
+    //public Disease targetDisease;
+    public String disease;
+    public String antigenName;
+    public String antigenSequence;
     public List<Antibody> proposedAntibodies = new ArrayList<>();
 
     public ResearchProject() {
     }
+
+    public ResearchProject(String diseaseName) {
+        // TODO fix back to Disease object
+        disease = diseaseName;
+    }
     
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("===============================");
         sb.append("ResearchProject{\n");
-        sb.append("Step to execute: " + STEPS);
-        sb.append("\nlastCompletedStep=").append(lastCompletedStep);
-        sb.append(", \ntargetDisease=").append(targetDisease);
+        //sb.append("Step to execute: " + STEPS);
+        sb.append("\ncurrentStep=").append(currentStep);
+        sb.append(", \ntargetDisease=").append(disease);
+        sb.append(", \nantigenName=").append(antigenName);
+        sb.append(", \nantigenSequence=").append(antigenSequence);
         if(!proposedAntibodies.isEmpty()) {
             sb.append("\nproposedAntibodies=");
             for (Antibody proposedAntibody : proposedAntibodies) {
                 sb.append(proposedAntibody.toString());
             }
         }
+        sb.append("\n===============================");
         sb.append("\n}");
         return sb.toString();
     }
 
     public void setName(String name) {
-        targetDisease = new Disease(name);
-        lastCompletedStep = STEP1;
+        disease = name;
+        //lastCompletedStep = STEP2;
     }
 
     public void setAntigenInfo(String antigenName, String antigenSequence) {
-        targetDisease.antigenName = antigenName;
-        targetDisease.antigenSequence = antigenSequence;
-        lastCompletedStep = STEP2;
+        this.antigenName = antigenName;
+       this.antigenSequence = antigenSequence;
+        //lastCompletedStep = STEP2;
     }
 }

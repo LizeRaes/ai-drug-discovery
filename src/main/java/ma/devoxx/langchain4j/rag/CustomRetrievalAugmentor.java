@@ -1,4 +1,4 @@
-package ma.devoxx.langchain4j.aiservices.rag;
+package ma.devoxx.langchain4j.rag;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.message.UserMessage;
@@ -34,6 +34,7 @@ import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.load
 @ApplicationScoped
 public class CustomRetrievalAugmentor {
     RetrievalAugmentor retrievalAugmentor;
+// TODO this seems to do lazy loading, only does it on the first message received from the WebSocket. find way to have it happen before, on application startup (otherwise too long wait after the first message)
 
     public CustomRetrievalAugmentor() {
 
