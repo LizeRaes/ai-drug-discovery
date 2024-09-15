@@ -196,6 +196,25 @@
     document.getElementById('sendButton').addEventListener('click', function() {
         const inputMessageText = inputMessage.value;
 
+        const messageArea = document.getElementById('messageArea');
+
+        // Success: Display the user message in the messageArea
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message');
+
+        newMessage.classList.add('user1-msg');
+        newMessage.textContent = inputMessageText;
+
+        messageArea.appendChild(newMessage);
+
+        // Clear input after sending
+        inputMessage.value = '';
+        inputMessage.style.height = 'auto'; // Reset the textarea height
+
+        // Scroll to the bottom of the message area
+        messageArea.scrollTop = messageArea.scrollHeight;
+
+
         if (inputMessageText) {
             // Make the POST request to your server
             fetch('http://localhost:8080/statemessage', {
@@ -211,25 +230,6 @@
                     } else {
                         throw new Error('Failed to send message');
                     }
-                })
-                .then(data => {
-                    const messageArea = document.getElementById('messageArea');
-
-                    // Success: Display the user message in the messageArea
-                    const newMessage = document.createElement('div');
-                    newMessage.classList.add('message');
-
-                    newMessage.classList.add('user1-msg');
-                    newMessage.textContent = inputMessageText;
-
-                    messageArea.appendChild(newMessage);
-
-                    // Clear input after sending
-                    inputMessage.value = '';
-                    inputMessage.style.height = 'auto'; // Reset the textarea height
-
-                    // Scroll to the bottom of the message area
-                    messageArea.scrollTop = messageArea.scrollHeight;
                 })
                 .catch(error => {
                     // Handle the error (e.g., show an alert or display an error message)
