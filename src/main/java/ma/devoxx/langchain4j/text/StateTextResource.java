@@ -1,34 +1,9 @@
 package ma.devoxx.langchain4j.text;
 
-import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentParser;
-import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
-import dev.langchain4j.data.embedding.Embedding;
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.chat.StreamingChatLanguageModel;
-import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.embedding.onnx.bgesmallenv15q.BgeSmallEnV15QuantizedEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModelName;
-import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
-import dev.langchain4j.rag.DefaultRetrievalAugmentor;
-import dev.langchain4j.rag.RetrievalAugmentor;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
-import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
-import dev.langchain4j.rag.query.router.DefaultQueryRouter;
-import dev.langchain4j.rag.query.router.LanguageModelQueryRouter;
-import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.service.AiServices;
-import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
-import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
-import dev.langchain4j.web.search.WebSearchEngine;
-import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
 import jakarta.inject.Inject;
 import jakarta.websocket.Session;
 import jakarta.ws.rs.POST;
@@ -38,28 +13,16 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import ma.devoxx.langchain4j.aiservices.AntigenFinder;
 import ma.devoxx.langchain4j.aiservices.DiseasePicker;
-import ma.devoxx.langchain4j.aiservices.FullResearcherService;
 import ma.devoxx.langchain4j.printer.MyService;
 import ma.devoxx.langchain4j.printer.MyWebSocket;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.state.CustomChatMemory;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
-import ma.devoxx.langchain4j.state.ResearchProject;
 import ma.devoxx.langchain4j.state.ResearchStateMachine;
 import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
 import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
-import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 import org.jboss.logging.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.FileSystems;
-import java.nio.file.PathMatcher;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
@@ -82,7 +45,7 @@ public class StateTextResource {
     CustomChatMemory customChatMemory;
 
     @Inject
-    CustomResearchProject cumstomResearchProject;
+    CustomResearchProject customResearchProject;
 
     @Inject
     CustomRetrievalAugmentor customRetrievalAugmentor;
@@ -96,7 +59,7 @@ public class StateTextResource {
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
-    public Response hello(String message) {
+    public Response answer(String message) {
         logger.info(message);
         Session session = myWebSocket.getSessionById();
 
@@ -104,15 +67,15 @@ public class StateTextResource {
         DiseasePicker diseasePicker = AiServices.builder(DiseasePicker.class)
                 .chatLanguageModel(model)
                 .chatMemory(customChatMemory.getChatMemory())
-                .tools(new ToolsForDiseasePicker(cumstomResearchProject))
+                .tools(new ToolsForDiseasePicker(customResearchProject))
                 .build();
 
-        if (ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("1")) {
+        if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
             logger.info("IN STEP 1 (define target disease)");
-            logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + cumstomResearchProject.getResearchProject().toString());
+            logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
             String answer = diseasePicker.answer(message);
             logger.info("*** Model Answer ***: " + answer);
-            if (ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).startsWith("1")) {
+            if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
                 // disease was not finally decided on yet
                 // TODO fix websocket to not be streaming
                 myService.sendMessage(session, answer);
@@ -120,9 +83,9 @@ public class StateTextResource {
             }
         }
         // else: model has set diseaseName and currentStep = 2 when decided on disease
-        logger.info("STATE OF RESEARCH PROJECT AFTER diseasePicker.answer(: " + cumstomResearchProject.getResearchProject().toString());
-        myService.sendMessage(session, "Stored disease " + cumstomResearchProject.getResearchProject().disease);
-        myService.sendMessage(session, "Finding antigen info for " + cumstomResearchProject.getResearchProject().disease);
+        logger.info("STATE OF RESEARCH PROJECT AFTER diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
+        myService.sendMessage(session, "Stored disease " + customResearchProject.getResearchProject().disease + "\\\n");
+        myService.sendMessage(session, "Finding antigen info for " + customResearchProject.getResearchProject().disease + "\\\n");
 
         logger.info("STARTING STEP 2 (find antigen)");
         AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
@@ -130,26 +93,26 @@ public class StateTextResource {
                 //.chatMemory(customChatMemory.getChatMemory())
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
                 //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
-                .tools(new ToolsForAntigenFinder(cumstomResearchProject.getResearchProject()))
+                .tools(new ToolsForAntigenFinder(customResearchProject.getResearchProject()))
                 .build();
 
-        String answer = antigenFinder.determineAntigenInfo(cumstomResearchProject.getResearchProject().disease);
-        logger.info("STATE OF RESEARCH PROJECT AFTER antigenFinder.determineAntigenInfo(: " + cumstomResearchProject.getResearchProject().toString());
+        String answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
+        logger.info("STATE OF RESEARCH PROJECT AFTER antigenFinder.determineAntigenInfo(: " + customResearchProject.getResearchProject().toString() + "\\");
 
         // if something went wrong with the antigenFinder
-        if (ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()).
+        if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).
                 startsWith("2")) {
-            logger.info("UNEXPECTED STEP: " + ResearchStateMachine.getCurrentStep(cumstomResearchProject.getResearchProject()));
+            logger.info("UNEXPECTED STEP: " + ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()));
             return Response.ok().build();
         }
 
         // this answer will not be shown to the user
-        myService.sendMessage(session, "Found antigen : " + cumstomResearchProject.getResearchProject().antigenName);
-        myService.sendMessage(session, "with sequence : " + cumstomResearchProject.getResearchProject().antigenSequence);
+        myService.sendMessage(session, "Found antigen : " + customResearchProject.getResearchProject().antigenName+ "\\\n");
+        myService.sendMessage(session, "with sequence : " + customResearchProject.getResearchProject().antigenSequence+ "\\\n");
 
         // STEP 3
         logger.info("STARTING STEP 3 (find antibodies)");
-        myService.sendMessage(session,"Determining known antibodies for " + cumstomResearchProject.getResearchProject().antigenName);
+        myService.sendMessage(session,"Determining known antibodies for " + customResearchProject.getResearchProject().antigenName);
         // TODO write consecutive steps, with here and there human as a tool
         return Response.ok().build();
 
