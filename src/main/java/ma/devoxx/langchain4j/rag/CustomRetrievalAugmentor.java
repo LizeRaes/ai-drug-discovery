@@ -17,7 +17,7 @@ import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.web.search.WebSearchEngine;
 import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
 import jakarta.enterprise.context.ApplicationScoped;
-import ma.devoxx.langchain4j.dbs.SequenceDbContentRetriever;
+import ma.devoxx.langchain4j.text.StateTextResource;
 
 import java.net.URISyntaxException;
 import java.net.URL;

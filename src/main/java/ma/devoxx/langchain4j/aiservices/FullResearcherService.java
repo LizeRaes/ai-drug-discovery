@@ -2,7 +2,12 @@ package ma.devoxx.langchain4j.aiservices;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
+import io.quarkiverse.langchain4j.RegisterAiService;
+import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
+import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 
+@RegisterAiService(
+        tools = ToolsForFullResearch.class)
 public interface FullResearcherService {
     @SystemMessage("""
         You are an AI researcher assistant that will help find antibody drug solutions.
@@ -15,7 +20,7 @@ public interface FullResearcherService {
         5. Find new candidate antibody based on antigen sequence and known antibodies, then printProjectState
         6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool), then printProjectState
             """)
-    String answer(String query);
+    TokenStream answer(String query);
 }
 
 

@@ -1,6 +1,5 @@
 package ma.devoxx.langchain4j.tools;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.molecules.Antibody;
 import org.jboss.logging.Logger;
 
