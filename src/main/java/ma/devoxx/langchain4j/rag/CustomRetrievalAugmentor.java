@@ -1,8 +1,8 @@
 package ma.devoxx.langchain4j.rag;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.experimental.rag.content.retriever.sql.SqlDatabaseContentRetriever;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
@@ -10,7 +10,6 @@ import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
-import dev.langchain4j.rag.query.Metadata;
 import dev.langchain4j.rag.query.router.LanguageModelQueryRouter;
 import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
@@ -18,6 +17,7 @@ import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.web.search.WebSearchEngine;
 import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
 import jakarta.enterprise.context.ApplicationScoped;
+import ma.devoxx.langchain4j.dbs.SequenceDbContentRetriever;
 import ma.devoxx.langchain4j.text.TextResource;
 
 import java.net.URISyntaxException;
@@ -66,8 +66,11 @@ public class CustomRetrievalAugmentor {
         Map<ContentRetriever, String> retrieverToDescription = new HashMap<>();
         retrieverToDescription.put(literatureDocsRetreiver, "Scientific literature on diseases, antigens and antibody solutions");
         retrieverToDescription.put(webSearchContentRetriever, "Web search");
-        // TODO add retriever for the SQLDatabase "Protein Sequence Database"
-        // retrieverToDescription.put(SequenceDbContentRetriever, "Scientific literature on diseases, antigens and antibody solutions");
+
+        // Sql database retriever
+        SqlDatabaseContentRetriever sequenceDbContentRetriever = new SequenceDbContentRetriever().get(chatModel);
+        retrieverToDescription.put(sequenceDbContentRetriever, "protein database");
+
         QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
