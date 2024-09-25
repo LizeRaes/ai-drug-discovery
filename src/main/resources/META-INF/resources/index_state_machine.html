@@ -7,7 +7,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
+          rel="stylesheet">
 
     <style>
         body {
@@ -103,15 +104,15 @@
 <div class="container">
     <!-- Left section with user/system messages -->
     <div class="messages" id="messageArea">
-<!--        <div class="message user1-msg">User 1: Hi there!</div>-->
-<!--        <div class="message user2-msg">User 2: Hello! How are you?</div>-->
-<!--        <div class="message user1-msg">-->
-<!--            &lt;!&ndash; Audio player for base64 encoded song &ndash;&gt;-->
-<!--            <audio controls>-->
-<!--                <source id="audioSource" src="" type="audio/mpeg">-->
-<!--                Your browser does not support the audio element.-->
-<!--            </audio>-->
-<!--        </div>-->
+        <!--        <div class="message user1-msg">User 1: Hi there!</div>-->
+        <!--        <div class="message user2-msg">User 2: Hello! How are you?</div>-->
+        <!--        <div class="message user1-msg">-->
+        <!--            &lt;!&ndash; Audio player for base64 encoded song &ndash;&gt;-->
+        <!--            <audio controls>-->
+        <!--                <source id="audioSource" src="" type="audio/mpeg">-->
+        <!--                Your browser does not support the audio element.-->
+        <!--            </audio>-->
+        <!--        </div>-->
     </div>
 
     <!-- Empty area that shows when mic is toggled -->
@@ -167,8 +168,32 @@
     // WebSocket connection
     const socket = new WebSocket('ws://localhost:8080/my-websocket');  // Change the URL to your WebSocket server address
 
+    let sendMessage = function () {
+        const inputMessageText = inputMessage.value;
+        console.log("Sending " + inputMessageText);
+        socket.send(inputMessageText);
+
+        const messageArea = document.getElementById('messageArea');
+
+        // Success: Display the user message in the messageArea
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message');
+
+        newMessage.classList.add('user1-msg');
+        newMessage.textContent = inputMessageText;
+
+        messageArea.appendChild(newMessage);
+
+        // Clear input after sending
+        inputMessage.value = '';
+        inputMessage.style.height = 'auto'; // Reset the textarea height
+
+        // Scroll to the bottom of the message area
+        messageArea.scrollTop = messageArea.scrollHeight;
+    };
+
     // Listen for messages from the WebSocket (this will be the User 2 messages)
-    socket.addEventListener('message', function(event) {
+    socket.addEventListener('message', function (event) {
         // Find the last user2-msg div
         const lastUser2MessageDiv = document.querySelector('.message.user2-msg:last-child');
 
@@ -193,52 +218,11 @@
         messageArea.scrollTop = messageArea.scrollHeight;
     });
 
-    document.getElementById('sendButton').addEventListener('click', function() {
-        const inputMessageText = inputMessage.value;
-
-        const messageArea = document.getElementById('messageArea');
-
-        // Success: Display the user message in the messageArea
-        const newMessage = document.createElement('div');
-        newMessage.classList.add('message');
-
-        newMessage.classList.add('user1-msg');
-        newMessage.textContent = inputMessageText;
-
-        messageArea.appendChild(newMessage);
-
-        // Clear input after sending
-        inputMessage.value = '';
-        inputMessage.style.height = 'auto'; // Reset the textarea height
-
-        // Scroll to the bottom of the message area
-        messageArea.scrollTop = messageArea.scrollHeight;
-
-
-        if (inputMessageText) {
-            // Make the POST request to your server
-            fetch('http://localhost:8080/statemessage', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: inputMessageText
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response; // Assuming the server sends a JSON response
-                    } else {
-                        throw new Error('Failed to send message');
-                    }
-                })
-                .catch(error => {
-                    // Handle the error (e.g., show an alert or display an error message)
-                    alert('Error: ' + error.message);
-                });
-        }
+    document.getElementById('sendButton').addEventListener('click', function () {
+        sendMessage();
     });
 
-    document.getElementById('micButton').addEventListener('click', function() {
+    document.getElementById('micButton').addEventListener('click', function () {
         micOn = !micOn; // Toggle mic state
         const messageArea = document.getElementById('messageArea');
         const emptyArea = document.getElementById('emptyArea');
@@ -255,7 +239,7 @@
     // Base64 encoded audio string (short example of a base64-encoded WAV file)
     const base64Audio = "UklGRmQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";  // Replace this with your own base64 string
 
-    document.getElementById('playAudioButton').addEventListener('click', function() {
+    document.getElementById('playAudioButton').addEventListener('click', function () {
         // Get the audio element
         const audioPlayer = document.getElementById('audioPlayer');
 
