@@ -1,7 +1,6 @@
 package ma.devoxx.langchain4j.rag;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
@@ -10,7 +9,6 @@ import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
-import dev.langchain4j.rag.query.Metadata;
 import dev.langchain4j.rag.query.router.LanguageModelQueryRouter;
 import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
@@ -85,8 +83,7 @@ public class CustomRetrievalAugmentor {
         EmbeddingStoreIngestor.ingest(documents, embeddingStore);
 
         // Lastly, let's create a content retriever from an embedding store.
-        return EmbeddingStoreContentRetriever.from(embeddingStore);
-        // TODO where to set maxresults (7), minscore (0.5?)
+        return new EmbeddingStoreContentRetriever(embeddingStore, null, 7, 0.5);
     }
 
     public static PathMatcher glob(String glob) {
