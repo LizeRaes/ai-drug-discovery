@@ -197,24 +197,23 @@
         // Find the last user2-msg div
         const lastUser2MessageDiv = document.querySelector('.message.user2-msg:last-child');
 
-        //let text = "";
-        if (lastUser2MessageDiv) {
-            // Append the new WebSocket message to the last User 2 message div
-            text += event.data;
-            lastUser2MessageDiv.innerHTML = marked.parse(text);
-        } else {
-            text = event.data;
-            // If no User 2 message exists, create a new one
-            const messageArea = document.getElementById('messageArea');
-            const newMessage = document.createElement('div');
-            newMessage.classList.add('message', 'user2-msg');
-
-            newMessage.innerHTML = marked.parse(text);
-            messageArea.appendChild(newMessage);
-        }
-
-        // Scroll to the bottom of the message area
         const messageArea = document.getElementById('messageArea');
+
+        // Create a new message block for each WebSocket message
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message', 'user2-msg'); // Add both message and user2-msg classes
+
+        // Use the received message data
+        let text = event.data;
+
+        // Optionally parse the message if it's markdown or plain text
+        newMessage.innerHTML = marked.parse(text);  // Use marked.js for markdown, or just use `textContent` for plain text
+        // newMessage.textContent = text; // If you don't want markdown parsing
+
+        // Append the new message to the message area
+        messageArea.appendChild(newMessage);
+
+        // Scroll to the bottom of the message area to show the latest message
         messageArea.scrollTop = messageArea.scrollHeight;
     });
 
