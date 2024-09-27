@@ -17,7 +17,7 @@ import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebSocket(path = "/my-websocket")
+@WebSocket(path = "/my-websocket-state")
 public class StateTextSocket {
 
     private static final Logger logger = LoggerFactory.getLogger(StateTextSocket.class);
@@ -81,7 +81,7 @@ public class StateTextSocket {
 
         // else: model has set diseaseName and currentStep = 2 when decided on disease
         logger.info("******************** STEP 2 *********************");
-        connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\\n");
+        connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\n");
         AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
                 .chatLanguageModel(model)
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())

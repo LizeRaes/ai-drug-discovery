@@ -18,7 +18,6 @@ import dev.langchain4j.web.search.WebSearchEngine;
 import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
 import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.dbs.SequenceDbContentRetriever;
-import ma.devoxx.langchain4j.text.TextResource;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -97,7 +96,7 @@ public class CustomRetrievalAugmentor {
 
     public static java.nio.file.Path toPath(String relativePath) {
         try {
-            URL fileUrl = TextResource.class.getClassLoader().getResource(relativePath);
+            URL fileUrl = CustomRetrievalAugmentor.class.getClassLoader().getResource(relativePath);
             return Paths.get(fileUrl.toURI());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);

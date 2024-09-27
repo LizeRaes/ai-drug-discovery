@@ -5,7 +5,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.molecules.Antibody;
 import ma.devoxx.langchain4j.state.ResearchProject;
-import ma.devoxx.langchain4j.text.TextResource;
 import org.jboss.logging.Logger;
 
 import java.io.Serializable;
