@@ -1,40 +1,25 @@
 package ma.devoxx.langchain4j.printer;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.model.openai.OpenAiChatModelName;
-import dev.langchain4j.service.AiServices;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.AntibodyFinder;
 import ma.devoxx.langchain4j.aiservices.AntigenFinder;
 import ma.devoxx.langchain4j.aiservices.CdrFinder;
 import ma.devoxx.langchain4j.aiservices.DiseasePicker;
-import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
-import ma.devoxx.langchain4j.state.CustomChatMemory;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.ResearchStateMachine;
-import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
-import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Random;
 
 @WebSocket(path = "/my-websocket-state")
 public class StateTextSocket {
 
     private static final Logger logger = LoggerFactory.getLogger(StateTextSocket.class);
 
-
-    private final String apiKey = System.getenv("OPENAI_API_KEY");
-
-    @Inject
-    CustomChatMemory customChatMemory;
-
     @Inject
     CustomResearchProject customResearchProject;
-
-    @Inject
-    CustomRetrievalAugmentor customRetrievalAugmentor;
 
     @Inject
     DiseasePicker diseasePicker;
@@ -48,25 +33,21 @@ public class StateTextSocket {
     @Inject
     CdrFinder cdrFinder;
 
-    ChatLanguageModel model = OpenAiChatModel.builder()
-            .apiKey(apiKey)
-            .modelName(OpenAiChatModelName.GPT_4_O)
-            .logRequests(true)
-            .logResponses(true)
-            .build();
+    private int userId;
 
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
-        System.out.println("Session opened, ID: " + connection.id());
-        // TODO generate new random user id so memory is fresh (and replace 1 by userId in AiService calls)
+        userId = generateRandomInt();
+        logger.info("Session opened, User ID: {}", userId);
+
         ResearchStateMachine.resetState(customResearchProject.getResearchProject());
+
+        connection.sendTextAndAwait("Hi, I’m here to assist you with your antibody research today.");
     }
 
     @OnTextMessage
-    public void onMessage(WebSocketConnection connection, String userMessage) throws Exception {
+    public void onMessage(WebSocketConnection connection, String userMessage) {
         System.out.println("Received message: " + userMessage);
-        // retrieve user ID
-        final String sessionId = connection.id();
 
         if (userMessage.equalsIgnoreCase("exit")) {
             return;
@@ -79,7 +60,7 @@ public class StateTextSocket {
 
             logger.info("IN STEP 1 (define target disease)");
             // logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
-            String answer = diseasePicker.answer(1, userMessage);
+            String answer = diseasePicker.answer(userId, userMessage);
             logger.info("*** Model Answer ***: " + answer);
             if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
                 // disease was not finally decided on yet
@@ -142,6 +123,11 @@ public class StateTextSocket {
         // release some resources
 
         logger.info("Session closed, ID: {}", sessionId);
+    }
+
+    private static int generateRandomInt() {
+        Random random = new Random();
+        return random.nextInt((100 - 1) + 1) + 1;
     }
 }
 
