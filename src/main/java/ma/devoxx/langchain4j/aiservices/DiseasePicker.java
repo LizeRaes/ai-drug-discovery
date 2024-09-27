@@ -5,8 +5,10 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 
+@ApplicationScoped
 @RegisterAiService(tools = ToolsForDiseasePicker.class)
 public interface DiseasePicker {
     @SystemMessage("""
