@@ -20,12 +20,12 @@ public class ToolsForAntigenFinder implements Serializable {
         this.myResearchProject = myResearchProject;
     }
 
-    @Tool("find sequence for antigen name")
+   /* @Tool("find sequence for antigen name")
     String findSequenceForAntigen(String antigenName) {
         Logger.getLogger(ToolsForAntigenFinder.class.getName()).info("findSequenceForAntigen() called with antigenName='" + antigenName + "'");
         return SearchTools.findSequenceForAntigen(antigenName);
         // TODO handle if not found (maybe change to uppercase comparison if too many issues)
-    }
+    }*/
 
     @Tool("store antigen name and antigen sequence")
     void storeAntigenInfo(String antigenName, String antigenSequence) {
