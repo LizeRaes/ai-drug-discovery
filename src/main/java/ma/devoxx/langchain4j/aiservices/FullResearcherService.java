@@ -20,7 +20,7 @@ public interface FullResearcherService {
         5. Find new candidate antibody based on antigen sequence and known antibodies, then printProjectState
         6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool), then printProjectState
             """)
-    TokenStream answer(String query);
+    String answer(String query);
 }
 
 

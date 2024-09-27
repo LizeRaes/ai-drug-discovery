@@ -35,6 +35,12 @@ public class StateTextSocket {
     @Inject
     CustomRetrievalAugmentor customRetrievalAugmentor;
 
+    @Inject
+    DiseasePicker diseasePicker;
+
+    @Inject
+    AntigenFinder antigenFinder;
+
     ChatLanguageModel model = OpenAiChatModel.builder()
             .apiKey(apiKey)
             .modelName(OpenAiChatModelName.GPT_4_O)
@@ -63,11 +69,7 @@ public class StateTextSocket {
         if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
             // TODO watch out with the memory, check if we need another memory in later steps
             // TODO build on every message? probably nicer solution
-            DiseasePicker diseasePicker = AiServices.builder(DiseasePicker.class)
-                    .chatLanguageModel(model)
-                    .chatMemory(customChatMemory.getChatMemory())
-                    .tools(new ToolsForDiseasePicker(customResearchProject))
-                    .build();
+
             logger.info("IN STEP 1 (define target disease)");
             // logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
             String answer = diseasePicker.answer(userMessage);
@@ -81,11 +83,6 @@ public class StateTextSocket {
             // else: model has set diseaseName and currentStep = 2 when decided on disease
             logger.info("******************** STEP 2 *********************");
             connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\n");
-            AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
-                    .chatLanguageModel(model)
-                    .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                    .tools(new ToolsForAntigenFinder(customResearchProject))
-                    .build();
 
             answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
 
