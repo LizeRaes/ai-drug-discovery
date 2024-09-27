@@ -58,16 +58,17 @@ public class StateTextSocket {
             return;
         }
 
-        // TODO watch out with the memory, check if we need another memory in later steps
-        DiseasePicker diseasePicker = AiServices.builder(DiseasePicker.class)
-                .chatLanguageModel(model)
-                .chatMemory(customChatMemory.getChatMemory())
-                .tools(new ToolsForDiseasePicker(customResearchProject))
-                .build();
-
+        // ************************** STEP 1 **************************
         if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
+            // TODO watch out with the memory, check if we need another memory in later steps
+            // TODO build on every message? probably nicer solution
+            DiseasePicker diseasePicker = AiServices.builder(DiseasePicker.class)
+                    .chatLanguageModel(model)
+                    .chatMemory(customChatMemory.getChatMemory())
+                    .tools(new ToolsForDiseasePicker(customResearchProject))
+                    .build();
             logger.info("IN STEP 1 (define target disease)");
-            logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
+           // logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
             String answer = diseasePicker.answer(userMessage);
             logger.info("*** Model Answer ***: " + answer);
             if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
@@ -77,37 +78,36 @@ public class StateTextSocket {
                 return;
             }
         }
-        // else: model has set diseaseName and currentStep = 2 when decided on disease
-        logger.info("STATE OF RESEARCH PROJECT AFTER diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
-        connection.sendTextAndAwait("Stored disease " + customResearchProject.getResearchProject().disease + "\\\n");
-        connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "\\\n");
 
-        logger.info("STARTING STEP 2 (find antigen)");
+        // else: model has set diseaseName and currentStep = 2 when decided on disease
+        logger.info("******************** STEP 2 *********************");
+        connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\\n");
         AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
                 .chatLanguageModel(model)
-                //.chatMemory(customChatMemory.getChatMemory())
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                //.retrievalAugmentor(getRetrievalAugmentor()) to use other documents
                 .tools(new ToolsForAntigenFinder(customResearchProject.getResearchProject()))
                 .build();
 
         String answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
-        logger.info("STATE OF RESEARCH PROJECT AFTER antigenFinder.determineAntigenInfo(: " + customResearchProject.getResearchProject().toString() + "\\");
 
         // if something went wrong with the antigenFinder
         if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).
                 startsWith("2")) {
-            logger.info("UNEXPECTED STEP: " + ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()));
+            String notification = "UNEXPECTED STEP 2: failed at finding antigen name or sequence. Current state: " + ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject());
+            logger.info(notification);
+            connection.sendTextAndAwait(notification);
+            return;
         }
 
-        // this answer will not be shown to the user
-        connection.sendTextAndAwait("Found antigen : " + customResearchProject.getResearchProject().antigenName+ "\\\n");
-        connection.sendTextAndAwait("with sequence : " + customResearchProject.getResearchProject().antigenSequence+ "\\\n");
+        connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName+ "\\\n" +
+                "with sequence : " + customResearchProject.getResearchProject().antigenSequence+ "\\\n");
 
-        // STEP 3
-        logger.info("STARTING STEP 3 (find antibodies)");
-        connection.sendTextAndAwait("Determining known antibodies for " + customResearchProject.getResearchProject().antigenName);
+        logger.info("******************** STEP 2 *********************");
+        connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
+
         // TODO write consecutive steps, with here and there human as a tool
+        connection.sendTextAndAwait("GOT HERE, TODO REST");
+
     }
 
     @OnClose

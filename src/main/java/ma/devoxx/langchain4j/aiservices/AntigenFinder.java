@@ -6,7 +6,7 @@ import dev.langchain4j.service.V;
 
 public interface AntigenFinder {
     @SystemMessage("""
-    You search through sources for a suitable antigen for the given disease and determine it's sequence.
+    You search through sources for a suitable antigen for the given disease and then determine it's sequence.
     Then you call storeAntigenInfo with the antigen name and sequence.
     """)
     @UserMessage("Find a suitable antigen for {{diseaseName}}")

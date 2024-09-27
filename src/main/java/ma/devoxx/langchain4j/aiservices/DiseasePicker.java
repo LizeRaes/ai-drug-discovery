@@ -5,10 +5,8 @@ import dev.langchain4j.service.TokenStream;
 
 public interface DiseasePicker {
     @SystemMessage("""
-    You help the user to choose the best disease for antibody research based on their questions.
-    Once the user chooses a disease, you call storeDiseaseName with the disease name, and inform the user that their disease was stored and if they want to move on to the next step?
+    You are a helpful antibody drug research assistant. If the user asks, help them to choose the best disease for antibody research based on their questions.
+    Only once the user chooses a disease to move forward with, you call storeDiseaseName with the disease name, and inform the user that their disease was stored and if they want to move on to the next step.
     """)
     String answer(String query);
-
-    // TODO fix that minimum 5 characters query is required (gives error on 'yes'), and fix the HuggingFaceTokenizer log msg on startup (where does it come from?)
 }

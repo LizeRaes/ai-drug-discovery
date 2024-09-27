@@ -23,8 +23,8 @@ public class ToolsForDiseasePicker implements Serializable {
     void storeDiseaseName(String name) {
         Logger.getLogger(ToolsForDiseasePicker.class.getName()).info("storeDiseaseName() called with name='" + name + "'");
         ResearchProject myResearchProject = customResearchProject.getResearchProject();
-        Logger.getLogger(ToolsForDiseasePicker.class.getName()).info("current researchProject state:" + myResearchProject);
         myResearchProject.setName(name);
         ResearchStateMachine.moveToNextStep(myResearchProject);
+        Logger.getLogger(ToolsForDiseasePicker.class.getName()).info(myResearchProject.toString());
     }
 }
