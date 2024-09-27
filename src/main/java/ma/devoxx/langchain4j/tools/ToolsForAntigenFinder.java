@@ -3,20 +3,19 @@ package ma.devoxx.langchain4j.tools;
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.ResearchProject;
 import ma.devoxx.langchain4j.state.ResearchStateMachine;
 
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-//@ApplicationScoped
 public class ToolsForAntigenFinder implements Serializable {
-    //    @Inject
-    ResearchProject myResearchProject;
+    CustomResearchProject customResearchProject;
 
 
-    public ToolsForAntigenFinder(ResearchProject myResearchProject) {
-        this.myResearchProject = myResearchProject;
+    public ToolsForAntigenFinder(CustomResearchProject customResearchProject) {
+        this.customResearchProject = customResearchProject;
     }
 
    @Tool("find sequence for antigen name")
@@ -29,8 +28,8 @@ public class ToolsForAntigenFinder implements Serializable {
     @Tool("store antigen name and antigen sequence")
     void storeAntigenInfo(String antigenName, String antigenSequence) {
         Logger.getLogger(ToolsForAntigenFinder.class.getName()).info("storeAntigenInfo() called with antigenName='" + antigenName + "' and AntigenSequence='" + antigenSequence + "'");
-        myResearchProject.setAntigenInfo(antigenName, antigenSequence);
-        ResearchStateMachine.moveToNextStep(myResearchProject);
-        Logger.getLogger(ToolsForAntigenFinder.class.getName()).info(myResearchProject.toString());
+        customResearchProject.getResearchProject().setAntigenInfo(antigenName, antigenSequence);
+        ResearchStateMachine.moveToNextStep(customResearchProject.getResearchProject());
+        Logger.getLogger(ToolsForAntigenFinder.class.getName()).info(customResearchProject.getResearchProject().toString());
     }
 }

@@ -6,13 +6,10 @@ import dev.langchain4j.model.openai.OpenAiChatModelName;
 import dev.langchain4j.service.AiServices;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
-import ma.devoxx.langchain4j.aiservices.AntigenFinder;
-import ma.devoxx.langchain4j.aiservices.DiseasePicker;
 import ma.devoxx.langchain4j.aiservices.FullResearcherService;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.state.CustomChatMemory;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
-import ma.devoxx.langchain4j.state.ResearchStateMachine;
 import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
 import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 import org.slf4j.Logger;
@@ -63,7 +60,8 @@ public class NoStateTextSocket {
                 .chatLanguageModel(model)
                 .chatMemory(customChatMemory.getChatMemory())
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                .tools(new ToolsForAntigenFinder(customResearchProject.getResearchProject()))
+                .tools(new ToolsForAntigenFinder(customResearchProject))
+                .tools(new ToolsForDiseasePicker(customResearchProject))
                 .build();
 
         String answer = fullResearcherService.answer(userMessage);

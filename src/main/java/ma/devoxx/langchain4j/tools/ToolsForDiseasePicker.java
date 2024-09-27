@@ -10,9 +10,7 @@ import ma.devoxx.langchain4j.state.ResearchStateMachine;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-@ApplicationScoped
 public class ToolsForDiseasePicker implements Serializable {
-    //    @Inject
     CustomResearchProject customResearchProject;
 
     public ToolsForDiseasePicker(CustomResearchProject customResearchProject) {

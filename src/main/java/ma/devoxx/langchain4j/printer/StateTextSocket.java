@@ -85,7 +85,7 @@ public class StateTextSocket {
         AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
                 .chatLanguageModel(model)
                 .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                .tools(new ToolsForAntigenFinder(customResearchProject.getResearchProject()))
+                .tools(new ToolsForAntigenFinder(customResearchProject))
                 .build();
 
         String answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
