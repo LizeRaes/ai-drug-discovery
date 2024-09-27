@@ -27,9 +27,6 @@ public class StateTextSocket {
     private final String apiKey = System.getenv("OPENAI_API_KEY");
 
     @Inject
-    CustomChatMemory customChatMemory;
-
-    @Inject
     CustomResearchProject customResearchProject;
 
     @Inject
