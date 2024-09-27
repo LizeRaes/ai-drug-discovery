@@ -36,6 +36,7 @@ public class ResearchProject implements Serializable {
     public String disease;
     public String antigenName;
     public String antigenSequence;
+    public List<Antibody> existingAntibodies = new ArrayList<>();
     public List<Antibody> proposedAntibodies = new ArrayList<>();
 
     public ResearchProject() {

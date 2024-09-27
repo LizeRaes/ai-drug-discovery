@@ -6,7 +6,7 @@ import dev.langchain4j.model.openai.OpenAiChatModelName;
 import dev.langchain4j.service.AiServices;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
-import ma.devoxx.langchain4j.aiservices.AntibodyFinderFromLiterature;
+import ma.devoxx.langchain4j.aiservices.AntibodyFinder;
 import ma.devoxx.langchain4j.aiservices.AntigenFinder;
 import ma.devoxx.langchain4j.aiservices.DiseasePicker;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
@@ -103,13 +103,17 @@ public class StateTextSocket {
 
             logger.info("******************** STEP 3 *********************");
             connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
-            AntibodyFinderFromLiterature antibodyFinderFromLiterature = AiServices.builder(AntibodyFinderFromLiterature.class)
+            AntibodyFinder antibodyFinderFromLiterature = AiServices.builder(AntibodyFinder.class)
                     .chatLanguageModel(model)
                     .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
                     .build();
             // TODO we absolutely need querycompression for this to work properly and make sure the memory is clean
             answer = antibodyFinderFromLiterature.getAntibodies(customResearchProject.getResearchProject().antigenName);
             // TODO have we moved to step 4? give it the tool to do so then. handle both move and not move
+            if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).
+                    startsWith("4")) {
+                connection.sendTextAndAwait("TODO we got to step 4 hurray");
+            }
             connection.sendTextAndAwait(answer);
             return;
 
