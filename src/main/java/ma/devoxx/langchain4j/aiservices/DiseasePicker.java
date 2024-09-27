@@ -2,7 +2,10 @@ package ma.devoxx.langchain4j.aiservices;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
+import io.quarkiverse.langchain4j.RegisterAiService;
+import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 
+@RegisterAiService(tools = ToolsForDiseasePicker.class)
 public interface DiseasePicker {
     @SystemMessage("""
     You are a helpful antibody drug research assistant. If the user asks, help them to choose the best disease for antibody research based on their questions.

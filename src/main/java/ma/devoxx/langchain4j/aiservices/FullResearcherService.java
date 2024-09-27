@@ -2,7 +2,12 @@ package ma.devoxx.langchain4j.aiservices;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
+import io.quarkiverse.langchain4j.RegisterAiService;
+import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
+import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 
+@RegisterAiService(
+        tools = ToolsForFullResearch.class)
 public interface FullResearcherService {
     @SystemMessage("""
         You are an AI researcher assistant that will help find antibody drug solutions.

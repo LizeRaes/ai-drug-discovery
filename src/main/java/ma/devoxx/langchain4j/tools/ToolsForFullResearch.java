@@ -1,6 +1,5 @@
 package ma.devoxx.langchain4j.tools;
 
-import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.molecules.Antibody;
@@ -8,7 +7,6 @@ import ma.devoxx.langchain4j.state.ResearchProject;
 import org.jboss.logging.Logger;
 
 import java.io.Serializable;
-import java.util.List;
 
 @ApplicationScoped
 public class ToolsForFullResearch implements Serializable {
