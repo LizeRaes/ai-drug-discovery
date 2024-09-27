@@ -12,6 +12,8 @@ import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
 import dev.langchain4j.rag.query.router.LanguageModelQueryRouter;
 import dev.langchain4j.rag.query.router.QueryRouter;
+import dev.langchain4j.rag.query.transformer.CompressingQueryTransformer;
+import dev.langchain4j.rag.query.transformer.QueryTransformer;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.web.search.WebSearchEngine;
@@ -72,8 +74,11 @@ public class CustomRetrievalAugmentor {
 
         QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 
+        QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
+
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
                 .queryRouter(queryRouter)
+                .queryTransformer(queryTransformer)
                 .build();
     }
 
