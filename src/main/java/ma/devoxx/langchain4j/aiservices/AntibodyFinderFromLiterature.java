@@ -3,15 +3,20 @@ package ma.devoxx.langchain4j.aiservices;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 
 import java.util.List;
 
 public interface AntibodyFinderFromLiterature {
     @SystemMessage("""
-    Given the antigen name, you propose names of good candidate antibodies.
+    You are an antibody drug researcher doing literature study of existing antibody candidates 
+    to target antigen {{antigenName}}. You propose suitable known antibodies for the antigen, 
+    as well as their main characteristics (binding affinity, specificity, stability, toxicity, immunogenicity)
+    if you find info about them. Then ask the user which antibodies they want to proceed with.
     """)
     @UserMessage("""
-    Which antibodies would be good candidates for {{antigenName}}?
+    From the information below, give me suitable antibodies and an assessment of their binding affinity, 
+    specificity, stability, toxicity, and immunogenicity if you find info about them. Also ask me which ones to proceed with.
     """)
-    List<String> getAntibodies(String antigenName);
+    String getAntibodies(@V("antigenName") String antigenName);
 }

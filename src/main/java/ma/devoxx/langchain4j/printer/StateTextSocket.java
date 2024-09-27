@@ -6,6 +6,7 @@ import dev.langchain4j.model.openai.OpenAiChatModelName;
 import dev.langchain4j.service.AiServices;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
+import ma.devoxx.langchain4j.aiservices.AntibodyFinderFromLiterature;
 import ma.devoxx.langchain4j.aiservices.AntigenFinder;
 import ma.devoxx.langchain4j.aiservices.DiseasePicker;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
@@ -68,42 +69,58 @@ public class StateTextSocket {
                     .tools(new ToolsForDiseasePicker(customResearchProject))
                     .build();
             logger.info("IN STEP 1 (define target disease)");
-           // logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
+            // logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
             String answer = diseasePicker.answer(userMessage);
             logger.info("*** Model Answer ***: " + answer);
             if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
                 // disease was not finally decided on yet
-                // TODO fix websocket to not be streaming (because? something with the tools?)
                 connection.sendTextAndAwait(answer);
                 return;
             }
-        }
 
-        // else: model has set diseaseName and currentStep = 2 when decided on disease
-        logger.info("******************** STEP 2 *********************");
-        connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\n");
-        AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
-                .chatLanguageModel(model)
-                .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                .tools(new ToolsForAntigenFinder(customResearchProject))
-                .build();
+            // else: model has set diseaseName and currentStep = 2 when decided on disease
+            logger.info("******************** STEP 2 *********************");
+            connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\n");
+            AntigenFinder antigenFinder = AiServices.builder(AntigenFinder.class)
+                    .chatLanguageModel(model)
+                    .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
+                    .tools(new ToolsForAntigenFinder(customResearchProject))
+                    .build();
 
-        String answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
+            answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
 
-        // if something went wrong with the antigenFinder
-        if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).
-                startsWith("2")) {
-            String notification = "UNEXPECTED STEP 2: failed at finding antigen name or sequence. Current state: " + ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject());
-            logger.info(notification);
-            connection.sendTextAndAwait(notification);
+            // if something went wrong with the antigenFinder
+            if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).
+                    startsWith("2")) {
+                String notification = "UNEXPECTED STEP 2: failed at finding antigen name or sequence. Current state: " + ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject());
+                logger.info(notification);
+                connection.sendTextAndAwait(notification);
+                return;
+            }
+
+            connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName + "\\\n" +
+                    "with sequence : " + customResearchProject.getResearchProject().antigenSequence + "\\\n");
+
+            logger.info("******************** STEP 3 *********************");
+            connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
+            AntibodyFinderFromLiterature antibodyFinderFromLiterature = AiServices.builder(AntibodyFinderFromLiterature.class)
+                    .chatLanguageModel(model)
+                    .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
+                    .build();
+            // TODO we absolutely need querycompression for this to work properly and make sure the memory is clean
+            answer = antibodyFinderFromLiterature.getAntibodies(customResearchProject.getResearchProject().antigenName);
+            // TODO have we moved to step 4? give it the tool to do so then. handle both move and not move
+            connection.sendTextAndAwait(answer);
             return;
+
         }
 
-        connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName+ "\\\n" +
-                "with sequence : " + customResearchProject.getResearchProject().antigenSequence+ "\\\n");
+        // ************************** STEP 3 **************************
+        // TODO are we still in step 3?
+        if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
 
-        logger.info("******************** STEP 2 *********************");
-        connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
+        }
+
 
         // TODO write consecutive steps, with here and there human as a tool
         connection.sendTextAndAwait("GOT HERE, TODO REST");
