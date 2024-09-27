@@ -22,6 +22,7 @@ public class ResearchProject implements Serializable {
         6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool), then printProjectState
             """;
 
+    // TODO move out of here and make enum
     final static String STEP1 = "1. Define target disease for antibody research (user input required), then printProjectState";
     final static String STEP2 = "2. Find antigen name and sequence for target disease, the printProjectState";
     final static String STEP3 = "3. Find known antibodies for target disease and their characteristics (binding affinity, specificity, stability, toxicity, immunogenicity) then printProjectState";
@@ -30,7 +31,6 @@ public class ResearchProject implements Serializable {
     final static String STEP6 = "6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool), then printProjectState";
     final static String FINISHED = "7. Finished";
 
-    //public String lastCompletedStep = STEP1;
     public String currentStep = STEP1;
     //public Disease targetDisease;
     public String disease;
@@ -75,5 +75,21 @@ public class ResearchProject implements Serializable {
         this.antigenName = antigenName;
        this.antigenSequence = antigenSequence;
         //lastCompletedStep = STEP2;
+    }
+
+    public Antibody getAntibody(String antibodyName) {
+        for (Antibody antibody : existingAntibodies) {
+            if (antibody.antibodyName.equals(antibodyName)) {
+                return antibody;
+            }
+        }
+        return null;
+    }
+
+    public void storeCdrs(String antibodyName, String cdrs) {
+        Antibody antibody = getAntibody(antibodyName);
+        if (antibody != null) {
+            antibody.cdrs = cdrs;
+        }
     }
 }

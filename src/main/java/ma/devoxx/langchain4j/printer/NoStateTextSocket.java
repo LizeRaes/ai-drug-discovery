@@ -64,7 +64,7 @@ public class NoStateTextSocket {
                 .tools(new ToolsForDiseasePicker(customResearchProject))
                 .build();
 
-        String answer = fullResearcherService.answer(userMessage);
+        String answer = fullResearcherService.answer(1, userMessage);
         logger.info("*** Model Answer ***: " + answer);
         connection.sendTextAndAwait(answer);
     }

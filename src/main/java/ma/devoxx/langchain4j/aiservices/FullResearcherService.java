@@ -1,7 +1,9 @@
 package ma.devoxx.langchain4j.aiservices;
 
+import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
+import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
@@ -20,7 +22,7 @@ public interface FullResearcherService {
         5. Find new candidate antibody based on antigen sequence and known antibodies, then printProjectState
         6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool), then printProjectState
             """)
-    String answer(String query);
+    String answer(@MemoryId int memoryId, @UserMessage String query);
 }
 
 

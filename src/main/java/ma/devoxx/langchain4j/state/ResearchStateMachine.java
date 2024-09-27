@@ -30,4 +30,8 @@ public class ResearchStateMachine {
                 throw new IllegalStateException("Unknown step: " + getCurrentStep(project));
         }
     }
+
+    public static void resetState(ResearchProject project) {
+        project.currentStep = ResearchProject.STEP1;
+    }
 }

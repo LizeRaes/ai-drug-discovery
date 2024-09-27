@@ -14,4 +14,5 @@ public class CustomResearchProject {
     public ResearchProject getResearchProject() {
         return researchProject;
     }
+
 }

@@ -8,6 +8,7 @@ import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.AntibodyFinder;
 import ma.devoxx.langchain4j.aiservices.AntigenFinder;
+import ma.devoxx.langchain4j.aiservices.CdrFinder;
 import ma.devoxx.langchain4j.aiservices.DiseasePicker;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.state.CustomChatMemory;
@@ -41,6 +42,12 @@ public class StateTextSocket {
     @Inject
     AntigenFinder antigenFinder;
 
+    @Inject
+    AntibodyFinder antibodyFinder;
+
+    @Inject
+    CdrFinder cdrFinder;
+
     ChatLanguageModel model = OpenAiChatModel.builder()
             .apiKey(apiKey)
             .modelName(OpenAiChatModelName.GPT_4_O)
@@ -51,8 +58,8 @@ public class StateTextSocket {
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
         System.out.println("Session opened, ID: " + connection.id());
-
-        // TODO init Ai Service here
+        // TODO generate new random user id so memory is fresh (and replace 1 by userId in AiService calls)
+        ResearchStateMachine.resetState(customResearchProject.getResearchProject());
     }
 
     @OnTextMessage
@@ -72,7 +79,7 @@ public class StateTextSocket {
 
             logger.info("IN STEP 1 (define target disease)");
             // logger.info("STATE OF RESEARCH PROJECT BEFORE diseasePicker.answer(: " + customResearchProject.getResearchProject().toString());
-            String answer = diseasePicker.answer(userMessage);
+            String answer = diseasePicker.answer(1, userMessage);
             logger.info("*** Model Answer ***: " + answer);
             if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
                 // disease was not finally decided on yet
@@ -100,31 +107,31 @@ public class StateTextSocket {
 
             logger.info("******************** STEP 3 *********************");
             connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
-            AntibodyFinder antibodyFinderFromLiterature = AiServices.builder(AntibodyFinder.class)
-                    .chatLanguageModel(model)
-                    .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                    .build();
-            // TODO we absolutely need querycompression for this to work properly and make sure the memory is clean
-            answer = antibodyFinderFromLiterature.getAntibodies(customResearchProject.getResearchProject().antigenName);
-            // TODO have we moved to step 4? give it the tool to do so then. handle both move and not move
+            answer = antibodyFinder.getAntibodies(1, customResearchProject.getResearchProject().antigenName);
+            // if we didn't move to step 4, no antibodies were found
             if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).
-                    startsWith("4")) {
-                connection.sendTextAndAwait("TODO we got to step 4 hurray");
+                    startsWith("3")) {
+                // TODO this shouldn't happen (or we continue without known antibodies)
+                connection.sendTextAndAwait("why are we still in step 3?");
+                return;
             }
-            connection.sendTextAndAwait(answer);
+            // TODO remove
+            connection.sendTextAndAwait("TODO we got to step 4 hurray");
+            // we ask the user's input at this point
+            connection.sendTextAndAwait(answer); // TODO or a fixed one about which antibodies they want to get the CDRs of
             return;
-
         }
 
-        // ************************** STEP 3 **************************
-        // TODO are we still in step 3?
-        if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
-
+        if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("4")) {
+            logger.info("******************** STEP 4 *********************");
+            String answer = cdrFinder.getCdrs(1, userMessage);
+            connection.sendTextAndAwait(answer);
+            connection.sendTextAndAwait("TODO we got here, rest is TODO");
+            return;
         }
-
 
         // TODO write consecutive steps, with here and there human as a tool
-        connection.sendTextAndAwait("GOT HERE, TODO REST");
+        connection.sendTextAndAwait("GTODO OT HERE ALL AT THE END, WEIRD");
 
     }
 
