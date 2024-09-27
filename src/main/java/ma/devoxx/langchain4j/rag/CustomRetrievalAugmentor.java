@@ -88,8 +88,7 @@ public class CustomRetrievalAugmentor {
         EmbeddingStoreIngestor.ingest(documents, embeddingStore);
 
         // Lastly, let's create a content retriever from an embedding store.
-        return EmbeddingStoreContentRetriever.from(embeddingStore);
-        // TODO where to set maxresults (7), minscore (0.5?)
+        return new EmbeddingStoreContentRetriever(embeddingStore, null, 7, 0.5);
     }
 
     public static PathMatcher glob(String glob) {
