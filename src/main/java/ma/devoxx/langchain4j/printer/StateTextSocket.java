@@ -72,7 +72,7 @@ public class StateTextSocket {
             logger.info("*** Model Answer ***: " + answer);
             if (ResearchStateMachine.getCurrentStep(customResearchProject.getResearchProject()).startsWith("1")) {
                 // disease was not finally decided on yet
-                // TODO fix websocket to not be streaming
+                // TODO fix websocket to not be streaming (because? something with the tools?)
                 connection.sendTextAndAwait(answer);
                 return;
             }

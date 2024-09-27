@@ -1,8 +1,9 @@
-# devoxx-ma-demo
+# AI Drug Discovery Researcher
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is a demo app, aiming to show the latest LangChain4j features, while also giving a glimpse of the type of app that will be possible in the future.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+
+This project uses LangChain4j, Quarkus <https://quarkus.io/> and SQLite.
 
 ## Running the application in dev mode
 
@@ -18,8 +19,12 @@ You can run your application in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
+In terminal, run `quarkus dev` or `./mvnw quarkus:dev` in the project root directory
 
-And then open the application at localhost:8080 in your browser.
+> Make sure that mvnw is executable after pulling the repo, if not run `chmod +x mvnw`
+
+
+Then open the application at `localhost:8080/index_state_machine.html` in your browser.
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
