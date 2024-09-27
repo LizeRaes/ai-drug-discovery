@@ -1,5 +1,7 @@
 package ma.devoxx.langchain4j.logging;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
@@ -15,15 +17,21 @@ public class LogWebSocket {
 
     private final Set<Session> sessions = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+    ObjectMapper mapper = new ObjectMapper();
+
     @OnOpen
     public void onOpen(Session session) {
         sessions.add(session);
     }
 
-    public void broadcast(String message) {
+    public void broadcast(DelegatingLogHandler.LoggerMessage message) {
         sessions.forEach(session -> {
             if (session.isOpen()) {
-                session.getAsyncRemote().sendText(message);
+                try {
+                    session.getAsyncRemote().sendText(mapper.writeValueAsString(message));
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

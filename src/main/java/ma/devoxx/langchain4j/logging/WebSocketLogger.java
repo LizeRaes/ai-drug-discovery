@@ -9,7 +9,7 @@ public class WebSocketLogger {
     @Inject
     LogWebSocket logWebSocket;
 
-    public void logMessage(String message) {
+    public void logMessage(DelegatingLogHandler.LoggerMessage message) {
         logWebSocket.broadcast(message);
     }
 }

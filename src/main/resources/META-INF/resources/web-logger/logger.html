@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quarkus Logs</title>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         #logContainer {
             height: 90vh;
@@ -12,6 +14,35 @@
             color: #a9a9a9;
             font-family: monospace;
             padding: 10px;
+        }
+
+        .log-entry {
+            display: flex;
+            margin-bottom: 10px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+        }
+
+        /* Icon side with fixed width */
+        .log-icon-side {
+            width: 50px;
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0; /* Prevent shrinking */
+            flex-grow: 0;   /* Prevent growing */
+        }
+
+        .log-text {
+            flex-grow: 1;
+            padding: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .log-icon-side i {
+            font-size: 24px;
         }
     </style>
 </head>
@@ -23,21 +54,54 @@
     const logContainer = document.getElementById('logContainer');
     const socket = new WebSocket('ws://localhost:8080/logs');
 
-    socket.onmessage = function(event) {
-        const logMessage = event.data;
+    // Function to get the icon class based on color
+    const getIconClass = (color) => {
+        const iconMap = {
+            yellow: 'bi-tools',
+            red: 'bi-file-earmark'
+        };
+        return iconMap[color] || 'bi-info-circle';
+    };
+
+    // Function to return lighter color
+    const lightenColor = (color) => {
+        const colorMap = {
+            yellow: "#f7d778f0",
+            '#ffae42': "#f7d778f0",
+            red: "#479973",
+            '#ff4c4c': "#479973"
+        };
+        return colorMap[color] || "#bcbdbe";
+    };
+
+    socket.onmessage = (event) => {
+        const { color, message } = JSON.parse(event.data);  // Destructure log message
+
+        // Create log entry
         const logElement = document.createElement('div');
-        logElement.textContent = logMessage;
+        logElement.className = 'log-entry';
+
+        // Icon side
+        const logIconSide = document.createElement('div');
+        logIconSide.className = 'log-icon-side';
+        logIconSide.style.backgroundColor = lightenColor(color);
+        logIconSide.innerHTML = `<i class="bi ${getIconClass(color)}"></i>`;
+
+        // Log text side
+        const logTextElement = document.createElement('div');
+        logTextElement.className = 'log-text';
+        logTextElement.textContent = message;
+
+        // Append icon and text to log entry
+        logElement.append(logIconSide, logTextElement);
         logContainer.appendChild(logElement);
-        logContainer.scrollTop = logContainer.scrollHeight; // Scroll to the bottom
+
+        // Scroll to the latest log
+        logContainer.scrollTop = logContainer.scrollHeight;
     };
 
-    socket.onerror = function(error) {
-        console.error('WebSocket Error:', error);
-    };
-
-    socket.onclose = function() {
-        console.log('WebSocket connection closed');
-    };
+    socket.onerror = (error) => console.error('WebSocket Error:', error);
+    socket.onclose = () => console.log('WebSocket connection closed');
 </script>
 
 </body>

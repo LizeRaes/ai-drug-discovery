@@ -5,17 +5,14 @@ import org.jboss.logmanager.ExtLogRecord;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
+
 
 public class DelegatingLogHandler extends ExtHandler {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             .withZone(ZoneId.systemDefault());
 
     private final WebSocketLogger webSocketLogger;
@@ -26,74 +23,65 @@ public class DelegatingLogHandler extends ExtHandler {
 
     @Override
     protected void doPublish(ExtLogRecord record) {
-        // Get the timestamp of the log record
-        Instant timestamp = record.getInstant();
-        String formattedTimestamp = FORMATTER.format(timestamp);
+        String formattedTimestamp = formatTimestamp(record.getInstant());
+        String logMessage = buildLogMessage(record, formattedTimestamp);
+        LoggerMessage loggerMessage = new LoggerMessage(determineLogColor(record.getLoggerName()), logMessage);
 
-        // Format the log message with logger name, level, and message
-        String logMessage = String.format("[%s] [%s] %s - %s",
-                formattedTimestamp, // Add formatted timestamp
+        webSocketLogger.logMessage(loggerMessage);
+    }
+
+    private String formatTimestamp(Instant timestamp) {
+        return DATE_FORMATTER.format(timestamp);
+    }
+
+    // Builds the log message with timestamp, level, message, and optional stack trace
+    private String buildLogMessage(ExtLogRecord record, String formattedTimestamp) {
+        String basicMessage = String.format("[%s] [%s] %s",
+                formattedTimestamp,
                 record.getLevel(),
-                record.getLoggerName(),
-                record.getMessage()
-        );
+                record.getMessage());
 
-        // Check if the log record contains an exception
+        // Append stack trace if an exception is present
         if (record.getThrown() != null) {
-            // Capture the stack trace as a string
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            record.getThrown().printStackTrace(pw);
-            String stackTrace = sw.toString();
+            basicMessage += "\n" + getStackTraceAsString(record.getThrown());
+        }
+        return basicMessage;
+    }
 
-            // Append the stack trace to the log message
-            logMessage += "\n" + stackTrace;
+    // Converts a stack trace to a string
+    private String getStackTraceAsString(Throwable throwable) {
+        StringWriter sw = new StringWriter();
+        try (PrintWriter pw = new PrintWriter(sw)) {
+            throwable.printStackTrace(pw);
+        }
+        return sw.toString();
+    }
+
+    // Determines the log color based on the logger name
+    private String determineLogColor(String loggerName) {
+        if (loggerName.contains("Tools")) {
+            return "yellow";
+        } else if (loggerName.contains("Ingestor") || loggerName.contains("Retriev")) {
+            return "red";
+        }
+        return "white";
+    }
+
+    public static class LoggerMessage {
+        private final String color;
+        private final String message;
+
+        public LoggerMessage(String color, String message) {
+            this.color = color;
+            this.message = message;
         }
 
-        webSocketLogger.logMessage(logMessage);
-    }
+        public String getColor() {
+            return color;
+        }
 
-    @Override
-    public void flush() {
-        // Optional: implement if necessary
-    }
-
-    @Override
-    public void close() throws SecurityException {
-        // Optional: implement if necessary
-    }
-
-    static class ExtLogFormatter extends Formatter {
-
-        private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        @Override
-        public String format(LogRecord record) {
-            // Cast to ExtLogRecord if possible
-            ExtLogRecord extRecord = (record instanceof ExtLogRecord) ? (ExtLogRecord) record : null;
-
-            StringBuilder sb = new StringBuilder();
-
-            // Date and Time
-            sb.append(dateFormat.format(new Date(record.getMillis()))).append(" ");
-
-            // Log Level
-            sb.append("[").append(record.getLevel()).append("] ");
-
-            // Class Name (from ExtLogRecord if available)
-            if (extRecord != null && extRecord.getLoggerClassName() != null) {
-                sb.append(extRecord.getLoggerClassName()).append(".");
-            }
-
-            // Method Name (from ExtLogRecord if available)
-            if (extRecord != null && extRecord.getLoggerName() != null) {
-                sb.append(extRecord.getLoggerName()).append(" - ");
-            }
-
-            // Log Message
-            sb.append(record.getMessage());
-
-            return sb.toString();
+        public String getMessage() {
+            return message;
         }
     }
 }
