@@ -107,6 +107,7 @@ public class StateTextSocket {
             // if we didn't move to step 4, no antibodies were found
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
                 connection.sendTextAndAwait(answer);
+                connection.sendTextAndAwait("ERROR: no antibodies were found for this antigen. Please reload the page and start over.");
                 return;
             }
             // we ask for the user's input at this point
@@ -129,7 +130,7 @@ public class StateTextSocket {
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_NEW_ANTIBODIES) {
             logger.info("******************** STEP 5 *********************");
             connection.sendTextAndAwait("Designing new antibodies based on known antibodies...");
-            // TODO actually we need confirmation here bcs it's costly calculations
+            // we ask for confirmation here bcs it's costly calculations / experiments
             String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printExistingAntibodiesWithCDR());
             connection.sendTextAndAwait(answer);
             return;
