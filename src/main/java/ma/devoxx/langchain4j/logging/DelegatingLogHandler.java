@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DelegatingLogHandler extends ExtHandler {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss")
             .withZone(ZoneId.systemDefault());
 
     private final WebSocketLogger webSocketLogger;
