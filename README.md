@@ -1,7 +1,9 @@
 # AI Drug Discovery Researcher
 
-This is a demo app, aiming to show the latest LangChain4j features, while also giving a glimpse of the type of app that will be possible in the future.
+This is a demo app, aiming to show the latest LangChain4j features, 
+while also giving a glimpse of the type of app that will be possible in the future.
 
+You can see the logs next to the chatbot, and see which tools are called, which RAG segments are retrieved, and much more.
 
 This project uses LangChain4j, Quarkus <https://quarkus.io/> and SQLite.
 
@@ -14,7 +16,7 @@ First, you have to configure 3 env variables :
 - TAVILY_API_KEY: get a free key: https://app.tavily.com/sign-in
 - (optional for antibody design simulation) ANTHROPIC_API_KEY: can be created here: https://console.anthropic.com/settings/keys
 
-
+## Running the application
 You can run your application in dev mode that enables live coding using:
 
 ```shell script
@@ -24,12 +26,45 @@ In terminal, run `quarkus dev` or `./mvnw quarkus:dev` in the project root direc
 
 > Make sure that mvnw is executable after pulling the repo, if not run `chmod +x mvnw`
 
-
 Then open the application at `localhost:8080/index_state_machine.html` in your browser.
+
+Or at `localhost:8080/index_no_state_machine.html` for the version where the LLM decides on the state transitions.
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
-## Packaging and running the application
+## A quick walkthrough of the app
+This application is an AI Drug Discovery Researcher that will try to determine good new engineered antibodies for a given disease.
+She will walk through the following steps with you:
+1. Define target disease you want to solve **(tip: pick GBM for best results)**
+2. Find antigen name and sequence (what makes the disease recognisable for anitbodies)
+3. Search literature for known antibodies for that antigen + 
+   their characteristics (binding affinity, specificity, stability, toxicity, immunogenicity)
+4. Find CDRs for the known antibodies **(tip: pick 806 mAb and Cetuximab for best results)**
+5. Find new candidate antibodies based on antigen sequence and findings from known antibodies,
+6. Determine characteristics of new candidate antibody (binding affinity, specificity, stability, toxicity, immunogenicity) (user permission required to proceed with calling those tool)
+7. Ask user if they want an article out of the findings for publishing in Nature
+
+Tip: for this demo we gathered some data (scientific papers, protein sequences) related to Glioblastoma Multiforme (GBM), which is a type of brain tumor.
+If you try the app with this disease, you'll find the best results with no hallucination. 
+
+You can of course add more data, the idea is that in theory, this app would search all scientific literature and connect to a real protein database.
+In that case, it can target any disease.
+
+The tools to determine a new candidate antibody and it's characteristics are dummies, and would in a real-world application be replaced by calls to real specialized models, 
+or even needed to be measured in the lab (how about steered by robotics, programmed by this app?).
+
+## Aspects of LangChain4j demonstrated in this app
+- Declarative AI services
+- Tool support
+- ChatMemory
+- Advanced RAG (QueryCompressions, QueryRouting, EmbeddingStoreRetriever + WebSearchRetriever + SQLRetriever, RerankingAggregator)
+- Audio
+- Integration with diverse LLMs (OpenAI GPT-4, Anthropic Claude-3.5, Google Gemini)
+- State Machine behavior (not specific to LangChain4j)
+- GuardRails
+- Observability (via Quarkus dev UI)
+
+## Packaging and executables
 
 The application can be packaged using:
 
@@ -68,14 +103,3 @@ You can then execute your native executable with: `./target/devoxx-ma-demo-1.0.0
 
 If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
