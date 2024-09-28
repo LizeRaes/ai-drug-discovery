@@ -23,7 +23,7 @@ public class NoBiologicalWeapon implements InputGuardrail {
         double result = service.isAttemptToBioWeapon(userMessage.singleText());
         if (result > 0.7) {
             Logger.getLogger(NoBiologicalWeapon.class.getName()).info("!!! Attempt to create biological weapon detected !!!");
-            return failure("Prompt injection detected");
+            return failure("!!! Attempt to create biological weapon detected !!!");
         }
         return success();
     }
