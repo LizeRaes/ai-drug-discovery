@@ -24,15 +24,23 @@
             height: 100vh;
         }
 
-        /* Header styling */
         header {
-            background-color: #343a40;
+            background-color: #473231;
             color: white;
-            padding: 20px;
-            text-align: center;
+            text-align: left;
             font-size: 32px;
             font-weight: bold;
             text-transform: uppercase;
+            display: flex;
+            justify-content: unset;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Image inside header */
+        header img {
+            height: 80px;
+            width: auto;
         }
 
         .container {
@@ -117,6 +125,7 @@
 <body>
 
 <header>
+    <img src="images/image.png" alt="Antibody Image">
     AI Antibody Drug Researcher
 </header>
 
