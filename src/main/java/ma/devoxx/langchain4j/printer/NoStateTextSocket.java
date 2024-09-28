@@ -3,15 +3,14 @@ package ma.devoxx.langchain4j.printer;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModelName;
-import dev.langchain4j.service.AiServices;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.FullResearcherService;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.state.CustomChatMemory;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
-import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
-import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
+import ma.devoxx.langchain4j.state.CustomResearchState;
+import ma.devoxx.langchain4j.state.ResearchState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +19,9 @@ public class NoStateTextSocket {
 
     private static final Logger logger = LoggerFactory.getLogger(NoStateTextSocket.class);
 
-
     private final String apiKey = System.getenv("OPENAI_API_KEY");
+
+    private Integer userId;
 
     @Inject
     CustomChatMemory customChatMemory;
@@ -30,20 +30,19 @@ public class NoStateTextSocket {
     CustomResearchProject customResearchProject;
 
     @Inject
+    CustomResearchState customResearchState;
+
+    @Inject
     CustomRetrievalAugmentor customRetrievalAugmentor;
 
-    ChatLanguageModel model = OpenAiChatModel.builder()
-            .apiKey(apiKey)
-            .modelName(OpenAiChatModelName.GPT_4_O)
-            .logRequests(true)
-            .logResponses(true)
-            .build();
+    @Inject
+    FullResearcherService fullResearcherService;
 
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
         System.out.println("Session opened, ID: " + connection.id());
-
-        // TODO init Ai Service here
+        customResearchState.getResearchState().moveToStep(ResearchState.Step.DEFINE_DISEASE);
+        refreshUser();
     }
 
     @OnTextMessage
@@ -55,14 +54,6 @@ public class NoStateTextSocket {
         if (userMessage.equalsIgnoreCase("exit")) {
             return;
         }
-
-        FullResearcherService fullResearcherService = AiServices.builder(FullResearcherService.class)
-                .chatLanguageModel(model)
-                .chatMemory(customChatMemory.getChatMemory())
-                .retrievalAugmentor(customRetrievalAugmentor.getRetrievalAugmentor())
-                .tools(new ToolsForAntigenFinder(customResearchProject))
-                .tools(new ToolsForDiseasePicker(customResearchProject))
-                .build();
 
         String answer = fullResearcherService.answer(1, userMessage);
         logger.info("*** Model Answer ***: " + answer);
@@ -76,6 +67,10 @@ public class NoStateTextSocket {
         // release some resources
 
         logger.info("Session closed, ID: {}", sessionId);
+    }
+
+    public void refreshUser() {
+        userId = (int) (Math.random() * 1000) + 1;
     }
 }
 
