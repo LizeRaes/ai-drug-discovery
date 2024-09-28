@@ -10,8 +10,6 @@ import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.load
 @Singleton
 public class StartupService {
 
-    CustomRetrievalAugmentor retrievalAugmentor;
-
     public void onStart(@Observes StartupEvent ev) {
         // initialize protein database
         try {

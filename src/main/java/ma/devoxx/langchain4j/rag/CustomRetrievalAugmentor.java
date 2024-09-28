@@ -10,11 +10,13 @@ import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.cohere.CohereScoringModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel;
+import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.scoring.ScoringModel;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.aggregator.ContentAggregator;
+import dev.langchain4j.rag.content.injector.DefaultContentInjector;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
@@ -23,7 +25,6 @@ import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.rag.query.transformer.CompressingQueryTransformer;
 import dev.langchain4j.rag.query.transformer.QueryTransformer;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.web.search.WebSearchEngine;
 import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
@@ -39,7 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 
 @ApplicationScoped
@@ -50,8 +50,7 @@ public class CustomRetrievalAugmentor {
 
         ChatLanguageModel chatModel = OpenAiChatModel.withApiKey(System.getenv("OPENAI_API_KEY"));
 
-        List<Document> documents = loadDocuments(
-                toPath("docs"), glob("*.txt"));
+        List<Document> documents = loadDocuments(toPath("docs"), glob("*.*"));
 
         // create web search content retriever.
         WebSearchEngine webSearchEngine = TavilyWebSearchEngine.builder()
@@ -89,20 +88,14 @@ public class CustomRetrievalAugmentor {
                 .queryRouter(queryRouter)
                 .queryTransformer(queryTransformer)
                 .contentAggregator(contentAggregator)
+                .contentInjector(DefaultContentInjector.builder()
+                        .promptTemplate(
+                                PromptTemplate.from("{{userMessage}}\n" +
+                                        "\n" +
+                                        "if relevant to the question, you can use amongst others following information:\n" +
+                                        "{{contents}}"))
+                        .build())
                 .build();
-    }
-
-    private static ContentRetriever createContentRetrieverOld(List<Document> documents) {
-
-        // Here, we create and empty in-memory store for our documents and their embeddings.
-        InMemoryEmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
-
-        // Here, we are ingesting our documents into the store.
-        // Under the hood, a lot of "magic" is happening, but we can ignore it for now.
-        EmbeddingStoreIngestor.ingest(documents, embeddingStore);
-
-        // Lastly, let's create a content retriever from an embedding store.
-        return new EmbeddingStoreContentRetriever(embeddingStore, null, 7, 0.5);
     }
 
     private static ContentRetriever createContentRetriever(List<Document> documents) {
