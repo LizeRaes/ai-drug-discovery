@@ -19,5 +19,9 @@ public interface CdrFinder {
             If they clearly manifest or choose which ones to proceed with,
             store the chosen antibodies using storeCdr() for each of them.
             """)
-    String getCdrs(@MemoryId int memoryId, @UserMessage String userMsg);
+    @UserMessage("""
+            Return and store suitable CDRs for the selected antibodies: 
+            {{usrMsg}}.
+            """)
+    String getCdrs(@MemoryId int memoryId, @V("usrMsg") String userMsg);
 }

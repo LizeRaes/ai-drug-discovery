@@ -3,6 +3,7 @@ package ma.devoxx.langchain4j.printer;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.*;
+import ma.devoxx.langchain4j.molecules.Antibody;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
@@ -42,6 +43,12 @@ public class StateTextSocket {
 
     @Inject
     NewAntibodyFinder newAntibodyFinder;
+
+    @Inject
+    CharacteristicsMeasurer measureCharacteristics;
+
+    @Inject
+    ArticlePublisher articlePublisher;
 
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
@@ -92,7 +99,7 @@ public class StateTextSocket {
 
             logger.info("******************** STEP 3 *********************");
             connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
-            answer = knownAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName);
+            answer = knownAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName, customResearchProject.getResearchProject().disease);
             // if we didn't move to step 4, no antibodies were found
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
                 connection.sendTextAndAwait("UNEXPECTED STEP 3: failed at finding antibodies.");
@@ -120,18 +127,22 @@ public class StateTextSocket {
             connection.sendTextAndAwait("Designing new antibodies based on known antibodies...");
             // TODO actually we need confirmation here bcs it's costly calculations
             // TODO only pass the antibodies that actually have CDRs
-            String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printAntibodies());
+            String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printAntibodiesWithCDR());
             connection.sendTextAndAwait(answer);
             return;
         }
 
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.MEASURE_CHARACTERISTICS) {
             logger.info("******************** STEP 6 *********************");
-            // TODO implement step 5
+            for(Antibody antibody : customResearchProject.getResearchProject().newAntibodies) {
+                connection.sendTextAndAwait("Measuring characteristics for " + antibody.antibodyName + "...");
+                connection.sendTextAndAwait(measureCharacteristics.measureCharacteristics(antibody.antibodyName, antibody.cdrs, customResearchProject.getResearchProject().antigenSequence));
+            }
+            logger.info("calling AiService ArticlePublisher with ResearchProject: " + customResearchProject.getResearchProject().toString() + "and authors: Mohamed Software and Lize Dev");
+            articlePublisher.publishArticle(userId, userMessage, customResearchProject.getResearchProject().toString(), "Mohamed Software and Lize Dev");
             return;
         }
-        // TODO write consecutive steps
-        connection.sendTextAndAwait("TODO GOT HERE ALL AT THE END, WEIRD");
+        connection.sendTextAndAwait("Thank you for using Ai Drug Discovery Researcher!");
 
     }
 

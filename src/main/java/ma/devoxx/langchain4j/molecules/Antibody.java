@@ -3,14 +3,6 @@ package ma.devoxx.langchain4j.molecules;
 public class Antibody {
     public String antibodyName;
     public String cdrs;
-//    public String lightChainSequence;
-//    public String heavyChainSequence;
-//    public String CDR_L1;
-//    public String CDR_L2;
-//    public String CDR_L3;
-//    public String CDR_H1;
-//    public String CDR_H2;
-//    public String CDR_H3;
     public Characteristics characteristics;
 
     public Antibody(String antibodyName) {

@@ -25,15 +25,22 @@ public class ResearchProject implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("===============================");
         sb.append("ResearchProject{\n");
-        sb.append(", \ntargetDisease=").append(disease);
-        sb.append(", \nantigenName=").append(antigenName);
-        sb.append(", \nantigenSequence=").append(antigenSequence);
+        sb.append(", \nTarget Disease=").append(disease);
+        sb.append(", \nAntigen Name=").append(antigenName);
+        sb.append(", \nAntigen Sequence=").append(antigenSequence);
+        if (!existingAntibodies.isEmpty()) {
+            sb.append("\nExisting Antibodies found in literature:\n");
+            for (Antibody proposedAntibody : existingAntibodies) {
+                sb.append(proposedAntibody.toString());
+            }
+        }
         if (!newAntibodies.isEmpty()) {
-            sb.append("\nproposedAntibodies=");
+            sb.append("\nNewly discovered Antibodies during this research:");
             for (Antibody proposedAntibody : newAntibodies) {
                 sb.append(proposedAntibody.toString());
             }
         }
+        sb.append("Methods used: innovative new approach using AI and ML models, amongst others OpenAI GPT-4, Anthropic Claude-3.5 and Google AlphaProteo");
         sb.append("\n===============================");
         sb.append("\n}");
         return sb.toString();
@@ -47,6 +54,16 @@ public class ResearchProject implements Serializable {
         StringBuilder sb = new StringBuilder();
         for (Antibody antibody : existingAntibodies) {
             sb.append(antibody.toString());
+        }
+        return sb.toString();
+    }
+
+    public String printAntibodiesWithCDR() {
+        StringBuilder sb = new StringBuilder();
+        for (Antibody antibody : existingAntibodies) {
+            if (antibody.cdrs != null) {
+                sb.append(antibody.toString());
+            }
         }
         return sb.toString();
     }
@@ -76,8 +93,11 @@ public class ResearchProject implements Serializable {
 
     public void storeCdrs(String antibodyName, String cdrs) {
         Antibody antibody = getAntibody(antibodyName);
-        if (antibody != null) {
-            antibody.cdrs = cdrs;
+        if (antibody == null) {
+            antibody = new Antibody(antibodyName);
+            newAntibodies.add(antibody);
         }
+        antibody.cdrs = cdrs;
     }
+
 }
