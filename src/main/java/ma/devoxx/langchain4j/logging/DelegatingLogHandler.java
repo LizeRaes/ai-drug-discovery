@@ -25,7 +25,7 @@ public class DelegatingLogHandler extends ExtHandler {
     protected void doPublish(ExtLogRecord record) {
         String formattedTimestamp = formatTimestamp(record.getInstant());
         String logMessage = buildLogMessage(record, formattedTimestamp);
-        LoggerMessage loggerMessage = new LoggerMessage(determineLogColor(record.getLoggerName()), logMessage);
+        LoggerMessage loggerMessage = new LoggerMessage(determineLogColor(record.getLoggerName(), record.getMessage()), logMessage);
 
         webSocketLogger.logMessage(loggerMessage);
     }
@@ -58,11 +58,13 @@ public class DelegatingLogHandler extends ExtHandler {
     }
 
     // Determines the log color based on the logger name
-    private String determineLogColor(String loggerName) {
+    private String determineLogColor(String loggerName, String loggerMessage) {
         if (loggerName.contains("Tools")) {
             return "yellow";
         } else if (loggerName.contains("Ingestor") || loggerName.contains("Retriev")) {
             return "red";
+        } else if (loggerMessage.startsWith("****")) {
+            return "purple";
         }
         return "white";
     }

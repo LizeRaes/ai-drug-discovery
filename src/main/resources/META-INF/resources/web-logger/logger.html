@@ -63,13 +63,21 @@
         return iconMap[color] || 'bi-info-circle';
     };
 
+    // Function to return the full block color when needed
+    const fullBlockColor = (color) => {
+        if (color === 'purple') {
+            return "#2a056c"; // Apply the full purple background for purple logs
+        }
+        return ""; // No change for other colors
+    };
+
     // Function to return lighter color
     const lightenColor = (color) => {
         const colorMap = {
             yellow: "#f7d778f0",
             '#ffae42': "#f7d778f0",
             red: "#479973",
-            '#ff4c4c': "#479973"
+            '#ff4c4c': "#479973",
         };
         return colorMap[color] || "#bcbdbe";
     };
@@ -81,19 +89,36 @@
         const logElement = document.createElement('div');
         logElement.className = 'log-entry';
 
-        // Icon side
-        const logIconSide = document.createElement('div');
-        logIconSide.className = 'log-icon-side';
-        logIconSide.style.backgroundColor = lightenColor(color);
-        logIconSide.innerHTML = `<i class="bi ${getIconClass(color)}"></i>`;
+        // Check if the color is purple and apply full block background if true
+        const backgroundColor = fullBlockColor(color);
+        if (backgroundColor) {
+            logElement.style.backgroundColor = backgroundColor; // Apply purple background for purple logs
+        }
 
-        // Log text side
-        const logTextElement = document.createElement('div');
-        logTextElement.className = 'log-text';
-        logTextElement.textContent = message;
+        // For non-purple logs, create the icon side and log text side
+        if (color !== 'purple') {
+            // Icon side
+            const logIconSide = document.createElement('div');
+            logIconSide.className = 'log-icon-side';
+            logIconSide.style.backgroundColor = lightenColor(color); // Icon background color
+            logIconSide.innerHTML = `<i class="bi ${getIconClass(color)}"></i>`;
 
-        // Append icon and text to log entry
-        logElement.append(logIconSide, logTextElement);
+            // Log text side
+            const logTextElement = document.createElement('div');
+            logTextElement.className = 'log-text';
+            logTextElement.textContent = message;
+
+            // Append icon and text to log entry
+            logElement.append(logIconSide, logTextElement);
+        } else {
+            // For purple logs, we don't want to divide the entry or add an icon, so just add the text
+            const logTextElement = document.createElement('div');
+            logTextElement.className = 'log-text';
+            logTextElement.textContent = message;
+
+            logElement.appendChild(logTextElement);
+        }
+
         logContainer.appendChild(logElement);
 
         // Scroll to the latest log
