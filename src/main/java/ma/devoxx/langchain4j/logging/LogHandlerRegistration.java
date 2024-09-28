@@ -14,9 +14,8 @@ public class LogHandlerRegistration {
     WebSocketLogger webSocketLogger;
 
     public void onStart(@Observes StartupEvent ev) {
-        System.out.println("Hey");
         DelegatingLogHandler handler = new DelegatingLogHandler(webSocketLogger);
-        handler.setFormatter(new ExtLogFormatter());
+        //handler.setFormatter(new ExtLogFormatter());
         LogManager.getLogManager().getLogger("").addHandler(handler);
     }
 }
