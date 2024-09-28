@@ -5,9 +5,11 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 import ma.devoxx.langchain4j.tools.ToolsForFullResearch;
 
+@ApplicationScoped
 @RegisterAiService(
         tools = ToolsForFullResearch.class)
 public interface FullResearcherService {

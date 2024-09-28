@@ -5,10 +5,12 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorProvider;
 import ma.devoxx.langchain4j.tools.ToolsForAntibodyFinder;
 import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
 
+@ApplicationScoped
 @RegisterAiService(
         tools = ToolsForAntibodyFinder.class,
         retrievalAugmentor = CustomRetrievalAugmentorProvider.class)

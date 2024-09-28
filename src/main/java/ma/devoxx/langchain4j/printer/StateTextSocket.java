@@ -100,7 +100,7 @@ public class StateTextSocket {
             }
             // we ask the user's input at this point
             connection.sendTextAndAwait(answer);
-            // TODO check if the above works with memory when saying 'first and last one'
+            // TODO Lize allow to stay in this loop, for questions like 'I'm doubting between Necitumumab, cetuximab and 806 mAb'
             return;
         }
 

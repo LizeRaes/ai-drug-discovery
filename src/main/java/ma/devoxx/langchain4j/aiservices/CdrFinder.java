@@ -4,11 +4,13 @@ import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorProvider;
 import ma.devoxx.langchain4j.tools.ToolsForCdrFinder;
 
-// TODO will SqlRetriever work?
-//  TODO we can also only pass it in this step where we leave the docs and websearch out
+// TODO Lize will SqlRetriever work?
+//  TODO Lize we can also only pass it in this step where we leave the docs and websearch out
+@ApplicationScoped
 @RegisterAiService(
         tools = ToolsForCdrFinder.class,
         retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
