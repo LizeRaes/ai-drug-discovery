@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 class AudioResourceTest {
     @Test
-    void testHelloEndpoint() {
+    void testGetTextEndpoint() {
         given()
           .when().get("/hello")
           .then()
