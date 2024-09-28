@@ -89,6 +89,7 @@ public class CustomReRankingContentAggregator implements ContentAggregator {
                 .filter(entry -> minScore == null || entry.getValue() >= minScore)
                 .sorted(Map.Entry.<TextSegment, Double>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
+                .peek(textSegment -> logger.info("aggregated segment : {}", textSegment.text()))
                 .map(Content::from)
                 .collect(Collectors.toList());
     }
