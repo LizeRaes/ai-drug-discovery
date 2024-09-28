@@ -87,8 +87,8 @@ public class StateTextSocket {
                 return;
             }
 
-            connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName + "\\\n" +
-                    "with sequence : " + customResearchProject.getResearchProject().antigenSequence + "\\\n");
+            connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName + "\n" +
+                    "with sequence : " + customResearchProject.getResearchProject().antigenSequence);
 
             logger.info("******************** STEP 3 *********************");
             connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);

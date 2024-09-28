@@ -10,8 +10,9 @@ This project uses LangChain4j, Quarkus <https://quarkus.io/> and SQLite.
 First, you have to configure 3 env variables :
 
 - OPENAI_API_KEY: Open AI Api Key
-- GEMINI_TOKEN: Google Gemini Api Key
+- (optional for audio) GEMINI_TOKEN: Google Gemini Api Key
 - TAVILY_API_KEY: get a free key: https://app.tavily.com/sign-in
+- (optional for antibody design simulation) ANTHROPIC_API_KEY: can be created here: https://console.anthropic.com/settings/keys
 
 
 You can run your application in dev mode that enables live coding using:

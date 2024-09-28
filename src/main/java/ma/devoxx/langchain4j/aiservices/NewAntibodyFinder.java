@@ -14,7 +14,7 @@ import ma.devoxx.langchain4j.tools.ToolsForNewAntibodyFinder;
         retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
 public interface NewAntibodyFinder {
     @UserMessage("""
-    Propose 1 or 2 new CDRs against the following antigen and store them:
+    Propose new CDRs against the following antigen using different functions, and store them. Antigen:
     {{antigen}}.
     You can optionally use the information about the following known antibodies that target this antigen:
     {{knownAntibodies}}
