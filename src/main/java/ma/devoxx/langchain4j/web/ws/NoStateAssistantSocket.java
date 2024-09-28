@@ -1,39 +1,22 @@
-package ma.devoxx.langchain4j.printer;
+package ma.devoxx.langchain4j.web.ws;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.model.openai.OpenAiChatModelName;
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.FullResearcherService;
-import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
-import ma.devoxx.langchain4j.state.CustomChatMemory;
-import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebSocket(path = "/my-websocket-no-state")
-public class NoStateTextSocket {
+public class NoStateAssistantSocket {
 
-    private static final Logger logger = LoggerFactory.getLogger(NoStateTextSocket.class);
-
-    private final String apiKey = System.getenv("OPENAI_API_KEY");
+    private static final Logger logger = LoggerFactory.getLogger(NoStateAssistantSocket.class);
 
     private Integer userId;
 
     @Inject
-    CustomChatMemory customChatMemory;
-
-    @Inject
-    CustomResearchProject customResearchProject;
-
-    @Inject
     CustomResearchState customResearchState;
-
-    @Inject
-    CustomRetrievalAugmentor customRetrievalAugmentor;
 
     @Inject
     FullResearcherService fullResearcherService;

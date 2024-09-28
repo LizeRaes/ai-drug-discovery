@@ -1,4 +1,4 @@
-package ma.devoxx.langchain4j.audio;
+package ma.devoxx.langchain4j.web.rest;
 
 import dev.langchain4j.data.message.AudioContent;
 import dev.langchain4j.data.message.SystemMessage;
@@ -6,13 +6,12 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 
 @Path("/audio")
-public class AudioResource {
+public class SpeechToTextResource {
 
-    Logger logger = Logger.getLogger(AudioResource.class);
+    Logger logger = Logger.getLogger(SpeechToTextResource.class);
 
     private final String apiKey = System.getenv("GEMINI_TOKEN");
     private static final String MODEL_NAME = "gemini-1.5-flash-001";

@@ -2,14 +2,15 @@ package ma.devoxx.langchain4j.logging;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import ma.devoxx.langchain4j.web.ws.LoggingPrinterSocket;
 
 @ApplicationScoped
 public class WebSocketLogger {
 
     @Inject
-    LogWebSocket logWebSocket;
+    LoggingPrinterSocket loggingPrinterSocket;
 
     public void logMessage(DelegatingLogHandler.LoggerMessage message) {
-        logWebSocket.broadcast(message);
+        loggingPrinterSocket.broadcast(message);
     }
 }

@@ -1,4 +1,4 @@
-package ma.devoxx.langchain4j.printer;
+package ma.devoxx.langchain4j.web.ws;
 
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
@@ -7,21 +7,15 @@ import ma.devoxx.langchain4j.molecules.Antibody;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
-import ma.devoxx.langchain4j.state.CustomChatMemory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebSocket(path = "/my-websocket-state")
-public class StateTextSocket {
+public class StateAssistantSocket {
 
-    private static final Logger logger = LoggerFactory.getLogger(StateTextSocket.class);
-
-    private final String apiKey = System.getenv("OPENAI_API_KEY");
+    private static final Logger logger = LoggerFactory.getLogger(StateAssistantSocket.class);
 
     private Integer userId;
-
-    @Inject
-    CustomChatMemory customChatMemory;
 
     @Inject
     CustomResearchProject customResearchProject;
