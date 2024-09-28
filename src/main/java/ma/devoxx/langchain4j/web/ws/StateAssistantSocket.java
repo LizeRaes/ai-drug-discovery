@@ -88,8 +88,9 @@ public class StateAssistantSocket {
                     return;
                 }
 
-                connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName + "\n" +
-                        "with sequence : " + customResearchProject.getResearchProject().antigenSequence);
+                String result = "I found antigen : " + customResearchProject.getResearchProject().antigenName + "\n" +
+                        "with sequence : " + customResearchProject.getResearchProject().antigenSequence;
+                connection.sendTextAndAwait(result.replace("\n", "\n\n"));
             }
 
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
