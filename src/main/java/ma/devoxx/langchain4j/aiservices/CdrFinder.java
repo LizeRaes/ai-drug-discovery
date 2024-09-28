@@ -16,8 +16,9 @@ import ma.devoxx.langchain4j.tools.ToolsForCdrFinder;
 public interface CdrFinder {
     @SystemMessage("""
             Help the user decide on which antibodies to proceed with if they are unsure.
-            If they clearly manifest or choose which ones to proceed with,
-            store the chosen antibodies using storeCdr() for each of them.
+            Once they clearly manifest or choose which ones to proceed with,
+            store the chosen antibodies using storeCdr() for each of them, 
+            tell which CDRs you found, and do not ask further questions.
             """)
     @UserMessage("""
             Return and store suitable CDRs for the selected antibodies: 

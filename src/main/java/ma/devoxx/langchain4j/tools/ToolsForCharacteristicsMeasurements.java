@@ -28,28 +28,28 @@ public class ToolsForCharacteristicsMeasurements implements Serializable {
     public String determineBindingAffinity(String CDRs, String antigenSequence) {
         logger.info("determineBindingAffinity() called with CDRs='" + CDRs + "', antigenSequence='" + antigenSequence + "'");
         // dummy to be replaced by a specialized model or lab experiment
-        return generateRandomValue();
+        return generateHighRandomValue();
     }
 
     @Tool
     public String determineStability(String CDRs) {
         logger.info("determineStability() called with CDRs='" + CDRs + "'");
         // dummy to be replaced by a specialized model or lab experiment
-        return generateRandomValue();
+        return generateHighRandomValue();
     }
 
     @Tool
     public String determineToxicity(String CDRs) {
         logger.info("determineToxicity() called with CDRs='" + CDRs + "'");
         // dummy to be replaced by a specialized model or lab experiment
-        return generateRandomValue();
+        return generateLowRandomValue();
     }
 
     @Tool
     public String determineImmunogenicity(String CDRs) {
         logger.info("determineImmunogenicity() called with CDRs='" + CDRs + "'");
         // dummy to be replaced by a specialized model or lab experiment
-        return generateRandomValue();
+        return generateHighRandomValue();
     }
 
     @Tool
@@ -61,10 +61,10 @@ public class ToolsForCharacteristicsMeasurements implements Serializable {
         };
 
         StringBuilder specificityReport = new StringBuilder();
-        specificityReport.append("Specificity against antigen '").append(antigenSequence).append("': ").append(generateRandomValue()).append("\n");
+        specificityReport.append("Specificity against antigen '").append(antigenSequence).append("': ").append(generateHighRandomValue()).append("\n");
 
         for (String alternative : antigenAlternatives) {
-            specificityReport.append("Specificity against alternative antigen '").append(alternative).append("': ").append(generateRandomValue()).append("\n");
+            specificityReport.append("Specificity against alternative antigen '").append(alternative).append("': ").append(generateHighRandomValue()).append("\n");
         }
 
         return specificityReport.toString();
@@ -77,8 +77,13 @@ public class ToolsForCharacteristicsMeasurements implements Serializable {
         customResearchState.getResearchState().currentStep = ResearchState.Step.FINISHED;
     }
 
-    private String generateRandomValue() {
-        String[] levels = { "very high", "high", "medium", "low" };
+    private String generateHighRandomValue() {
+        String[] levels = { "very high", "high"};
+        return levels[random.nextInt(levels.length)];
+    }
+
+    private String generateLowRandomValue() {
+        String[] levels = { "medium", "low", "very low"};
         return levels[random.nextInt(levels.length)];
     }
 }

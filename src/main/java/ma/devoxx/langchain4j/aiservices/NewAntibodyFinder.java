@@ -17,6 +17,7 @@ public interface NewAntibodyFinder {
     {{antigen}}.
     You can optionally use the information about the following known antibodies that target this antigen:
     {{knownAntibodies}}
+    At the end, ask if the user want to measure how good they perform, and for which ones.
     """)
     String getAntibodies(@MemoryId int memoryId, @V("antigen") String antigen, @V("knownAntibodies") String knownAntibodies);
 }

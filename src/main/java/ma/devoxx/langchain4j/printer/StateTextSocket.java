@@ -79,12 +79,14 @@ public class StateTextSocket {
                 connection.sendTextAndAwait(answer);
                 return;
             }
+        }
 
+        if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_ANTIGEN) {
             // else: model has set diseaseName and currentStep = 2 when decided on disease
             logger.info("******************** STEP 2 *********************");
             connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...");
 
-            answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
+            String answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
 
             // if something went wrong with the antigenFinder
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_ANTIGEN) {
@@ -96,37 +98,38 @@ public class StateTextSocket {
 
             connection.sendTextAndAwait("I found antigen : " + customResearchProject.getResearchProject().antigenName + "\n" +
                     "with sequence : " + customResearchProject.getResearchProject().antigenSequence);
+        }
 
+        if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
             logger.info("******************** STEP 3 *********************");
-            connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
-            answer = knownAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName, customResearchProject.getResearchProject().disease);
+            connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName + "...");
+            String answer = knownAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName, customResearchProject.getResearchProject().disease);
             // if we didn't move to step 4, no antibodies were found
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
-                connection.sendTextAndAwait("UNEXPECTED STEP 3: failed at finding antibodies.");
+                connection.sendTextAndAwait(answer);
                 return;
             }
-            // we ask the user's input at this point
-            connection.sendTextAndAwait(answer);
+            // we ask for the user's input at this point
+            // TODO make layout better (in line with what comes out of LLM)
+            connection.sendTextAndAwait("We found the following antibodies: " + customResearchProject.getResearchProject().printAntibodies() +
+                    "\nWhich antibodies would you like to proceed with?");
             return;
         }
 
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
             logger.info("******************** STEP 4 *********************");
-            // found antibodies, but only determine CDRs when decided which ones to proceed with
             String answer = cdrFinder.getCdrs(userId, userMessage);
-            connection.sendTextAndAwait(answer); // TODO Lize test if loops correctly when unsure
-            if(customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
+            connection.sendTextAndAwait(answer);
+            if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                 // still deciding on which antibodies to proceed with
                 return;
             }
         }
 
-        // else determine CDRs
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_NEW_ANTIBODIES) {
             logger.info("******************** STEP 5 *********************");
             connection.sendTextAndAwait("Designing new antibodies based on known antibodies...");
             // TODO actually we need confirmation here bcs it's costly calculations
-            // TODO only pass the antibodies that actually have CDRs
             String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printAntibodiesWithCDR());
             connection.sendTextAndAwait(answer);
             return;
@@ -134,16 +137,23 @@ public class StateTextSocket {
 
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.MEASURE_CHARACTERISTICS) {
             logger.info("******************** STEP 6 *********************");
-            for(Antibody antibody : customResearchProject.getResearchProject().newAntibodies) {
+            for (Antibody antibody : customResearchProject.getResearchProject().newAntibodies) {
                 connection.sendTextAndAwait("Measuring characteristics for " + antibody.antibodyName + "...");
                 connection.sendTextAndAwait(measureCharacteristics.measureCharacteristics(antibody.antibodyName, antibody.cdrs, customResearchProject.getResearchProject().antigenSequence));
             }
-            logger.info("calling AiService ArticlePublisher with ResearchProject: " + customResearchProject.getResearchProject().toString() + "and authors: Mohamed Software and Lize Dev");
-            articlePublisher.publishArticle(userId, userMessage, customResearchProject.getResearchProject().toString(), "Mohamed Software and Lize Dev");
+            connection.sendTextAndAwait("All characteristics were measured. Do you want to publish the results of this research in Nature or in the New York Times?");
             return;
         }
-        connection.sendTextAndAwait("Thank you for using Ai Drug Discovery Researcher!");
 
+        if (customResearchState.getResearchState().currentStep == ResearchState.Step.FINISHED) {
+            logger.info("calling AiService ArticlePublisher with ResearchProject: " + customResearchProject.getResearchProject().toString() + "and authors: Mohamed Software and Lize Dev");
+            // give this AiService a clean memory
+            String answer = articlePublisher.publishArticle(userId + 1, userMessage, customResearchProject.getResearchProject().toString(), "Mohamed Software and Lize Dev");
+            connection.sendTextAndAwait(answer);
+            return;
+        }
+
+        connection.sendTextAndAwait("We shouldn't get in this state. But thank you for using Ai Drug Discovery Researcher!");
     }
 
     @OnClose
