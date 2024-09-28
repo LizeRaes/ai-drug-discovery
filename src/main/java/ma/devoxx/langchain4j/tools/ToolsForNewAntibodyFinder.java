@@ -43,10 +43,12 @@ public class ToolsForNewAntibodyFinder implements Serializable {
                     .logRequests(false)
                     .logResponses(false)
                     .build();
-            return model.generate("Propose CDRs for a new antibody for antigen; " + antigenSequence + ". " +
+            String answer = model.generate("Propose CDRs for a new antibody for antigen; " + antigenSequence + ". " +
                     "You can base yourself on insights gained from these known antibodies " + previousAntibodies + "." +
                     "The CDRs should be in the format CDR-L1, CDR-L2, CDR-L3, CDR-H1, CDR-H2, CDR-H3." +
                     "Please give 3 lines of explanation for why you chose these CDRs.");
+            Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("Anthropic model returned: " + answer);
+            return answer;
         } catch (Exception e) {
             Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("Error while calling Anthropic model: " + e.getMessage());
             return "no antibody could be designed because of an issue with the Anthropic model";
