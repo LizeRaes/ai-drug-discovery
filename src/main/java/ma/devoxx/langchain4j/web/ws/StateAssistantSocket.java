@@ -105,8 +105,9 @@ public class StateAssistantSocket {
                 }
                 // we ask for the user's input at this point
                 // TODO make layout better (in line with what comes out of LLM)
-                connection.sendTextAndAwait("We found the following antibodies: " + customResearchProject.getResearchProject().printAntibodies() +
-                        "\nWhich antibodies would you like to proceed with?");
+                connection.sendTextAndAwait("We found the following antibodies:\n\n"
+                        + customResearchProject.getResearchProject().printAntibodies() +
+                        "\n\nWhich antibodies would you like to proceed with?");
                 return;
             }
 

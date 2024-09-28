@@ -53,7 +53,7 @@ public class ResearchProject implements Serializable {
     public String printAntibodies() {
         StringBuilder sb = new StringBuilder();
         for (Antibody antibody : existingAntibodies) {
-            sb.append(antibody.toString());
+            sb.append(antibody.toString()).append("\n\n");
         }
         return sb.toString();
     }
