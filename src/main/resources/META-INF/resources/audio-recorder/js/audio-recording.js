@@ -94,9 +94,28 @@ var audioRecorder = {
                     };
 
                     fetch(url, options)// Convertir la réponse en JSON
-                        .then(responseData => {
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text(); // Assuming the server sends a JSON response
+                            } else {
+                                throw new Error('Failed to send message');
+                            }
+                        })
+                        .then(data => {
                             // Traiter la réponse du serveur
-                            console.log('Réponse reçue du serveur:', responseData);
+                            console.log('Réponse reçue du serveur:', data);
+
+                            const messageArea = document.getElementById('messageArea');
+
+                            sendMessage(data)
+
+                            // Hide audio recorder
+                            const emptyArea = document.getElementById('emptyArea');
+                            messageArea.style.display = 'flex'; // Show message area
+                            emptyArea.style.display = 'none';   // Hide empty area
+
+                            // Scroll to the bottom of the message area
+                            messageArea.scrollTop = messageArea.scrollHeight;
                         })
                         .catch(error => {
                             // Gérer les erreurs de la requête

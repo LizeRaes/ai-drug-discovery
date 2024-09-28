@@ -10,6 +10,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
           rel="stylesheet">
 
+    <link rel="stylesheet" href="audio-recorder/css/reset.css">
+    <link rel="stylesheet" href="audio-recorder/css/font-awesome.min.css">
+    <link rel="stylesheet" href="audio-recorder/css/style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -117,7 +120,30 @@
 
     <!-- Empty area that shows when mic is toggled -->
     <div class="empty-area" id="emptyArea">
-        <h4>Mic is on, message area is hidden</h4>
+        <div class="audio-recording-container">
+            <h1 class="title">Audio Recording API Demo</h1>
+            <i class="start-recording-button fa fa-microphone" aria-hidden="true"></i>
+            <div class="recording-contorl-buttons-container hide">
+                <i class="cancel-recording-button fa fa-times-circle-o" aria-hidden="true"></i>
+                <div class="recording-elapsed-time">
+                    <i class="red-recording-dot fa fa-circle" aria-hidden="true"></i>
+                    <p class="elapsed-time"></p>
+                </div>
+                <i class="stop-recording-button fa fa-stop-circle-o" aria-hidden="true"></i>
+            </div>
+            <div class="text-indication-of-audio-playing-container">
+                <p class="text-indication-of-audio-playing hide">Audio is playing<span>.</span><span>.</span><span>.</span></p>
+            </div>
+        </div>
+        <div class="overlay hide">
+            <div class="browser-not-supporting-audio-recording-box">
+                <p>To record audio, use browsers like Chrome and Firefox that support audio recording.</p>
+                <button type="button" class="close-browser-not-supported-box">Ok.</button>
+            </div>
+        </div>
+
+        <audio controls class="audio-element hide">
+        </audio>
     </div>
 
     <!-- Right section with fullscreen iFrame -->
@@ -137,6 +163,9 @@
         <i class="bi bi-mic-fill"></i> Mic
     </button>
 </div>
+
+<script src="audio-recorder/js/audio-recording.js"></script>
+<script src="audio-recorder/js/index.js"></script>
 
 <!-- Bootstrap JS and Popper.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -168,8 +197,7 @@
     // WebSocket connection
     const socket = new WebSocket('ws://localhost:8080/my-websocket-state');  // Change the URL to your WebSocket server address
 
-    let sendMessage = function () {
-        const inputMessageText = inputMessage.value;
+    let sendMessage = function (inputMessageText) {
         console.log("Sending " + inputMessageText);
         socket.send(inputMessageText);
 
@@ -218,7 +246,7 @@
     });
 
     document.getElementById('sendButton').addEventListener('click', function () {
-        sendMessage();
+        sendMessage(inputMessage.value);
     });
 
     document.getElementById('micButton').addEventListener('click', function () {
