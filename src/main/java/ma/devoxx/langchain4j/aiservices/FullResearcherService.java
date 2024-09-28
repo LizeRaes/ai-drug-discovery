@@ -7,6 +7,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.guardrails.InputGuardrails;
 import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.guardrails.NoBiologicalWeapon;
+import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorProvider;
 import ma.devoxx.langchain4j.tools.*;
 
 @ApplicationScoped
@@ -16,7 +17,8 @@ import ma.devoxx.langchain4j.tools.*;
                 ToolsForKnownAntibodyFinder.class,
                 ToolsForCdrFinder.class,
                 ToolsForNewAntibodyFinder.class,
-                ToolsForCharacteristicsMeasurements.class})
+                ToolsForCharacteristicsMeasurements.class},
+        retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
 public interface FullResearcherService {
     @InputGuardrails(NoBiologicalWeapon.class)
     @SystemMessage("""

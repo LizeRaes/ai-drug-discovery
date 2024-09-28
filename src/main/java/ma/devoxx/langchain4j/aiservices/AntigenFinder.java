@@ -14,7 +14,7 @@ import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
         retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
 public interface AntigenFinder {
     @SystemMessage("""
-    You search through sources for a suitable antigen for the given disease and then determine it's sequence.
+    You search through sources for a suitable antigen (characteristic protein) for the given disease and then determine it's sequence (the sequence for the antigen. a disease has no sequence and is no protein.)
     Then you call storeAntigenInfo with the antigen name and sequence.
     """)
     @UserMessage("Find a suitable antigen for {{diseaseName}}")

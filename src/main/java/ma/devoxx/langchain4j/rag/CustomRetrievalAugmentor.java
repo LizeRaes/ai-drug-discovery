@@ -81,7 +81,7 @@ public class CustomRetrievalAugmentor {
 
         ScoringModel scoringModel = CohereScoringModel.withApiKey(System.getenv("COHERE_API_KEY"));
 
-        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.8);
+        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.6);
 
         QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
 
@@ -109,7 +109,7 @@ public class CustomRetrievalAugmentor {
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
         for (Document document : documents) {
-            DocumentSplitter splitter = DocumentSplitters.recursive(300, 0);
+            DocumentSplitter splitter = DocumentSplitters.recursive(1000, 50);
             List<TextSegment> segments = splitter.split(document);
             List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
             embeddingStore.addAll(embeddings, segments);
