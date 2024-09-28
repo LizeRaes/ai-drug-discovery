@@ -42,13 +42,8 @@ import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.load
 @ApplicationScoped
 public class CustomRetrievalAugmentor {
     RetrievalAugmentor retrievalAugmentor;
-// TODO this seems to do lazy loading, only does it on the first message received from the WebSocket. find way to have it happen before, on application startup (otherwise too long wait after the first message)
 
     public CustomRetrievalAugmentor() {
-
-        // initialize RAG
-        // TODO make sure retrieved documents are logged to UI log
-        // TODO add reranker
 
         ChatLanguageModel chatModel = OpenAiChatModel.withApiKey(System.getenv("OPENAI_API_KEY"));
 

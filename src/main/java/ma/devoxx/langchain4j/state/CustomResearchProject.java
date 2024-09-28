@@ -7,8 +7,7 @@ public class CustomResearchProject {
     ResearchProject researchProject;
 
     public CustomResearchProject() {
-        // TODO should work with empty constructor
-        researchProject = new ResearchProject("diseaseToBeDetermined");
+        researchProject = new ResearchProject();
     }
 
     public ResearchProject getResearchProject() {

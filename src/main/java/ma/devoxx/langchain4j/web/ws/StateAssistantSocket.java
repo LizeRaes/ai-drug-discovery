@@ -62,9 +62,6 @@ public class StateAssistantSocket {
 
         // ************************** STEP 1 **************************
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.DEFINE_DISEASE) {
-            // TODO watch out with the memory, check if we need another memory in later steps
-            // TODO build on every message? probably nicer solution
-
             logger.info("IN STEP 1 (define target disease)");
             String answer = diseasePicker.answer(userId, userMessage);
             logger.info("*** Model Answer ***: " + answer);
