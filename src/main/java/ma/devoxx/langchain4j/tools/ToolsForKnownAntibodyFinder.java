@@ -11,19 +11,19 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 @ApplicationScoped
-public class ToolsForAntibodyFinder implements Serializable {
+public class ToolsForKnownAntibodyFinder implements Serializable {
 
     CustomResearchProject customResearchProject;
     CustomResearchState customResearchState;
 
-    public ToolsForAntibodyFinder(CustomResearchProject customResearchProject, CustomResearchState customResearchState) {
+    public ToolsForKnownAntibodyFinder(CustomResearchProject customResearchProject, CustomResearchState customResearchState) {
         this.customResearchProject = customResearchProject;
         this.customResearchState = customResearchState;
     }
 
     @Tool("")
     void storeAntibody(String antibodyName, String bindingAffinity, String specificity, String stability, String toxicity, String immunogenicity) {
-        Logger.getLogger(ToolsForAntibodyFinder.class.getName()).info("storeAntibody() called with antibodyName='" + antibodyName + "', bindingAffinity='" + bindingAffinity + "', specificity='" + specificity + "', stability='" + stability + "', toxicity='" + toxicity + "', immunogenicity='" + immunogenicity + "'");
+        Logger.getLogger(ToolsForKnownAntibodyFinder.class.getName()).info("storeAntibody() called with antibodyName='" + antibodyName + "', bindingAffinity='" + bindingAffinity + "', specificity='" + specificity + "', stability='" + stability + "', toxicity='" + toxicity + "', immunogenicity='" + immunogenicity + "'");
         customResearchProject.getResearchProject().existingAntibodies.add(new Antibody(antibodyName, bindingAffinity, specificity, stability, toxicity, immunogenicity));
         customResearchState.getResearchState().currentStep = ResearchState.Step.FIND_KNOWN_CDRS;
     }

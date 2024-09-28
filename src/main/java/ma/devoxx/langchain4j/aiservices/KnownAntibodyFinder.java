@@ -7,14 +7,13 @@ import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorProvider;
-import ma.devoxx.langchain4j.tools.ToolsForAntibodyFinder;
-import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
+import ma.devoxx.langchain4j.tools.ToolsForKnownAntibodyFinder;
 
 @ApplicationScoped
 @RegisterAiService(
-        tools = ToolsForAntibodyFinder.class,
+        tools = ToolsForKnownAntibodyFinder.class,
         retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
-public interface AntibodyFinder {
+public interface KnownAntibodyFinder {
     @SystemMessage("""
     You are an antibody drug researcher doing literature study of existing antibody candidates 
     to target antigen {{antigenName}}. You propose suitable known antibodies for the antigen, 

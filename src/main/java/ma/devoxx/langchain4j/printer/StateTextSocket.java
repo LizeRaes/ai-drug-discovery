@@ -2,10 +2,7 @@ package ma.devoxx.langchain4j.printer;
 
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
-import ma.devoxx.langchain4j.aiservices.AntibodyFinder;
-import ma.devoxx.langchain4j.aiservices.AntigenFinder;
-import ma.devoxx.langchain4j.aiservices.CdrFinder;
-import ma.devoxx.langchain4j.aiservices.DiseasePicker;
+import ma.devoxx.langchain4j.aiservices.*;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
@@ -38,10 +35,13 @@ public class StateTextSocket {
     AntigenFinder antigenFinder;
 
     @Inject
-    AntibodyFinder antibodyFinder;
+    KnownAntibodyFinder knownAntibodyFinder;
 
     @Inject
     CdrFinder cdrFinder;
+
+    @Inject
+    NewAntibodyFinder newAntibodyFinder;
 
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
@@ -75,7 +75,7 @@ public class StateTextSocket {
 
             // else: model has set diseaseName and currentStep = 2 when decided on disease
             logger.info("******************** STEP 2 *********************");
-            connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...\\n");
+            connection.sendTextAndAwait("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...");
 
             answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
 
@@ -92,7 +92,7 @@ public class StateTextSocket {
 
             logger.info("******************** STEP 3 *********************");
             connection.sendTextAndAwait("I'm searching the literature to find known antibodies for " + customResearchProject.getResearchProject().antigenName);
-            answer = antibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName);
+            answer = knownAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName);
             // if we didn't move to step 4, no antibodies were found
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
                 connection.sendTextAndAwait("UNEXPECTED STEP 3: failed at finding antibodies.");
@@ -100,19 +100,36 @@ public class StateTextSocket {
             }
             // we ask the user's input at this point
             connection.sendTextAndAwait(answer);
-            // TODO Lize allow to stay in this loop, for questions like 'I'm doubting between Necitumumab, cetuximab and 806 mAb'
             return;
         }
 
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
             logger.info("******************** STEP 4 *********************");
+            // found antibodies, but only determine CDRs when decided which ones to proceed with
             String answer = cdrFinder.getCdrs(userId, userMessage);
+            connection.sendTextAndAwait(answer); // TODO Lize test if loops correctly when unsure
+            if(customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
+                // still deciding on which antibodies to proceed with
+                return;
+            }
+        }
+
+        // else determine CDRs
+        if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_NEW_ANTIBODIES) {
+            logger.info("******************** STEP 5 *********************");
+            connection.sendTextAndAwait("Designing new antibodies based on known antibodies...");
+            // TODO actually we need confirmation here bcs it's costly calculations
+            // TODO only pass the antibodies that actually have CDRs
+            String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printAntibodies());
             connection.sendTextAndAwait(answer);
-            connection.sendTextAndAwait("TODO we got here, rest is TODO");
-            // TODO implement option to loop here and discuss, vs move to step 5
             return;
         }
 
+        if (customResearchState.getResearchState().currentStep == ResearchState.Step.MEASURE_CHARACTERISTICS) {
+            logger.info("******************** STEP 6 *********************");
+            // TODO implement step 5
+            return;
+        }
         // TODO write consecutive steps
         connection.sendTextAndAwait("TODO GOT HERE ALL AT THE END, WEIRD");
 
