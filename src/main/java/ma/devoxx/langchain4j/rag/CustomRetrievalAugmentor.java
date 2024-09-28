@@ -1,9 +1,14 @@
 package ma.devoxx.langchain4j.rag;
 
 import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentSplitter;
+import dev.langchain4j.data.document.splitter.DocumentSplitters;
+import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.experimental.rag.content.retriever.sql.SqlDatabaseContentRetriever;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.RetrievalAugmentor;
@@ -14,6 +19,7 @@ import dev.langchain4j.rag.query.router.LanguageModelQueryRouter;
 import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.rag.query.transformer.CompressingQueryTransformer;
 import dev.langchain4j.rag.query.transformer.QueryTransformer;
+import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.web.search.WebSearchEngine;
@@ -30,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 
 @ApplicationScoped
@@ -82,7 +89,7 @@ public class CustomRetrievalAugmentor {
                 .build();
     }
 
-    private static ContentRetriever createContentRetriever(List<Document> documents) {
+    private static ContentRetriever createContentRetrieverOld(List<Document> documents) {
 
         // Here, we create and empty in-memory store for our documents and their embeddings.
         InMemoryEmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
@@ -92,6 +99,18 @@ public class CustomRetrievalAugmentor {
         EmbeddingStoreIngestor.ingest(documents, embeddingStore);
 
         // Lastly, let's create a content retriever from an embedding store.
+        return new EmbeddingStoreContentRetriever(embeddingStore, null, 7, 0.5);
+    }
+
+    private static ContentRetriever createContentRetriever(List<Document> documents) {
+        EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
+        EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
+        for (Document document : documents) {
+            DocumentSplitter splitter = DocumentSplitters.recursive(300, 0);
+            List<TextSegment> segments = splitter.split(document);
+            List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
+            embeddingStore.addAll(embeddings, segments);
+        }
         return new EmbeddingStoreContentRetriever(embeddingStore, null, 7, 0.5);
     }
 
