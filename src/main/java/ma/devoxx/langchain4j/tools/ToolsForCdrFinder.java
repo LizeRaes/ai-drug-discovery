@@ -23,7 +23,7 @@ public class ToolsForCdrFinder implements Serializable {
     @Tool("")
     void storeCdrs(String antibodyName, String cdrs) {
         Logger.getLogger(ToolsForCdrFinder.class.getName()).info("storeCdrs() called with antibodyName='" + antibodyName + "', cdrs='" + cdrs + "'");
-        customResearchProject.getResearchProject().storeCdrs(antibodyName, cdrs);
+        customResearchProject.getResearchProject().storeExistingCdrs(antibodyName, cdrs);
         customResearchState.getResearchState().currentStep = ResearchState.Step.FIND_NEW_ANTIBODIES;
     }
 }

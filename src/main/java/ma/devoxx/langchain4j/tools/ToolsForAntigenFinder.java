@@ -2,6 +2,7 @@ package ma.devoxx.langchain4j.tools;
 
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
+import ma.devoxx.langchain4j.dbs.PublicProteinDatabase;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
@@ -20,11 +21,11 @@ public class ToolsForAntigenFinder implements Serializable {
         this.customResearchState = customResearchState;
     }
 
-   @Tool("find sequence for antigen name")
+    @Tool("find sequence for antigen name")
     String findSequenceForAntigen(String antigenName) {
         Logger.getLogger(ToolsForAntigenFinder.class.getName()).info("findSequenceForAntigen() called with antigenName='" + antigenName + "'");
-        return SearchTools.findSequenceForAntigen(antigenName);
-        // TODO Lize handle if not found (maybe change to uppercase comparison if too many issues?)
+        PublicProteinDatabase db = new PublicProteinDatabase();
+        return db.retrieveSequences(antigenName);
     }
 
     @Tool("store antigen name and antigen sequence")

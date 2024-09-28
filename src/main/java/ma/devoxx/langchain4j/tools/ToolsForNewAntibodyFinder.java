@@ -63,9 +63,9 @@ public class ToolsForNewAntibodyFinder implements Serializable {
     }
 
     @Tool("")
-    void storeTheCdrs(String antibodyName, String cdrs) {
-        Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("storeCdrs() called with antibodyName='" + antibodyName + "', cdrs='" + cdrs + "'");
-        customResearchProject.getResearchProject().storeCdrs(antibodyName, cdrs);
+    void storeNewCdrs(String antibodyName, String cdrs) {
+        Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("storeNewCdrs() called with antibodyName='" + antibodyName + "', cdrs='" + cdrs + "'");
+        customResearchProject.getResearchProject().storeNewCdrs(antibodyName, cdrs);
         customResearchState.getResearchState().currentStep = ResearchState.Step.MEASURE_CHARACTERISTICS;
     }
 }

@@ -113,7 +113,7 @@ public class PublicProteinDatabase {
                 sb.append("CDR-H2: ").append(rs.getString("CDR_H2")).append("\n");
                 sb.append("CDR-H3: ").append(rs.getString("CDR_H3")).append("\n");
             } else {
-                sb.append("No protein found with name: ").append(proteinName);
+                sb.append("No protein found with name: ").append(proteinName).append(". Optionally, try a variation of the name with different uppercasing or word order.");
             }
             return sb.toString();
         } catch (SQLException e) {

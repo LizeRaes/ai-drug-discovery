@@ -130,14 +130,14 @@ public class StateTextSocket {
             logger.info("******************** STEP 5 *********************");
             connection.sendTextAndAwait("Designing new antibodies based on known antibodies...");
             // TODO actually we need confirmation here bcs it's costly calculations
-            String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printAntibodiesWithCDR());
+            String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printExistingAntibodiesWithCDR());
             connection.sendTextAndAwait(answer);
             return;
         }
 
         if (customResearchState.getResearchState().currentStep == ResearchState.Step.MEASURE_CHARACTERISTICS) {
             logger.info("******************** STEP 6 *********************");
-            for (Antibody antibody : customResearchProject.getResearchProject().newAntibodies) {
+            for (Antibody antibody : customResearchProject.getResearchProject().getNewAntibodiesWithCdrs()) {
                 connection.sendTextAndAwait("Measuring characteristics for " + antibody.antibodyName + "...");
                 connection.sendTextAndAwait(measureCharacteristics.measureCharacteristics(antibody.antibodyName, antibody.cdrs, customResearchProject.getResearchProject().antigenSequence));
             }

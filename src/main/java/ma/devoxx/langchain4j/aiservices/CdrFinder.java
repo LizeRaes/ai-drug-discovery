@@ -21,7 +21,7 @@ public interface CdrFinder {
             tell which CDRs you found, and do not ask further questions.
             """)
     @UserMessage("""
-            Return and store suitable CDRs for the selected antibodies: 
+            Return and store suitable CDRs (CDR_L1, ... , CDR_H3) for the selected antibodies: 
             {{usrMsg}}.
             """)
     String getCdrs(@MemoryId int memoryId, @V("usrMsg") String userMsg);

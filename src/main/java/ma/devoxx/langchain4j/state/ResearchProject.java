@@ -58,7 +58,7 @@ public class ResearchProject implements Serializable {
         return sb.toString();
     }
 
-    public String printAntibodiesWithCDR() {
+    public String printExistingAntibodiesWithCDR() {
         StringBuilder sb = new StringBuilder();
         for (Antibody antibody : existingAntibodies) {
             if (antibody.cdrs != null) {
@@ -91,7 +91,16 @@ public class ResearchProject implements Serializable {
         return null;
     }
 
-    public void storeCdrs(String antibodyName, String cdrs) {
+    public void storeExistingCdrs(String antibodyName, String cdrs) {
+        Antibody antibody = getAntibody(antibodyName);
+        if (antibody == null) {
+            antibody = new Antibody(antibodyName);
+            existingAntibodies.add(antibody);
+        }
+        antibody.cdrs = cdrs;
+    }
+
+    public void storeNewCdrs(String antibodyName, String cdrs) {
         Antibody antibody = getAntibody(antibodyName);
         if (antibody == null) {
             antibody = new Antibody(antibodyName);
@@ -100,4 +109,13 @@ public class ResearchProject implements Serializable {
         antibody.cdrs = cdrs;
     }
 
+    public Antibody[] getNewAntibodiesWithCdrs() {
+        List<Antibody> newAntibodiesWithCdrs = new ArrayList<>();
+        for (Antibody antibody : newAntibodies) {
+            if (antibody.cdrs != null) {
+                newAntibodiesWithCdrs.add(antibody);
+            }
+        }
+        return newAntibodiesWithCdrs.toArray(new Antibody[0]);
+    }
 }
