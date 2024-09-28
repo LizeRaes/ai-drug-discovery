@@ -61,7 +61,9 @@ public class DelegatingLogHandler extends ExtHandler {
     private String determineLogColor(String loggerName, String loggerMessage) {
         if (loggerName.contains("Tools")) {
             return "yellow";
-        } else if (loggerName.contains("Ingestor") || loggerName.contains("Retriev")) {
+        } else if (loggerName.contains("Ingestor")
+                || loggerName.contains("Retriev")
+                || loggerName.contains("ContentAggregator")) {
             return "red";
         } else if (loggerMessage.startsWith("****")) {
             return "purple";
