@@ -8,7 +8,7 @@ import ma.devoxx.langchain4j.tools.ToolsForCharacteristicsMeasurements;
 
 @ApplicationScoped
 @RegisterAiService
-// @OTHER_LLM
+// @HERE OTHER_LLM
 //(tools = ToolsForCharacteristicsMeasurements.class)
 public interface CharacteristicsMeasurer {
     @UserMessage("""

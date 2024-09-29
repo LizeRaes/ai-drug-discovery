@@ -9,7 +9,7 @@ import ma.devoxx.langchain4j.tools.ToolsForNewAntibodyFinder;
 
 @ApplicationScoped
 @RegisterAiService
-        // @CLAUDE
+        // @HERE CLAUDE
         //(tools = ToolsForNewAntibodyFinder.class)
 public interface NewAntibodyFinder {
     @UserMessage("""
