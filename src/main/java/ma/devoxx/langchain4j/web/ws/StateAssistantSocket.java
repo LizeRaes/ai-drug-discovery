@@ -150,7 +150,7 @@ public class StateAssistantSocket {
 
             connection.sendTextAndAwait("We shouldn't get in this state. But thank you for using Ai Drug Discovery Researcher!");
         } catch (Exception e) {
-            logger.error("An error occurs", e);
+            logger.warn(e.getMessage());
         }
     }
 

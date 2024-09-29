@@ -28,6 +28,7 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.web.search.WebSearchEngine;
 import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
+import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.dbs.SequenceDbContentRetriever;
 
@@ -42,8 +43,10 @@ import java.util.Map;
 
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 
+@Startup
 @ApplicationScoped
 public class CustomRetrievalAugmentor {
+
     RetrievalAugmentor retrievalAugmentor;
 
     public CustomRetrievalAugmentor() {
