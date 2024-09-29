@@ -6,7 +6,7 @@ import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
-import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorProvider;
+import ma.devoxx.langchain4j.aiservices.supplier.CustomRetrievalAugmentorProvider;
 import ma.devoxx.langchain4j.tools.ToolsForCdrFinder;
 
 @ApplicationScoped

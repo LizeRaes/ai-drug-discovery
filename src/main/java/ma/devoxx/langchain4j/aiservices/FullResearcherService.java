@@ -7,7 +7,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.guardrails.InputGuardrails;
 import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.guardrails.NoBiologicalWeapon;
-import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorProvider;
+import ma.devoxx.langchain4j.aiservices.supplier.CustomRetrievalAugmentorProvider;
 import ma.devoxx.langchain4j.tools.*;
 
 @ApplicationScoped
