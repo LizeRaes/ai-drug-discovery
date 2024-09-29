@@ -22,7 +22,7 @@ public interface KnownAntibodyFinder {
     Then ask the user which antibodies they want to proceed with.
     """)
     @UserMessage("""
-    Only taken from the scientific article fragments below, list suitable antibodies that target antigen: {{antigenName}} (to fight disease {{diseaseName}}).
+    Only taken from the scientific article fragments below, list suitable monoclonal antibodies (add mAb to the search term or it will not work!) that target antigen: {{antigenName}} (to fight disease {{diseaseName}}).
     Make an assessment of their binding affinity, specificity, stability, toxicity, and immunogenicity
     Store the found antibodies and their characteristics by calling storeAntibody() for each of them.
     If you find no info about a specific characteristics, leave the characteristic in question blank.
