@@ -66,18 +66,18 @@ public class CustomRetrievalAugmentor {
         retrieverToDescription.put(literatureDocsRetriever, "Scientific literature on diseases, antigens and antibody solutions");
 
         // 2. Create web search content retriever.
-        WebSearchEngine webSearchEngine = TavilyWebSearchEngine.builder()
-                .apiKey(System.getenv("TAVILY_API_KEY"))
-                .build();
-        ContentRetriever webSearchContentRetriever = WebSearchContentRetriever.builder()
-                .webSearchEngine(webSearchEngine)
-                .maxResults(5)
-                .build();
-        retrieverToDescription.put(webSearchContentRetriever, "Web search");
+//        WebSearchEngine webSearchEngine = TavilyWebSearchEngine.builder()
+//                .apiKey(System.getenv("TAVILY_API_KEY"))
+//                .build();
+//        ContentRetriever webSearchContentRetriever = WebSearchContentRetriever.builder()
+//                .webSearchEngine(webSearchEngine)
+//                .maxResults(5)
+//                .build();
+//        retrieverToDescription.put(webSearchContentRetriever, "Web search");
 
         // 3. Create sql database content retriever.
-        SqlDatabaseContentRetriever sequenceDbContentRetriever = new SequenceDbContentRetriever().get(chatModel);
-        retrieverToDescription.put(sequenceDbContentRetriever, "protein database");
+//        SqlDatabaseContentRetriever sequenceDbContentRetriever = new SequenceDbContentRetriever().get(chatModel);
+//        retrieverToDescription.put(sequenceDbContentRetriever, "protein database");
 
         QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 
@@ -90,15 +90,15 @@ public class CustomRetrievalAugmentor {
 
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
                 .queryRouter(queryRouter)
-                .queryTransformer(queryTransformer)
-                .contentAggregator(contentAggregator)
-                .contentInjector(DefaultContentInjector.builder()
-                        .promptTemplate(
-                                PromptTemplate.from("{{userMessage}}\n" +
-                                        "\n" +
-                                        "if relevant to the question, you can use amongst others following information:\n" +
-                                        "{{contents}}"))
-                        .build())
+//                .queryTransformer(queryTransformer)
+//                .contentAggregator(contentAggregator)
+//                .contentInjector(DefaultContentInjector.builder()
+//                        .promptTemplate(
+//                                PromptTemplate.from("{{userMessage}}\n" +
+//                                        "\n" +
+//                                        "if relevant to the question, you can use amongst others following information:\n" +
+//                                        "{{contents}}"))
+//                        .build())
                 .build();
     }
 
