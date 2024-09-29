@@ -44,7 +44,7 @@ import java.util.Map;
 
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 
-@Startup
+//@Startup
 @ApplicationScoped
 public class CustomRetrievalAugmentor {
 

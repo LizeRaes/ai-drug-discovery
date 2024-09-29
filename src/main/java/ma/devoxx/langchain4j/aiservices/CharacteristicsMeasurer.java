@@ -7,8 +7,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.tools.ToolsForCharacteristicsMeasurements;
 
 @ApplicationScoped
-@RegisterAiService(
-        tools = ToolsForCharacteristicsMeasurements.class)
+@RegisterAiService
+// @OTHER_LLM
+//(tools = ToolsForCharacteristicsMeasurements.class)
 public interface CharacteristicsMeasurer {
     @UserMessage("""
     Given the newly designed antibody:

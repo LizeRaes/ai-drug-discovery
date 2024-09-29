@@ -8,8 +8,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.tools.ToolsForNewAntibodyFinder;
 
 @ApplicationScoped
-@RegisterAiService(
-        tools = ToolsForNewAntibodyFinder.class)
+@RegisterAiService
+        // @CLAUDE
+        //(tools = ToolsForNewAntibodyFinder.class)
 public interface NewAntibodyFinder {
     @UserMessage("""
     Propose new CDRs against the following antigen using different functions, and store each of them using storeNewCdrs(). Antigen:
