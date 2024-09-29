@@ -26,6 +26,7 @@ public class NoStateAssistantSocket {
         System.out.println("Session opened, ID: " + connection.id());
         customResearchState.getResearchState().moveToStep(ResearchState.Step.DEFINE_DISEASE);
         refreshUser();
+        connection.sendTextAndAwait("Hi, I’m here to assist you with your antibody research today.");
     }
 
     @OnTextMessage
