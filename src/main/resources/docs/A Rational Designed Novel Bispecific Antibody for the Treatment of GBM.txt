@@ -1,0 +1,318 @@
+   biomedicines
+  Article
+A Rational Designed Novel Bispecific Antibody for the Treatment of GBM
+Rui Sun 1, Yuexian Zhou 1, Lei Han 2,3, Zhidi Pan 1, Jie Chen 1, Huifang Zong 1 , Yanlin Bian 1, Hua Jiang 2,4,
+Baohong Zhang 1,*
+and Jianwei Zhu 1,4,*
+ 
+
+Citation: Sun,R.;Zhou,Y.;Han,L.; Pan, Z.; Chen, J.; Zong, H.; Bian, Y.; Jiang, H.; Zhang, B.; Zhu, J. A Rational Designed Novel Bispecific Antibody for the Treatment of GBM. Biomedicines2021,9,640. https:// doi.org/10.3390/biomedicines9060640
+Academic Editor: Amedeo Amedei
+Received: 3 April 2021 Accepted: 28 May 2021 Published: 3 June 2021
+Publisher’s Note: MDPI stays neutral with regard to jurisdictional claims in published maps and institutional affil- iations.
+Copyright: © 2021 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https:// creativecommons.org/licenses/by/ 4.0/).
+1
+2
+3 4
+* Correspondence: bhzhang@sjtu.edu.cn (B.Z.); jianweiz@sjtu.edu.cn (J.Z.)
+Abstract: Epidermal growth factor receptor variant III (EGFRvIII) is highly and specifically expressed in a subset of lethal glioblastoma (GBM), making the receptor a unique therapeutic target for GBM. Recently, bispecific antibodies (BsAbs) have shown exciting clinical benefits in cancer immunotherapy. Here, we report remarkable results for GBM treatment with a BsAb constructed by the “BAPTS” method. The BsAb was characterized through LC/MS, SEC-HPLC, and SPR. Furthermore, the BsAb was evaluated in vitro for bioactivities through FACS, antigen-dependent T-cell-mediated cytotoxicity, and a cytokine secretion assay, as well as in vivo for antitumor activity and pharma- cokinetic (PK) parameters through immunodeficient NOD/SCID and BALB/c mouse models. The results indicated that the EGFRvIII-BsAb eliminated EGFRvIII-positive GBM cells by recruiting and stimulating effector T cells secreting cytotoxic cytokines that killed GBM cells in vitro. The results demonstrated the antitumor potential and long circulation time of EGFRvIII-BsAb in NOD/SCID mice bearing de2–7 subcutaneously heterotopic transplantation tumors and BALB/c mice. In conclu- sion, our experiments in both in vitro and in vivo have shown the remarkable antitumor activities of EGFRvIII-BsAb, highlighting its potential in clinical applications for the treatment of GBM. Addi- tional merits, including a long circulation time and low immunogenicity, have also made the novel BsAb a promising therapeutic candidate.
+Keywords: bispecific antibody; GBM; EGFRvIII; split intein
+1. Introduction
+GBM is a highly malignant tumor that originates in the central nervous system (CNS). It accounts for 54% of all gliomas and 16% of all primary brain tumors [1]. For newly diagnosed patients, the five-year survival rate is only 6.8% [2]. Over the past 30 years, little improvement has been made in treating GBM. Possible reasons include a highly heteroge- neous brain tumor microenvironment, an impermeable blood–brain barrier (BBB), and a lack of T-cell infiltration. GBM is characterized by rapid proliferation, invasiveness, and poorprognosis[3].Thecurrentstandardofcareisstillexternalirradiationaftermaximum safe resection, treatment with temozolomide (TMZ), and maintenance chemotherapy [4,5].
+EGFRvIII is an EGFR mutant, an 801 bp in-frame deletion spanning exons 2–7 of the coding sequence [6–8], and is highly and specifically expressed in a subset of human GBM. The EGFRvIII loses its binding site to the ligand EGF, so it exhibits a low level of constitutive activity due to impaired endocytosis and degradation [9]. Furthermore, cells with the EGFRvIII confer significant tumor growth advantages and resistance to
+Engineering Research Center of Cell & Therapeutic Antibody, Ministry of Education, School of Pharmacy, Shanghai Jiao Tong University, 800 Dongchuan Road, Minhang District, Shanghai 200240, China; sun-rui@sjtu.edu.cn (R.S.); yuexianzhou@sjtu.edu.cn (Y.Z.); panzhidi@sjtu.edu.cn (Z.P.); jacy0214@sjtu.edu.cn (J.C.); zhaoxiliunian@sjtu.edu.cn (H.Z.); weixiaobyl@sjtu.edu.cn (Y.B.)
+Jecho Biopharmaceuticals Co., Ltd. No. 2018 Zhongtian Avenue, Binhai New Area, Tianjin 300457, China; lei_han@alumni.sjtu.edu.cn (L.H.); hjiang@jechoinc.com (H.J.)
+Jecho Biopharmaceutical Institute, No. 58 Yuanmei Road, Minhang District, Shanghai 200241, China Jecho Laboratories Inc., 7320 Executive Way, Frederick, MD 21704, USA
+   Biomedicines 2021, 9, 640. https://doi.org/10.3390/biomedicines9060640 https://www.mdpi.com/journal/biomedicines
+
+Biomedicines 2021, 9, 640
+2 of 16
+ chemotherapy and radiation therapy [10,11]. The mutant EGFRvIII has been detected in various cancers, including brain, breast, ovarian, lung, and prostate cancers, but not in normal tissue, which makes it a potential tumor-specific antigen (TSA) for cancer therapy.
+Bispecific antibodies (BsAbs) have shown excellent potential in the treatment of cancers. Until recently, there were four BsAbs approved on the market—Removab [12], Blincyto [13,14], Hemlibra [15], and Rybrevant (EP2922872A1)—and many others in clinical trials [16,17]. The T-cell-engaged bispecific antibody (TCB) that recruits and activates circulating T cells to tumor sites has attracted extensive research attention. Here, we would like to develop an IgG format of EGFRvIII-BsAb, a TCB antibody, targeting CD3 and EGFRvIII. We expected that a BsAb with an IgG format would have low immunogenicity and a prolonged body circulation time. Until recently, chain-mispairing, especially light chain-mispairing, has been a major issue in the generation of a BsAb. Thus, a “Bispecific Antibody by Protein Trans-splicing” (BAPTS) platform, developed in our lab [18–20], was employed to synthesize the EGFRvIII-BsAb for this study.
+Since the uncontrolled cytokine release of an Fc-equipped BsAb is due to CD3 aggre- gates on T cells that may not be conducive to antitumor effects [16,21], we designed the EGFRvIII-specific BsAb with attenuated antibody-dependent cellular cytotoxicity (ADCC) and complement-dependent cytotoxicity (CDC) functions, targeting EGFRvIII-expressing GBM by recruiting T cells. This design may validate the suggestion that BsAbs with an IgG format have an extended half-life and durable tumor inhibition potential, as previously reported [22,23].
+2. Materials and Methods
+2.1. Animal and Tumor Cell Lines
+Female NOD/SCID mice and male BALB/c mice were purchased from Charles River Laboratories in China and fed according to guidelines from the Institutional Animal Care and Use Committee of the School of Pharmacy of Shanghai Jiao Tong University (SJTU). The U87MG.∆EGFR cell line was a gift from Renji Hospital, affiliated with the School of Medicine at SJTU. U87MG and Jurkat cells were purchased from the Chinese Type Culture Collection and preserved in our laboratory. All cell lines were cultured under standard conditions and used within 6 months after resuscitation without reauthentication. The HEK293E cell line and CHO-S cell line were preserved in our lab.
+2.2. Protein Expression and Purification
+The ADCC and CDC functions were attenuated by introducing mutations at L234A, L235A, and P329G (LALA-PG) in the Fc region of the EGFRvIII-BsAb, the EGFRvIII mAb, and the CD3 mAb, respectively. The CD3 protein fragment (fragment A in the BAPTS platform) was expressed by a stable transfected CHO cell line. Meanwhile, the EGFRvIII protein fragment (fragment B in the BAPTS platform) was transiently expressed by HEK293E cells, as previous reported [24,25]. Both fragment A and fragment B were captured by affinity chromatography with Capto L (GE Healthcare, Chicago, IL, USA). The EGFRvIII-BsAb was synthesized by the BAPTS method [20]. The complete BsAb was purified via isometric-precipitation and subsequent MMC ImpRes Multimodal Chromatog- raphy Column (Cytiva, Marlborough, MA, USA). Likewise, both controls, EGFRvIII mAb and CD3 mAb, were transiently expressed by HEK293E cells and purified with Protein A (GE Healthcare, Chicago, IL, USA) affinity chromatography. The EGFRvIII mAb amino acid sequence was identical to that of the 806 mAb (CN102405235A). All the recombinant antibodies were dialyzed overnight into phosphate buffer saline (PBS) and sterilized by 0.22 μM filtration.
+2.3. Optimization of the Condition of the “BAPTS” Reaction
+After being captured and purified via standard Protein L affinity chromatography, frag- ment A and fragment B were fused to form the BsAb by the trans-splicing reaction. In the absence or presence of reducing agents DTT (10708984001; Sigma-Aldrich, St. Louis, MO,
+
+Biomedicines 2021, 9, 640
+3 of 16
+ USA) or TCEP (C4706-2G, Sigma-Aldrich, St. Louis, MO, USA) at various concentrations (0 mM, 0.01 mM, 0.05 mM, 0.1 mM, 0.5 mM, 1 mM, 2 mM, and 5 mM), the trans-splicing reaction occurred through the two fragments at a 1 mg/mL concentration and 37 ◦C for 2 h. SDS-PAGE was used to monitor the reaction progress. Upon the completion of the trans-splicing reaction, the product was dialyzed into PBS buffer, followed by an oxidiza- tion reaction in the presence of DHAA (D8132; Sigma-Aldrich, St. Louis, MO, USA) in a 20-molar excess (eq.) over TCEP at 37 ◦C for 3 h. The process of the oxidization reaction was also monitored by SDS-PAGE analysis.
+2.4. EGFRvIII-BsAb Characterization
+The purified EGFRvIII-BsAb was characterized with LC/MS, SEC-HPLC, and other methods. The molecular weight of the produced EGFRvIII-BsAb was determined with an LC/MS method. A sample of 0.5–1 mg was concentrated to 10 mg/mL and dialyzed into N-glycan excision buffer (5 mM NH4HCO3, 40867; Fluka, Charlotte, N.C., USA) and mixed with 1 μL PNGase F (500 U/μL, P0704S; New England Biolab, Ipswich, MA, USA) at 37 °C for 24 h to remove the N-glycan. Then, the components in the sample were separated with the ACQUITY UPLC Protein BEH C4 Column (186004495; Waters, Etten-Leur, Netherlands). A Waters Acquity VION IMS Q-Tof mass spectrometer (Milford, MA, USA) was coupled with the UPLC (Milford, MA, USA) to determine the mass of the target protein. The data were collected and processed with UNIFI 1.8 software (Waters, Milford, MA, USA). Purity of the EGFRvIII-BsAb was determined by the SEC-HPLC method (Agilent, Santa Clara, CA, USA).
+2.5. Flow Cytometry
+Flow cytometry was used to evaluate the EGFRvIII antigen expression level of GBM cell lines, the binding of the EGFRvIII-BsAb with the target tumor cell lines, and the binding of the EGFRvIII-BsAb to CD3+ Jurkat cells. An operating procedure following the manufacturer’s protocol (RRID AB_465926 and RRID AB_2565789) was followed to achieve the best results.
+2.6. Binding of EGFRvIII-BsAb to EGFRvIII+ U87MG.∆EGFR Cells
+The GBM cell lines U87MG and U87MG.∆EGFR, which were in a logarithmic growth phase, were harvested and incubated with EGFRvIII mAb and EGFRvIII-BsAb at a 1 ug/mL concentration on ice for 30 min and then washed twice with FACS buffer (PBS + 2% FBS) for the analysis of antigen expression. For the binding affinity analysis of the EGFRvIII- BsAb to U87MG.∆EGFR and U87MG, cells were prepared with the same procedure, but with different antibody concentrations. Then, the PE-conjugated goat antihuman IgG-Fc antibody (12-4998-82; eBioscienceTM, San Diego, CA, USA) was added and incubated on ice for 30 min. After being washed twice, samples were resuspended with FACS buffer, followed by analysis with a CytoFLEX cytometer (BECKMAN COULTER, Brea, CA, USA).
+2.7. Binding of EGFRvIII-BsAb to CD3+ Jurkat Cells
+Jurkat cells were resuspended in FACS buffer on ice and incubated with the CD3 mAb or the EGFRvIII-BsAb at a series of concentrations, followed by APC-conjugated antihuman IgG-Fc antibody (409305; Biolegend, San Diego, CA, USA). Samples were analyzed with a CytoFLEX cytometer using CytExpert software (BECKMAN COULTER, Brea, CA, USA).
+2.8. Affinity Measurement of EGFRvIII-BsAb with Surface Plasmon Resonance (SPR)
+The binding affinities of the antibodies were determined using SPR (Biacore 8K; GE Healthcare, Chicago, IL, USA). The EGFRvIII antigen (AVI10494; R&D System, Minneapolis, MN, USA) and extracellular domain of human CD3D/CD3E heterodimer (CT038-H2508H; Sino Biological, Beijing, China) were immobilized to a CM5 chip (29149603; GE Healthcare, Chicago, IL, USA) surface using standard protocols with 1-ethyl-3 (3-dimethylaminopropyl) carbodiimide (EDC)/N-hydroxysuccinimide (NHS) amine. The concentration series were
+
+Biomedicines 2021, 9, 640
+4 of 16
+ fit to a 1:1 binding model to determine the equilibrium dissociation constant (KD) and association (Ka) and dissociation (Kd) rate constants. Surfaces were regenerated using injections of 0.1 M glycine (pH 1.5). EGFRvIII mAb and CD3 mAb were used as controls.
+2.9. CD3+ Jurkat Cells Recruited to EGFRvIII+ Tumor Cells
+EGFRvIII-positive U87MG.∆EGFR cells were labeled with CFSE (65-0850-84; In- vitrogen, Carlsbad, CA, USA) and CD3-positive Jurkat cells were labeled with PKH26 (PKH26GL; Sigma-Aldrich, St. Louis, MO, USA), according to the manufacturers’ protocols. The stained cells were mixed at a ratio of 1:1 and incubated with EGFRvIII-BsAb on ice for 1 h. EGFRvIII mAb was added as control. After the samples were washed twice and resuspended with FACS buffer, CFSE/PKH26 signals were analyzed with a CytoFLEX cytometer using Cyto-Expert software.
+2.10. T-Cell Activation and Cytotoxic Cytokine Release in the Presence of Tumor Cells
+Fresh human PBMCs were separated from healthy donors with Ficoll-Paque Plus density gradient media (17144003; GE Healthcare, Chicago, IL, USA) according to the manufacturer’s protocol, and then were incubated with 1 ug/mL EGFRvIII-BsAb in the presence of U87MG.∆EGFR (EGFRvIII-positive cells) or U87MG (EGFRvIII-negative cells), respectively, with an effector-to-target (E/T) ratio of 10:1 for 28 h. Then, early signs of T-cell activation (CD69) were detected by FACS within CD4+ and CD8+ T-cell subsets. Cells were harvested and analyzed for T-cell activation with antihuman CD4 (10400-M001-P; Sino Biological, Beijing, China), antihuman CD8 (10980-MM28-F; Sino Biological, Beijing, China), and antihuman CD69 antibodies (560967; BD Biosciences, Franklin Lakes, NJ, USA). The culture supernatants at different incubation time points were also collected to detect the secreted level of IFN-γ (DY285; R&D System, Minneapolis, MN, USA) and IL-2 (DY202; R&D System, Minneapolis, MN, USA) by ELISA, according to the manufacturer’s protocol.
+2.11. EGFRvIII-BsAb Mediated Cytotoxicity against GBM Cells
+Target cells U87MG.∆EGFR and control cells U87MG were seeded on a 96-well cell culture plate. After the cells adhered to the bottom of the plate, antibodies at different concentrations were preincubated at 37 ◦C in cell culture medium (no phenol RPMI 1640 + 10% FBS) for 30 min before adding the human PBMCs at an E/T ratio of 5:1. After coincubation for 75 h, the cell culture supernatant was collected, and the cytotoxicity was mediated by the EGFRvIII-BsAb or its parental EGFRvIII mAb, and the CD3 mAb was quantified via a CytoTox 96® Non-Radioactive Cytotoxicity Assay Kit (G1780; Promega, Madison, WI, USA), following the standard procedure. All measurements were performed in triplicate. The percentage of cytotoxicity was calculated as follows:
+%cytotoxicity = experimental lysis − spontaneous effector lysis − spontaneous target lysis × 100 (1) maximum target lysis − spontaneous target lysis
+2.12. Pharmacokinetics Analysis
+Ten SPF-grade BALB/c male mice aged 8 weeks and weighing 20–26 g were selected and randomly divided into two groups to ensure that mouse status was basically the same between the two groups. The EGFRvIII-BsAb and the control antibody EGFRvIII mAb were single-intraperitoneally (i.p.) injected into mice at 5 mg/kg. The day of injection was d 0, and the blood samples were collected from the orbit at different time points: 15 min, 6 h, 1 d, 2 d, 4 d, 7 d, 10 d, 15 d, 21 d, and 28 d. The antibody concentration of serum samples was quantified by ELISA and PK parameters were determined with a noncompartmental analysis model using WinNonlin.
+2.13. Xenograft Studies
+To verify the antitumor effect of the EGFRvIII-BsAb and the existence of huPBMCs, female NOD/SCID mice aged 8 weeks (3/group) were subcutaneously implanted with the mixture of 3 × 106 U87MG.∆EGFR cells and 6 × 106 or 3 × 106 unstimulated human
+ 
+Biomedicines 2021, 9, 640
+5 of 16
+ PBMCs (E/T 1:1 and E/T 2:1) on day 0. Treatments with the EGFRvIII-BsAb at 5 mg/kg and PBS started from the second day after inoculation, with 6 consecutive administrations to the mice every 3 days by intraperitoneal injection. To evaluate the dose-dependent prevention efficacy of the EGFRvIII-BsAb, another in vivo experiment was performed. Female NOD/SCID mice aged 8 weeks (5/group) were subcutaneously implanted with the mixture of 2.25 × 106 U87MG.∆EGFR cells and 3 × 106 unstimulated human PBMCs on day 0. In order to compare with the control of EGFRvIII mAb on antitumor efficacy, EGFRvIII mAb at 1.5 mg/kg was also administrated. The drugs or controls (3 mg/kg EGFRvIII-BsAb, 1 mg/kg EGFRvIII-BsAb, 0.33 mg/kg EGFRvIII-BsAb, 1.5 mg/kg EGFRvIII mAb, or PBS) were administered from the same day of the inoculation, and 8 consecutive treatments were administered to the mice every three days by intraperitoneal injection. The tumor volume was detected every three days with a vernier caliper and calculated using the formula below:
+approximated formula V = length × width × width (2) 2
+After the mice were sacrificed, photographs of the stripped tumors were taken.
+2.14. Animal Experiment Statement
+All methods were conducted in accordance with guidelines from the Institutional Animal Care and Use Committee of the School of Pharmacy of SJTU, and all experimen- tal protocols were approved by the Institutional Animal Care and Use Committee of the School of Pharmacy of SJTU. PBMCs were obtained from donators who signed an informed consent.
+2.15. Statistical Analysis
+Differences between samples indicated in the figures were tested for statistical signifi- cance by the Student’s t-test, and p < 0.05 was considered statistically significant.
+3. Results
+3.1. Preparation and Purification of the EGFRvIII-BsAb with the BAPTS Platform
+We adapted the BAPTS platform to generate an IgG-like bispecific antibody targeting EGFRvIII and CD3 with minimum light/heavy chain mispairings, as reported by our lab [18,20]. In this method, two antibody fragments were expressed and purified, followed by the autocatalytic “protein trans-splicing” (PTS) reaction to conjugate the two fragments together (Figure 1). We selected an antibody CDR region from 806 humanized mAb with proven preclinical efficacy and clinical safety. Following the BAPTS procedure, one frag- ment with anti-EGFRvIII and another fragment with anti-CD3 mAb were constructed and expressed by CHO cells. Both fragments were purified by Protein L affinity chromatog- raphy (Figure 2a, left). Fragment A was composed of three peptides, CD3Lc, CD3Hc, and CD3-IntC. Similarly, fragment B was composed of two peptides, EGFRvIII-IntN and EGFRvIII-Lc (Figure 2a, right). A newly generated band was generated by SDS-PAGE analysis in the corresponding molecular weight, with a decreasing amount of antibody fragments as starting materials (Figure 2b). Since the reducing agent needed in the PTS reaction may interfere with correct folding and antibody structure, the proper reducing con- dition was screened for generating EGFRvIII-BsAb (Figure 2c). SDS-PAGE analysis showed that the reaction reached a plateau with the least fragment B residue under an optimal reaction condition of 0.5 mM TCEP at 37 °C for 2 h. Then, DHAA was used to neutralize extra reducing agent TCEP, as previously reported [26] (Figure 2c, left). The final product of EGFRvIII-BsAb was polished with an MMC ImpRes Multimodal Chromatography Column (Figure 2e), and was characterized with LC/MS and SPR. Ion mobility quadrupole time-of- flight (IMS Q-Tof) mass spectrometry was utilized to identify the molecular mass of the BsAb. After deglycosylation, the mass of the BsAb was 145,360 Da (Figure 2f). SEC-HPLC analysis showed a high purity of EGFRvIII-BsAb (Figure 2h), with a minimum amount
+ 
+ dition was screened for generating EGFRvIII-BsAb (Figure 2c). SDS-PAGE analysis
+Biomedicines 2021, 9, 640
+showed that the reaction reached a plateau with the least fragment B residue under an
+optimal reaction condition of 0.5 mM TCEP at 37 °C for 2 h. Then, DHAA was used to
+neutralize extra reducing agent TCEP, as previously reported [26] (Figure 2c, left). The
+final product of EGFRvIII-BsAb was polished with an MMC ImpRes Multimodal Chro-
+matography Column (Figure 2e), and was characterized with LC/MS and SPR. Ion mobil-
+ity quadrupole time-of-flight (IMS Q-Tof) mass spectrometry was utilized to identify the
+molecular mass of the BsAb. After deglycosylation, the mass of the BsAb was 145,360 Da
+(Figure 2f). SEC-HPLC analysis showed a high purity of EGFRvIII-BsAb (Figure 2h), with
+Protein A affinity chromatography (Figure 2d).
+6 of 16
+ a minimum amount of aggregation, half antibody, or hole–hole homodimer. EGFRvIII
+of aggregation, half antibody, or hole–hole homodimer. EGFRvIII mAb was purified by
+mAb was purified by Protein A affinity chromatography (Figure 2d).
+ Figure1. SchematFiicgpureoc1e.sSschoefmEaGtiFcRpvroIIcIe-sBssoAfbEGsyFnRtvhIIeIs-BisAbbysthynethBeAsiPsTbSypthleatBfoArPmT.SIpnlatthfoisrm.eInthtohdis,method,
+◦
+under 4–25 °C and reduced conditions, fragment A and fragment B were fused into a complete
+under 4–25
+bispecific antibody, and the intein was dropped.
+C and reduced conditions, fragment A and fragment B were fused into a complete
+bispecific antibody, and the intein was dropped.
+3.2. In Vitro Activity of the EGFRvIII-BsAb
+3.2.1. Cellular Binding of the EGFRvIII-BsAb
+The ability of EGFRvIII-BsAb to bind to target cells was verified by flow cytometry. We confirmed EGFRvIII-specific expression on the de2-7 mutant cell line U87MG.∆EGFR (Figure 3a, left), but were not able to detect EGFRvIII on the surface of wild-type GBM cell line U87MG (Figure 3a, left). From the cellular binding experiment, the flow cytometry result showed that the EGFRvIII-BsAb specifically targeted EGFRvIII-positive cells without off-target binding to EGFRvIII-negative U87MG cells (Figure 3a, right), which indicated the superior specificity by the BsAb toward the EGFRvIII. The EGFRvIII-BsAb did bind with the CD3-positive Jurkat cell line, as well as the EGFRvIII-positive U87MG.∆EGFR cell line, in a dose-dependent manner (Figure 3b). The affinities of EGFRvIII-BsAb with the antigens EGFRvIII and CD3 were determined by a Biacore assay (Figure 2g). It was previously reported that T-cell-dependent BsAbs with high affinity toward the CD3 antigen would lead to the biodistribution to T-cell-rich tissues and the fast elimination of the BsAbs [27]. Thus, we adapted the sequence of anti-CD3 antibody whose affinity to the CD3 was low, according to a previous report (US20130289127A1). The result confirmed that the EGFRvIII-BsAb had a lower affinity with the CD3 antigen compared with the parental CD3 mAb (1.95 × 10-7 M vs. 2.82 × 10-8 M), as designed. For binding to the EGFRvIII antigen, the BsAb appeared to have a lower affinity compared with the parental EGFRvIII mAb (1.60 × 10-8 M vs. 7.40 × 10-10 M, partly due to its monovalent structure.
+3.2.2. EGFRvIII-BsAb Redirected T Cells to Tumor Cells
+To investigate the killing mechanism against the GBM cell mediated by BsAb, we evaluated the EGFRvIII-BsAb from the perspective of recruiting T cells to tumor cells. Under a light microscope, it was apparent that T cells were redirected to the tumor cell site in the presence of EGFRvIII-BsAb (Figure 3c). To further quantify recruitment ability, an FACS assessment was performed to evaluate the percentage of CD3- and EGFRvIII- positive cell clusters (Figure 3d). CD3-positive Jurkat cells were labeled with PKH26, and EGFRvIII-positive U87MG.∆EGFR cells were labeled with CFSE. U87MG cells were labeled with CFSE as control. The result from the flow cytometry assessment demonstrated that the EGFRvIII-BsAb specifically redirected T cells to the EGFRvIII-positive cell line, and did not appear to affect the behavior of T cells against the EGFRvIII antigen-negative cell line U87MG (CFSE + /PKH26+ cell ratio was 20.86% vs. 2.05%). In contrast, no redirection ability of the EGFRvIII mAb was detected (CFSE+/PKH26+ cell ratio was 3.85%). This result indicated that the redirection of T cells was target-dependent.
+
+  Biomedicines 2021, 9, 640 7 of 16 Biomedicines 2021, 9, x FOR PEER REVIEW 7 of 18
+Figure 2. The generation and characterization of EGFRvIII-BsAb with the BAPTS method. (a) SDS-PAGE analysis of EG- Figure 2. The generation and characterization of EGFRvIII-BsAb with the BAPTS method. (a) SDS-PAGE analysis of
+  FRvIII-2F (fragment B) under nonreduced and reduced conditions. (b) SDS-PAGE analysis of BAPTS reaction. Bands 1,5— EGFRvIII-2F (fragment B) under nonreduced and reduced conditions. (b) SDS-PAGE analysis of BAPTS reaction. Bands
+EGFRvIII-2F (fragment B); bands 2,6—CD3-3F (fragment A); bands 3,7—BAPTS reaction catalyzed by reduction agent;
+1,5—EGFRvIII-2F (fragment B); bands 2,6—CD3-3F (fragment A); bands 3,7—BAPTS reaction catalyzed by reduction agent;
+bands 4,8—complete bispecific antibody obtained by the BAPTS reaction, and followed by oxidization reagent reconstitu-
+bands 4,8—complete bispecific antibody obtained by the BAPTS reaction, and followed by oxidization reagent reconstitution.
+tion. (c) Reduced SDS-PAGE analysis of BAPTS reaction condition optimization. Bands 1–10 represent EGFRvIII-2F, CD3- (3c)F,RtehdeumceixdtuSrDeSo-PfA2FGaEnadn3aFlyisnisthoef BpArePseTnScereoafct0iomnMco,n0d.0i1tiomnMo,p0t.i0m5izmaMtio,n0.1BmanMd,s01.5–1m0Mre,p1remseMnt, E2GmFMR,vaIInId-2F5,mCDM3-3F,
+reduction agent. (d) Nonreduced (upper) and reduced (lower) SDS-PAGE analysis of purification products of EGFRvIII
+the mixture of 2F and 3F in the presence of 0 mM, 0.01 mM, 0.05 mM, 0.1 mM, 0.5 mM, 1 mM, 2 mM, and 5 mM reduction
+mAb. (e) Nonreduced (left) and reduced (right) SDS-PAGE analysis of purification products of EGFRvIII-BsAb with an agent. (d) Nonreduced (upper) and reduced (lower) SDS-PAGE analysis of purification products of EGFRvIII mAb. (e)
+MMC ImpRes Multimodal Chromatography Column. (f) LC/MS analysis of deglycosylated nonreduced BsAb. (g) SPR Nonreduced (left) and reduced (right) SDS-PAGE analysis of purification products of EGFRvIII-BsAb with an MMC ImpRes
+assay of the dissociation constant of EGFRvIII-BsAb and its control mAbs against recombinant target antigens. (h) SEC- Multimodal Chromatography Column. (f) LC/MS analysis of deglycosylated nonreduced BsAb. (g) SPR assay of the
+HPLC analysis of EGFRvIII-BsAb.
+dissociation constant of EGFRvIII-BsAb and its control mAbs against recombinant target antigens. (h) SEC-HPLC analysis of EGFRvIII-BsAb.
+
+ Biomedicines 2021, 9, 640 8 of 16 Biomedicines 2021, 9, x FOR PEER REVIEW 9 of 18
+Figure 3. (a) EGFRvIII antigen expression level on mutant GBM cell line U87MG.∆EGFR and wild-type GBM cell line U87MG. (b) A binding activity comparison of EGFRvIII-BsAb and CD3 mAb with Jurkat cells (CD3-positive) (upper), as well as a binding activity comparison of the EGFRvIII-BsAb and the EGFRvIII mAb with U87MG.∆EGFR cells (EGFRvIII- positive) (lower). (c) Photographs of the redirection of T cells to cancer cells by 0.01 ng/mL EGFRvIII-BsAb or EGFRvIII mAb. (d) FACS analysis of the redirection of CD3+ Jurkat cells to cancer cells by EGFRvIII-BsAb. Jurkat (CD3+) cells labeled by PKH26 (PE-A), as well as U87MG.∆EGFR cells labeled by CFSE (FITC-A).
+  
+Biomedicines 2021, 9, 640
+9 of 16
+ 3.2.3. The EGFRvIII-BsAb Activated T Cells to Release Cytotoxic Cytokines
+Next, we tested the activation of T cells by EGFRvIII-BsAb in vitro. The T-cell ac- tivation marker CD69 in CD4+ and CD8+ T cells was analyzed when target cells were incubated with the EGFRvIII-BsAb (Figure 4a). The CD4+CD69+ T cells in PBMCs were increased from 0.93% to 2.80%, and CD8+CD69+ T cells were increased from 0.18% to 3.94% with target cells only, showing that target cells had more influence on CD8+ T- cell activation. Interestingly, the CD4+ and CD69+ cells were increased from 0.93% to 19.33%, while the CD8+ and CD69+ positive cells were increased from 0.16% to 5.48% with EGFRvIII-BsAb only, indicating EGFRvIII-BsAb could activate both CD4+ and CD8+ T cells independently. In the presence of both target cells and the EGFRvIII-BsAb, the percentages of CD4+CD69+ and CD8+CD69+ cells reached 31.94% and 12.54%, respec- tively. These results demonstrated that CD4+ T-cell activation was mainly dependent on the EGFRvIII-BsAb, while CD8+ T-cell activation relied on the combined action of target cells and EGFRvIII-BsAb. Furthermore, this also supported the theory that CD8+ T cells were the main effector cells during the lymphocyte-mediated killing of tumors. To assess whether additional favorable cytokines were released in the process of T-cell activation by the EGFRvIII-BsAb, we measured the IFN-γ and IL-2 levels in the cell culture super- natant when effector cells were incubated with target cells and the EGFRvIII-BsAb or the EGFRvIII mAb. The cytokine release was barely detectable with the EGFRvIII mAb and the CD3 mAb, while the cytokines were remarkably increased with the EGFRvIII-BsAb (Figure 4b). A time- and antibody-concentration-dependent release of IFN-γ and IL-2 was also observed. In the earlier stage, IL-2 release rapidly reached a peak around 50 h after EGFRvIII-BsAb treatment. However, the IFN-γ release showed a continuous increase. In conclusion, EGFRvIII-BsAb did activate T cells, which led to cytokine release.
+3.2.4. EGFRvIII-BsAb Mediated T Cells to Lyse Tumor Cells In Vitro
+To evaluate the cytotoxicity of the EGFRvIII-BsAb, we incubated tumor cells, effector cell PBMCs, and antibodies together, and then collected the cell culture to test the lactate dehydrogenase (LDH) release level (Figure 4c,d). Among all experimental groups, the EGFRvIII-BsAb showed potent cytotoxicity compared to its parental antibodies, EGFRvIII mAb and CD3 mAb, even at a low dosage of 0.01 ug/mL. Furthermore, the BsAb was superior in killing tumor cells compared with combo treatment with the EGFRvIII mAb and the CD3 mAb. This demonstrated that cytotoxicity was mediated through the synergistic effect by recruiting immune cells, rather than through a simple combined effect of the CD3 mAb and the EGFRvIII mAb (Figure 4c,d). In addition, the EGFRvIII-BsAb showed higher maximum killing activity and lower EC50 compared with parental EGFRvIII mAb (Figure 4d,e) in the dose–response cytotoxicity experiment. We also observed that the antitumor killing activity of the EGFRvIII mAb was mainly due to its Fc domain that binds to FcγRIII positive effector cells, including NK cells and macrophages (Figure 4c). Once ADCC and CDC function was depleted, no cytotoxicity of the EGFRvIII mAb was observed. This observation further proved that the killing ability of EGFRvIII-BsAb solely relied on its effect on T cells. This is highly advantageous for controllable T-cell activation without other immune effector cells being activated.
+
+ Biomedicines 2021, 9, 640 10 of 16 Biomedicines 2021, 9, x FOR PEER REVIEW 11 of 18
+Figure 4. T-cell activation by EGFRvIII-BsAb. (a) CD69 expression on CD4+ and CD8+ T cells’ surface in response to target tumor cells or the EGFRvIII-BsAb. (b) The secreted levels of IFN-γ and IL-2 in culture supernatant detected after treatment with different EGFRvIII-BsAb concentrations by ELISA. (c) The cytotoxicity measurement of the EGFRvIII- BsAb and its parental antibodies or their combo treatment under low and middle antibody concentration by the LDH method (p < 0.0002 (***), p < 0.0001 (****)). (d) Dose-dependent antitumor activity evaluation of the EGFRvIII-BsAb on U87MG.∆EGFR or U87MG (left). Dose-dependent antitumor activity evaluation of the EGFRvIII-BsAb compared with the EGFRvIII mAb and the CD3 mAb on U87MG.∆EGFR cells (right). (e) Maximum cytotoxicity and EC50 comparison among EGFRvIII-BsAb and EGFRvIII mAb or ADCC-attenuated EGFRvIII mAb counterpart. Cytotoxicity measurement by LDH release assay.
+  
+Biomedicines 2021, 9, 640
+11 of 16
+ 3.3. In Vivo Activity of the EGFRvIII-BsAb
+3.3.1. Tumor Growth Inhibition in Immunocompromised Mice by the EGFRvIII-BsAb
+To evaluate the in vivo activity of the EGFRvIII-BsAb in NOD/SCID mice, we first explored the effect of the E/T ratio on the tumor growth. The U87MG.∆EGFR cells ex- pressing EGFRvIII, together with huPBMCs from a healthy donor at an E/T ratio of 1:1 and 2:1, were subcutaneously implanted into immunodeficient mice. The EGFRvIII-BsAb or placebo at 5 mg/kg were intraperitoneally administered every three days from the second day of tumor implantation (Figure 5a). Compared with the placebo group, the EGFRvIII-BsAb significantly inhibited U87MG.∆EGFR-derived tumor growth. Under a high E/T ratio of 2:1, the average tumor volume was smaller, indicating that the exis- tence of huPBMCs contributed to tumor inhibition. The most effective tumor inhibition was observed in the EGFRvIII-BsAb E/T 2:1 group. Further results demonstrated that complete tumor elimination was the synergetic effect of the EGFRvIII-BsAb and immune cells (Figure 5b–d). Then, in another subsequent in vivo experiment, an antitumor ability assessment of EGFRvIII-BsAb under a series of dosages (3 mg/kg, 1 mg/kg, 0.33 mg/kg) and EGFRvIII mAb (1.5 mg/kg) was carried out with PBS as a placebo (Figure 5e). From the result, the EGFRvIII-BsAb showed an initial inhibitory effect toward tumor growth at a concentration as low as 0.33 mg/kg, which was 5 times lower than the control EGFRvIII mAb (Figure 5f,g). At a high dose of 3 mg/kg, the EGFRvIII-BsAb was able to eliminate tumor cells completely, without an observed recurrence (Figure 5g). In addition, no body- weight decrease was observed among any of the groups. Interestingly, mice treated with the EGFRvIII mAb suffered from beard shedding, while this side effect was not observed in the groups treated with PBS buffer (placebo) or EGFRvIII-BsAb. To recap, EGFRvIII-BsAb showed promising therapeutic efficacy in vivo, with no obvious side effects observed.
+3.3.2. Pharmacokinetic (PK) Analysis
+The PK parameters of EGFRvIII-BsAb and EGFRvIII mAb were evaluated in male BALB/c mice after a single intraperitoneal (i.p.) administration of 5 mg/kg. A noncom- partment model was applied, and data showed that both EGFRvIII-BsAb and EGFRvIII mAb displayed a biphasic disposition (Figure 6). Interestingly, an long half-life was unex- pectedly observed in the EGFRvIII-BsAb group (13.90 days) compared to the group that was administered the parental EGFRvIII mAb (3.56 days) (Figure 5h). The long circulation time of EGFRvIII-BsAb may be attributed to its lower affinity with the CD3 antigen, as previously documented [27]. This merit is especially advantageous in clinical treatments.
+
+ Biomedicines 2021, 9, 640 12 of 16 Biomedicines 2021, 9, x FOR PEER REVIEW 13 of 18
+Figure 5. EGFRvIII-expression of tumor growth inhibition in vivo by EGFRvIII-BsAb. (a) Schematic schedule of tumor inoculation and treatment. (b) Time course of U87MG.∆EGFR tumor-growing. Data are presented as mean ± SEM (p < 0.0332 (*), p < 0.0001 (****)). (c) Images of stripped tumors. (d) U87MG.∆EGFR tumor-growing time course under various E/T ratios. Data are presented as measured tumor volumes from individual mice. (e) Schematic schedule of tumor inoculation and treatment. (f) Tumor-growing time course(p < 0.0021 (**), p < 0.0001 (****)). (g) Morbidity time course. (h)
+  Body-weight time course.
+
+Figure 5. EGFRvIII-expression of tumor growth inhibition in vivo by EGFRvIII-BsAb. (a) Schematic schedule of tumor inoculation and treatment. (b) Time course of U87MG.ΔEGFR tumor-growing. Data are presented as mean ± SEM(p < 0.0332 (*),p < 0.0001 (****)). (c) Images of stripped tumors. (d) U87MG.ΔEGFR tumor-growing time course under various
+E/T ratios. Data are presented as measured tumor volumes from individual mice. (e) Schematic schedule of tumor inocu- Biomedicines 2021, 9, 640 13 of 16
+lation and treatment. (f) Tumor-growing time course(p < 0.0021 (**), p < 0.0001 (****)). (g) Morbidity time course. (h) Body- weight time course.
+    EGFRvIII-BsAb
+EGFRvIII-mAb
+  Figure 6. PK analysis of EGFRvIII-BsAb and EGFRvIII mAb in BALB/c mice. Antibody concentration Figure 6. PK analysis of EGFRvIII-BsAb and EGFRvIII mAb in BALB/c mice. Antibody concentra-
+of serum samples at different time points (left figure), and PK parameters analysis (right table). tion of serum samples at different time points (left figure), and PK parameters analysis (right table).
+4. Discussion
+Within the past 20 years, limited progress has been made in combatting GBM. Po-
+4. Discussion
+Within the past 20 years, limited progress has been made in combatting GBM. Poten-
+tential reasons include a highly heterogeneous brain tumor microenvironment, an imper-
+tial reasons include a highly heterogeneous brain tumor microenvironment, an imperme-
+meable BBB, and lack of T-cell infiltration. There have been many frustrating moments
+able BBB, and lack of T-cell infiltration. There have been many frustrating moments in the
+in the development of therapeutic antibodies and vaccines, including ABT-414 [28,29], development of therapeutic antibodies and vaccines, including ABT-414 [28,29], an anti-
+an antibody–drug conjugate (ADC) against the EGFRvIII; Rindopepimut [30,31], a tumor body–drug conjugate (ADC) against the EGFRvIII; Rindopepimut [30,31], a tumor vaccine
+vaccine against EGFRvIII; and mAb treatment in Phase III clinical trials [32]. According to against EGFRvIII; and mAb treatment in Phase III clinical trials [32]. According to dis-
+disclosed clinical data, ABT-414 failed to show a survival benefit for patients compared
+closed clinical data, ABT-414 failed to show a survival benefit for patients compared with
+with a placebo, with a severe corneal side effect caused by ADC’s on-target or off-target
+a placebo, with a severe corneal side effect caused by ADC’s on-target or off-target cyto-
+cytotoxicity [33]. Although several BsAbs against EGFRvIII have been developed, they
+tohxaivceitnyo[t33p]r.oAgrltehsoseudghbesyeovnerdalpBrescAlibnsicaglasitnusdtieEsG[F3R4,v3I5I]I.hHaevre,baenenIgdGe-vleikloepBesdA,bthweyithalovwe
+niomtmpruongorgesesneidcitbye,yeoxncdellpernetclGinBiMcaltsutmudoiresin[h34ib,3it5i]o.nH,earned,anloIgnGg-lciikrecuBlasAtiobnwhiathlf-lloifwewima-s
+mreupnorgtednictoityp,reoxvciedleleantpGotBeMntitaulmapoprrionahcihbitfiornt,raeantdinaglGonBgMc.irTchuelahtiiognh-hqaulaf-lliitfye mwatseriea-l
+pofrtehde tBospArbovwidaes agepnoeteranteiadl tahprporuogahchthfoerBtrAePatTinSgpGlaBtfMor.mThaenhdigmh-uqlutiamliotydaml aBtieorPiarloocfesthsTMe
+BcshArobmwatsogeranpehraytesdtetphsro[3u6g]h. CthoemBpAaPreTdSwpliathtfothrme manodstmaduvltainmcoedahl EBGioFPRrovcIeIIs-sCTMD3chbrio-smcFa-v
+toangrdaTpahnydAstebp[s35[,367]., tChoemIgpGa-rleidkewBistAhbthperomveodstoahdavvaencseudpehrEioGrFaRntviItIuIm-CoDr3abiil-istycFivn vaintrdo
+TuandeArba[l3o5w,3e7r]E, t/hTerIagtGio-laiknedBEsCAb,parnodveadmtuochalvoensgueprecririocurlantitoitnumtimoreainbivliitvyoin(1v3i.9tr0oduany-s 50
+dvesr. a2.l8owh e[3r5E])/.T ratio and EC50, and a much longer circulation time in vivo (13.90 days vs.
+2.8h[I3n5]o)u.rinvivoanimalexperiments,weusedimmunodeficientmicetoimitatethe
+immune-cell-infiltrating tumor microenvironment by reestablishing their immune sys-
+In our in vivo animal experiments, we used immunodeficient mice to imitate the im-
+tems with mixed huPBMCs and tumor cells, based on previous studies [28,37,38]. The mune-cell-infiltrating tumor microenvironment by reestablishing their immune systems
+tumor inhibitory ability of EGFRvIII-BsAb was verified. Human immune cells usually
+with mixed huPBMCs and tumor cells, based on previous studies [28,37,38]. The tumor
+have a limited half-life in the murine background, which might limit the immune cells’
+inhibitory ability of EGFRvIII-BsAb was verified. Human immune cells usually have a
+exertion when exhibiting full antitumor ability [19,39]. In the future, we will evaluate the limited half-life in the murine background, which might limit the immune cells’ exertion
+efficacy and biodistribution of EGFRvIII-BsAb in an orthotopic tumor model with a hu-
+when exhibiting full antitumor ability [19,39]. In the future, we will evaluate the efficacy
+manized mouse model and/or a patient-derived GBM model to evaluate the full potential
+and biodistribution of EGFRvIII-BsAb in an orthotopic tumor model with a humanized
+of EGFRvIII-BsAb. In addition, we observed beard shedding as a side effect in mice in the
+mouse model and/or a patient-derived GBM model to evaluate the full potential of EG-
+parental EGFRvIII mAb treatment group. This side effect may be due to the cross-reaction
+FRvIII-BsAb. In addition, we observed beard shedding as a side effect in mice in the pa-
+between EGFRvIII mAb and highly endogenously expressed EGF in skin, as previously
+rental EGFRvIII mAb treatment group. This side effect may be due to the cross-reaction
+reported [38]. However, no severe toxicities were observed in the EGFRvIII-BsAb treatment between EGFRvIII mAb and highly endogenously expressed EGF in skin, as previously
+groups, even with a long circulation in vivo.
+reported [38]. However, no severe toxicities were observed in the EGFRvIII-BsAb treat-
+When we looked into the details of T-cell-dependent cytotoxicity mediated by EGFRvIII-
+ment groups, even with a long circulation in vivo.
+BsAb, we found that the BsAb activated T cells and killed tumor cells in a dose-dependent
+When we looked into the details of T-cell-dependent cytotoxicity mediated by EG-
+manner. Moreover, according to the IFN-γ and IL-2 release assay, we depicted a cytokine- FRvIII-BsAb, we found that the BsAb activated T cells and killed tumor cells in a dose-
+release surface diagram. The results indicated a time-dependent cytokine release in re-
+dependent manner. Moreover, according to the IFN-γ and IL-2 release assay, we depicted
+sponse to EGFRvIII-BsAb treatment, and implied that the immune function of the EGFRvIII- BsAb was controllable. Furthermore, a controlled cytokine release could assist in the design of a clinically safe starting dose, which would be based on a minimum anticipated biolog- ical effect level (“MABEL”) approach [40]. It is notable that EGFRvIII-BsAb mediated a potent killing effect against tumor cells at an E/T ratio as low as 5:1, and that it showed prolonged cytotoxicity against tumor cells compared with parental EGFRvIII mAb. As expected, once the ADCC and CDC functions were knocked out, EGFRvIII mAb was unable to inhibit tumor growth. EGFRvIII mAb’s antitumor efficacy largely relied on the Fc
+
+Biomedicines 2021, 9, 640
+14 of 16
+ domain to bind with the FcγIIIR to kill cancer cells in the early stages, while EGFRvIII-BsAb activated T cells to proliferate and consistently present antitumor efficacy.
+Solid tumors are characterized by the immune suppressive microenvironment, with the existence of myeloid-derived suppressor cells (MDSCs), regulatory T cells (Tregs), tumor-associated macrophages (TAM), and cancer-associated fibroblast (CAF), negatively hampering the killing of cytotoxic T cells [41]. However, the application of immune check point inhibitors recuperates tumor inhibition and changes a “cold tumor” into “hot tumor” [42,43]. It is noticeable that oncolytic virus and gene therapies have been widely tested in clinical trials for the treatment of GBM, with significant immune-cell infiltration and tolerance [44,45]. Preconditioning the tumor microenvironment with an oncolytic virus also proved to be an effective strategy for enhancing CD3-BsAb in immune-silent solid tumors [46]. Therefore, combination treatment consisting of immune checkpoint blockades or oncolytic virus and EGFRvIII-BsAb would show further applicable potential in the treatment of GBM.
+5. Conclusions
+We have demonstrated that EGFRvIII-BsAb redirected T cells to GBM cells and stim- ulated T cells to release cytotoxic cytokines to kill tumor cells. Both in vitro and in vivo experiments showed that EGFRvIII-BsAb was superior to the parental EGFRvIII mAb in antitumor efficacy and circulation time. This BsAb appeared as a potentially promising therapeutic reagent for GBM treatment in clinical applications.
+Author Contributions: Conceptualization, R.S. and Y.Z.; methodology, L.H., Z.P., J.C. and H.Z.; software, R.S.; validation, R.S., Z.P. and J.C.; formal analysis, R.S.; resources, J.Z., H.J. and Y.B.; writing—original draft preparation, R.S.; writing—review and editing, J.Z.; critical discussion, J.Z. and B.Z.; supervision, J.Z.; project administration, J.Z.; funding acquisition, J.Z., B.Z. and Y.B. All authors have read and agreed to the published version of the manuscript.
+Funding: This research was funded by the National Natural Science Foundation of China (to J.Z., Nos. 81773621 and 82073751) and the National Science and Technology Major Project “Key New Drug Creation and Manufacturing Program” of China (to J.Z., No. 2019ZX09732001-019). The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.
+Institutional Review Board Statement: The mice in the study were handled according to guidelines from the Institutional Animal Care and Use Committee of the School of Pharmacy of Shanghai Jiao Tong University (protocol code A2018041).
+Informed Consent Statement: Informed consent was obtained from all the PBMC donors involved in the study.
+Data Availability Statement: The data set supporting the conclusions of this article is included within the article.
+Acknowledgments: We thank Jecho Biopharmaceuticals and Jecho Laboratories, Inc. for their technical support. We thank Renji Hospital, affiliated with the School of Medicine, SJTU, for offering the U87MG.∆EGFR cell line. This work was supported by the National Natural Science Foundation of China and the National Science and Technology Major Project “Key New Drug Creation and Manufacturing Program”.
+Conflicts of Interest: L.H. is an employee of Jecho Biopharmaceuticals Co., Ltd., Tianjin, China, and Jecho Biopharmaceutical Institute, Shanghai, China; H.J. is an employee of Jecho Laboratories, Inc., Frederick, MD, USA, and Jecho Biopharmaceuticals Co., Ltd., Tianjin, China; J.Z. is an employee of Jecho Biopharmaceuticals Co., Ltd., Tianjin, China; Jecho Laboratories, Inc., Frederick, MD, USA; and Jecho Biopharmaceutical Institute, Shanghai, China. The authors declare no conflict of interest.
+
+Biomedicines 2021, 9, 640 15 of 16
+ References
+1. Czapski, B.; Baluszek, S.; Herold-Mende, C.; Kaminska, B. Clinical and immunological correlates of long term survival in glioblastoma. Contemp. Oncol. 2018, 22, 81–85. [CrossRef]
+2. Leece, R.; Xu, J.; Ostrom, Q.T.; Chen, Y.; Kruchko, C.; Barnholtz-Sloan, J.S. Global incidence of malignant brain and other central nervous system tumors by histology, 2003–2007. Neuro Oncol. 2017, 19, 1553–1564. [CrossRef]
+3. Abbas, M.N.; Kausar, S.; Wang, F.; Zhao, Y.; Cui, H. Advances in targeting the epidermal growth factor receptor pathway by synthetic products and its regulation by epigenetic modulators as a Therapy for Glioblastoma. Cells 2019, 8, 350. [CrossRef] [PubMed]
+4. Komotar, R.J.; Otten, M.L.; Moise, G.; Connolly, E.S., Jr. Radiotherapy plus concomitant and adjuvant temozolomide for glioblastoma—A critical review. Clin. Med. Oncol. 2008, 2, 421–422. [CrossRef]
+5. Zanders, E.D.; Svensson, F.; Bailey, D.S. Therapy for glioblastoma: Is it working? Drug Discov. Today 2019, 24, 1193–1201. [CrossRef]
+6. Humphrey, P.A.; Wong, A.J.; Vogelstein, B.; Zalutsky, M.R.; Fuller, G.N.; Archer, G.E.; Friedman, H.S.; Kwatra, M.M.; Bigner, S.H.; Bigner, D.D. Anti-synthetic peptide antibody reacting at the fusion junction of deletion-mutant epidermal growth factor receptors in human glioblastoma. Proc. Natl. Acad. Sci. USA 1990, 87, 4207–4211. [CrossRef] [PubMed]
+7. Wong, A.J.; Ruppert, J.M.; Bigner, S.H.; Grzeschik, C.H.; Humphrey, P.A.; Bigner, D.S.; Vogelstein, B. Structural alterations of the epidermal growth factor receptor gene in human gliomas. Proc. Natl. Acad. Sci. USA 1992, 89, 2965–2969. [CrossRef] [PubMed]
+8. Chistiakov, D.A.; Chekhonin, I.V.; Chekhonin, V.P. The EGFR variant III mutant as a target for immunotherapy of glioblastoma
+multiforme. Eur. J. Pharmacol. 2017, 810, 70–82. [CrossRef] [PubMed]
+9. Grandal, M.V.; Zandi, R.; Pedersen, M.W.; Willumsen, B.M.; van Deurs, B.; Poulsen, H.S. EGFRvIII escapes down-regulation due
+to impaired internalization and sorting to lysosomes. Carcinogenesis 2007, 28, 1408–1417. [CrossRef]
+10. Nishikawa, R.; Ji, X.D.; Harmon, R.C.; Lazar, C.S.; Gill, G.N.; Cavenee, W.K.; Huang, H.J. A mutant epidermal growth factor receptor common in human glioma confers enhanced tumorigenicity. Proc. Natl. Acad. Sci. USA 1994, 91, 7727–7731. [CrossRef]
+[PubMed]
+11. Montgomery, R.B.; Guzman, J.; O’Rourke, D.M.; Stahl, W.L. Expression of oncogenic epidermal growth factor receptor family
+kinases induces paclitaxel resistance and alters beta-tubulin isotype expression. J. Biol. Chem. 2000, 275, 17358–17363. [CrossRef]
+12. Del, B.J.; Chames, P.; Baty, D.; Kerfelec, B. Taking up cancer immunotherapy challenges: Bispecific antibodies, the path forward?
+Antibodies 2016, 5, 1. [CrossRef]
+13. Löffler, A.; Kufer, P.; Lutterbüse, R.; Zettl, F.; Daniel, P.T.; Schwenkenbecher, J.M.; Riethmüller, G.; Dörken, B.; Bargou, R.C.
+A recombinant bispecific single-chain antibody, CD19 x CD3, induces rapid and high lymphoma-directed cytotoxicity by
+unstimulated T lymphocytes. Blood 2000, 95, 2098–2103. [CrossRef] [PubMed]
+14. Klinger, M.; Brandl, C.; Zugmaier, G.; Hijazi, Y.; Bargou, R.C.; Topp, M.S.; Gökbuget, N.; Neumann, S.; Goebeler, M.; Viardot,
+A.; et al. Immunopharmacologic response of patients with B-lineage acute lymphoblastic leukemia to continuous infusion of T
+cell-engaging CD19/CD3-bispecific BiTE antibody blinatumomab. Blood 2012, 119, 6226–6233. [CrossRef] [PubMed]
+15. Scott, L.J.; Kim, E.S. Emicizumab-kxwh: First global approval. Drugs 2018, 78, 269–274. [CrossRef] [PubMed]
+16. Labrijn, A.F.; Janmaat, M.L.; Reichert, J.M.; Parren, P.W.H.I. Bispecific antibodies: A mechanistic review of the pipeline. Nat. Rev.
+Drug Discov. 2019, 18, 585–608. [CrossRef]
+17. Nie, S.; Wang, Z.; Moscoso-Castro, M.; D’Souza, P.; Lei, C.; Xu, J.; Gu, J. Biology drives the discovery of bispecific antibodies as
+innovative therapeutics. Antib. Ther. 2020, 3, 18–62. [CrossRef]
+18. Han, L.; Chen, J.; Ding, K.; Zong, H.; Xie, Y.; Jiang, H.; Zhang, B.; Lu, H.; Yin, W.; Gilly, J.; et al. Efficient generation of bispecific
+IgG antibodies by split intein mediated protein trans-splicing system. Sci. Rep. 2017, 7, 1–8. [CrossRef]
+19. Zhou, Y.; Zong, H.; Han, L.; Xie, Y.; Jiang, H.; Gilly, J.; Zhang, B.; Lu, H.; Chen, J.; Sun, R.; et al. A novel bispecific antibody targeting CD3 and prolactin receptor (PRLR) against PRLR-expression breast cancer. J. Exp. Clin. Cancer Res. 2020, 39, 87.
+[CrossRef] [PubMed]
+20. Han, L.; Zong, H.; Zhou, Y.; Pan, Z.; Chen, J.; Ding, K.; Xie, Y.; Jiang, H.; Zhang, B.; Lu, H.; et al. Naturally split intein Npu DnaE
+mediated rapid generation of bispecific IgG antibodies. Methods 2019, 154, 32–37. [CrossRef]
+21. Vafa, O.; Trinklein, N.D. Perspective: Designing T-cell engagers with better therapeutic windows. Front. Oncol. 2020, 10, 1–7.
+[CrossRef]
+22. Bacac, M.; Fauti, T.; Sam, J.; Colombetti, S.; Weinzierl, T.; Ouaret, D.; Bodmer, W.; Lehmann, S.; Hofer, T.; Hosse, R.J.; et al. A novel
+carcinoembryonic antigen T-Cell bispecific antibody (CEA TCB) for the treatment of solid tumors. Clin. Cancer Res. 2016, 22,
+3286–3297. [CrossRef]
+23. Lo, M.; Kim, H.S.; Tong, R.K.; Bainbridge, T.W.; Vernes, J.M.; Zhang, Y.; Lin, Y.L.; Chung, S.; Dennis, M.S.; Zuchero, Y.J.; et al.
+Effector-attenuating substitutions that maintain antibody stability and reduce toxicity in mice. J. Biol. Chem. 2017, 292, 3900–3908.
+[CrossRef] [PubMed]
+24. Zhu, J. Mammalian cell protein expression for biopharmaceutical production. Biotechnol. Adv. 2012, 30, 1158–1170. [CrossRef]
+[PubMed]
+25. Ding, K.; Han, L.; Zong, H.; Chen, J.; Zhang, B.; Zhu, J. Production process reproducibility and product quality consistency of
+transient gene expression in HEK293 cells with anti-PD1 antibody as the model protein. Appl. Microbiol. Biotechnol. 2017, 101, 1889–1898. [CrossRef]
+
+Biomedicines 2021, 9, 640 16 of 16
+ 26. Hofmann, T.; Schmidt, J.; Ciesielski, E.; Becker, S.; Rysiok, T.; Schütte, M.; Toleikis, L.; Kolmar, H.; Doerner, A. Intein mediated high throughput screening for bispecific antibodies. mAbs 2020, 12, 1731938. [CrossRef] [PubMed]
+27. Mandikian, D.; Takahashi, N.; Lo, A.A.; Li, J.; Eastham-Anderson, J.; Slaga, D.; Ho, J.; Hristopoulos, M.; Clark, R.; Totpal, K.; et al. Relative target affinities of t-cell-dependent bispecific antibodies determine biodistribution in a solid tumor mouse model. Mol. Cancer Ther. 2018, 17, 776–785. [CrossRef] [PubMed]
+28. Phillips, A.C.; Boghaert, E.R.; Vaidya, K.S.; Mitten, M.J.; Norvell, S.; Falls, H.D.; DeVries, P.J.; Cheng, D.; Meulbroek, J.A.; Buchanan, F.G.; et al. ABT-414, an antibody-drug conjugate targeting a tumor-selective EGFR epitope. Mol. Cancer Ther. 2016, 15, 661–669. [CrossRef] [PubMed]
+29. Lassman, A.B.; van den Bent, M.J.; Gan, H.K.; Reardon, D.A.; Kumthekar, P.; Butowski, N.; Lwin, Z.; Mikkelsen, T.; Nabors, L.B.; Papadopoulos, K.P.; et al. Safety and efficacy of depatuxizumab mafodotin + temozolomide in patients with EGFR-amplified, recurrent glioblastoma: Results from an international phase I multicenter trial. Neuro Oncol. 2019, 21, 106–114. [CrossRef] [PubMed]
+30. Gerstner, E.R. ACT IV: The final act for rindopepimut? Lancet Oncol. 2017, 18, 1294–1296. [CrossRef]
+31. Reardon, D.A.; Desjardins, A.; Vredenburgh, J.J.; O’Rourke, D.M.; Tran, D.D.; Fink, K.L.; Nabors, L.B.; Li, G.; Bota, D.A.; Lukas, R.V.; et al. ReACT trial investigators. Rindopepimut with bevacizumab for patients with relapsed EGFRvIII-expressing
+glioblastoma (ReACT): Results of a double-blind randomized phase II trial. Clin. Cancer Res. 2020, 26, 1586–1594. [CrossRef]
+32. Neyns, B.; Sadones, J.; Joosens, E.; Bouttens, F.; Verbeke, L.; Baurain, J.F.; D’Hondt, L.; Strauven, T.; Chaskis, C.; In’t Veld, P.; et al. Stratified phase II trial of cetuximab in patients with recurrent high-grade glioma. Ann. Oncol. 2009, 20, 1596–1603. [CrossRef]
+[PubMed]
+33. Parrozzani, R.; Lombardi, G.; Midena, E.; Leonardi, F.; Londei, D.; Padovan, M.; Caccese, M.; Marchione, G.; Bini, S.; Zagonel, V.;
+et al. Corneal side effects induced by EGFR-inhibitor antibody-drug conjugate ABT-414 in patients with recurrent glioblastoma:
+A prospective clinical and confocal microscopy study. Ther. Adv. Med. Oncol. 2020, 12, 1758835920907543. [CrossRef] [PubMed]
+34. Gedeon, P.C.; Choi, B.D.; Hodges, T.R.; Mitchell, D.A.; Bigner, D.D.; Sampson, J.H. An EGFRvIII-targeted bispecific T-cell engager
+overcomes limitations of the standard of care for glioblastoma. Expert Rev. Clin. Pharmacol. 2013, 6, 375–386. [CrossRef]
+35. Gedeon, P.C.; Schaller, T.H.; Chitneni, S.K.; Choi, B.D.; Kuan, C.T.; Suryadevara, C.M.; Snyder, D.J.; Schmittling, R.J.; Szafranski, S.E.; Cui, X.; et al. A rationally designed fully human EGFRvIII:CD3-targeted bispecific antibody redirects human T cells to treat
+patient-derived intracerebral malignant glioma. Clin. Cancer Res. 2018, 24, 3611–3631. [CrossRef]
+36. Tang, J.; Zhang, X.; Chen, T.; Wang, Y.; Li, Y. Removal of half antibody, hole-hole homodimer and aggregates during bispecific
+antibody purification using MMC ImpRes mixed-mode chromatography. Protein Expr. Purif. 2020, 167, 105529. [CrossRef]
+37. Ellwanger, K.; Reusch, U.; Fucek, I.; Knackmuss, S.; Weichel, M.; Gantke, T.; Molkenthin, V.; Zhukovsky, E.A.; Tesar, M.; Treder, M. Highly Specific and effective targeting of EGFRvIII-positive tumors with TandAb antibodies. Front. Oncol. 2017, 19, 100.
+[CrossRef] [PubMed]
+38. Panousis, C.; Rayzman, V.M.; Johns, T.G.; Renner, C.; Liu, Z.; Cartwright, G.; Lee, F.T.; Wang, D.; Gan, H.; Cao, D.; et al.
+Engineering and characterisation of chimeric monoclonal antibody 806 (ch806) for targeted immunotherapy of tumours expressing
+de2-7 EGFR or amplified EGFR. Br. J. Cancer. 2005, 92, 1069–1077. [CrossRef]
+39. Shultz, L.D.; Schweitzer, P.A.; Christianson, S.W.; Gott, B.; Schweitzer, I.B.; Tennent, B.; McKenna, S.; Mobraaten, L.; Rajan, T.V.;
+Greiner, D.L.; et al. Multiple defects in innate and adaptive immunologic function in NOD/LtSz-scid mice. J. Immunol. 1995, 154,
+180–191. [PubMed]
+40. Schaller, T.H.; Snyder, D.J.; Spasojevic, I.; Gedeon, P.C.; Sanchez-Perez, L.; Sampson, J.H. First in human dose calculation of a
+single-chain bispecific antibody targeting glioma using the MABEL approach. J. Immunother. Cancer 2020, 8, 1–10. [CrossRef]
+[PubMed]
+41. Pombo Antunes, A.R.; Scheyltjens, I.; Duerinck, J.; Neyns, B.; Movahedi, K.; Van Ginderachter, J.A. Understanding the glioblas-
+toma immune microenvironment as basis for the development of new immunotherapeutic strategies. eLife 2020, 9, 1–16.
+[CrossRef]
+42. Hegde, P.S.; Chen, D.S. Top 10 Challenges in Cancer Immunotherapy. Immunity 2020, 52, 17–35. [CrossRef] [PubMed]
+43. Song, Y.; Liu, Q.; Zuo, T.; Wei, G.; Jiao, S. Combined antitumor effects of anti-EGFR variant III CAR-T cell therapy and PD-1
+checkpoint blockade on glioblastoma in mouse model. Cell Immunol. 2020, 352, 104112. [CrossRef]
+44. Ribas, A.; Dummer, R.; Puzanov, I.; VanderWalde, A.; Andtbacka, R.H.I.; Michielin, O.; Olszanski, A.J.; Malvehy, J.; Cebon, J.; Fernandez, E.; et al. Oncolytic virotherapy promotes intratumoral T cell infiltration and improves anti-PD-1 immunotherapy. Cell
+2017, 170, 1109–1119. [CrossRef] [PubMed]
+45. Groeneveldt, C.; van Hall, T.; van der Burg, S.H.; ten Dijke, P.; van Montfoort, N. Immunotherapeutic potential of TGF-β inhibition
+and oncolytic viruses. Trends Immunol. 2020, 41, 406–420. [CrossRef] [PubMed]
+46. Groeneveldt, C.; Kinderman, P.; van den Wollenberg, D.J.M.; van den Oever, R.L.; Middelburg, J.; Mustafa, D.A.M.; Hoeben,
+R.C.; van der Burg, S.H.; van Hall, T.; van Montfoort, N. Preconditioning of the tumor microenvironment with oncolytic reovirus converts CD3-bispecific antibody treatment into effective immunotherapy. J. Immunother. Cancer 2020, 8, e001191. [CrossRef]

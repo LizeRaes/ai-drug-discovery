@@ -18,5 +18,5 @@ public interface NewAntibodyFinder {
     {{knownAntibodies}}
     At the end, ask if the user want to measure how good they perform.
     """)
-    String getAntibodies(@MemoryId int memoryId, @V("antigen") String antigen, @V("knownAntibodies") String knownAntibodies);
+    String getAntibodies(@V("antigen") String antigen, @V("knownAntibodies") String knownAntibodies);
 }

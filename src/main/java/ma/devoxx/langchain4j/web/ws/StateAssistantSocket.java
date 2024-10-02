@@ -125,7 +125,7 @@ public class StateAssistantSocket {
                 logger.info("******************** STEP 5 *********************");
                 connection.sendTextAndAwait("Designing new antibodies based on known antibodies...");
                 // we ask for confirmation here bcs it's costly calculations / experiments
-                String answer = newAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printExistingAntibodiesWithCDR());
+                String answer = newAntibodyFinder.getAntibodies(customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printExistingAntibodiesWithCDR());
                 connection.sendTextAndAwait(answer);
                 return;
             }
