@@ -39,9 +39,13 @@ public class NoStateAssistantSocket {
             return;
         }
 
-        String answer = fullResearcherService.answer(1, userMessage);
-        logger.info("*** Model Answer ***: " + answer);
-        connection.sendTextAndAwait(answer);
+        try {
+            String answer = fullResearcherService.answer(1, userMessage);
+            logger.info("*** Model Answer ***: " + answer);
+            connection.sendTextAndAwait(answer);
+        } catch (Exception e) {
+            connection.sendTextAndAwait("Please try again");
+        }
     }
 
     @OnClose

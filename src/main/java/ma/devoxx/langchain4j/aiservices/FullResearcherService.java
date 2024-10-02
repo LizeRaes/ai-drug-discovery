@@ -12,15 +12,16 @@ import ma.devoxx.langchain4j.tools.*;
 
 @ApplicationScoped
 @RegisterAiService(
-        tools = {ToolsForDiseasePicker.class,
-                ToolsForAntigenFinder.class,
-                ToolsForKnownAntibodyFinder.class,
-                ToolsForCdrFinder.class,
-                ToolsForNewAntibodyFinder.class,
-                ToolsForCharacteristicsMeasurements.class},
-        retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
+//        tools = {ToolsForDiseasePicker.class,
+//                ToolsForAntigenFinder.class,
+//                ToolsForKnownAntibodyFinder.class,
+//                ToolsForCdrFinder.class,
+//                ToolsForNewAntibodyFinder.class,
+//                ToolsForCharacteristicsMeasurements.class},
+//        retrievalAugmentor = CustomRetrievalAugmentorProvider.class
+)
 public interface FullResearcherService {
-    @InputGuardrails(NoBiologicalWeapon.class)
+    //@InputGuardrails(NoBiologicalWeapon.class)
     @SystemMessage("""
             You are an AI researcher assistant that will help find antibody drug solutions.
             You assist the user in walking through these steps, always asking for confirmation before starting the next step.
