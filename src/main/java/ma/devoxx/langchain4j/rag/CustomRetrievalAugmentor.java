@@ -61,7 +61,7 @@ public class CustomRetrievalAugmentor {
         Map<ContentRetriever, String> retrieverToDescription = new HashMap<>();
 
         // 1. Create document content retriever
-        List<Document> documents = loadDocuments(toPath("docs"), glob("*.*"));
+        List<Document> documents = loadDocuments(toPath("docs"), glob("*.txt"));
         ContentRetriever literatureDocsRetriever = createContentRetriever(documents);
         retrieverToDescription.put(literatureDocsRetriever, "Scientific literature on diseases, antigens and antibody solutions");
 
@@ -83,7 +83,7 @@ public class CustomRetrievalAugmentor {
 
         // Create content aggregator
         ScoringModel scoringModel = CohereScoringModel.withApiKey(System.getenv("COHERE_API_KEY"));
-        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.6);
+        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.4);
 
         // Create query compressor
         QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
