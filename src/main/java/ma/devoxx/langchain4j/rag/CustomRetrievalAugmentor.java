@@ -30,7 +30,7 @@ import dev.langchain4j.web.search.WebSearchEngine;
 import dev.langchain4j.web.search.tavily.TavilyWebSearchEngine;
 import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
-import ma.devoxx.langchain4j.dbs.SequenceDbContentRetriever;
+import org.sqlite.SQLiteDataSource;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -52,8 +52,6 @@ public class CustomRetrievalAugmentor {
 
     public CustomRetrievalAugmentor() {
 
-        ChatLanguageModel chatModel = OpenAiChatModel.withApiKey(System.getenv("OPENAI_API_KEY"));
-
         // Default QueryRouter that uses all documents and websearch
         // QueryRouter queryRouter = new DefaultQueryRouter(literatureDocsRetreiver, webSearchContentRetriever);
 
@@ -63,7 +61,7 @@ public class CustomRetrievalAugmentor {
         // 1. Create document content retriever
         List<Document> documents = loadDocuments(toPath("docs"), glob("*.*"));
         ContentRetriever literatureDocsRetriever = createContentRetriever(documents);
-       // retrieverToDescription.put(literatureDocsRetriever, "Scientific literature on diseases, antigens and antibody solutions");
+        //retrieverToDescription.put(literatureDocsRetriever, "Scientific literature on diseases, antigens and antibody solutions");
 
         // 2. Create web search content retriever.
 //        WebSearchEngine webSearchEngine = TavilyWebSearchEngine.builder()
@@ -76,23 +74,28 @@ public class CustomRetrievalAugmentor {
 //        retrieverToDescription.put(webSearchContentRetriever, "Web search");
 
         // 3. Create sql database content retriever.
-//        SqlDatabaseContentRetriever sequenceDbContentRetriever = new SequenceDbContentRetriever().get(chatModel);
+        //ChatLanguageModel chatModel = OpenAiChatModel.withApiKey(System.getenv("OPENAI_API_KEY"));
+//        SQLiteDataSource dataSource = new SQLiteDataSource();
+//        dataSource.setUrl("jdbc:sqlite:src/main/resources/dbs/protein_structure.db");
+//        SqlDatabaseContentRetriever sequenceDbContentRetriever = SqlDatabaseContentRetriever.builder()
+//                .dataSource(dataSource)
+//                .chatLanguageModel(chatModel)
+//                .build();
 //        retrieverToDescription.put(sequenceDbContentRetriever, "protein database");
-
-        //QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
+//
+//        QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 
         // Create content aggregator
-        //ScoringModel scoringModel = CohereScoringModel.withApiKey(System.getenv("COHERE_API_KEY"));
-        //ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.4);
+//        ScoringModel scoringModel = CohereScoringModel.withApiKey(System.getenv("COHERE_API_KEY"));
+//        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.4);
 
         // Create query compressor
-        //QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
+//        QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
 
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
                 .contentRetriever(literatureDocsRetriever)
                 //.queryRouter(queryRouter)
-                //
-                // .queryTransformer(queryTransformer)
+                //.queryTransformer(queryTransformer)
                 //.contentAggregator(contentAggregator)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(
