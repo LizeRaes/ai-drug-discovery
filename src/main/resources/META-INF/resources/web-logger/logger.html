@@ -48,6 +48,15 @@
 </head>
 <body>
 
+<div class="top-bar">
+    <button id="increaseFontButton">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+    <button id="decreaseFontButton">
+        <i class="bi bi-arrow-down"></i>
+    </button>
+</div>
+
 <div id="logContainer"></div>
 
 <script>
@@ -127,6 +136,21 @@
 
     socket.onerror = (error) => console.error('WebSocket Error:', error);
     socket.onclose = () => console.log('WebSocket connection closed');
+
+    // Initial font size
+    let currentFontSize = 13;
+
+    // Event listener for the button
+    document.getElementById('increaseFontButton').addEventListener('click', function () {
+        currentFontSize += 2; // Increase font size by 2px
+        document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
+    });
+
+    // Event listener for the button
+    document.getElementById('decreaseFontButton').addEventListener('click', function () {
+        currentFontSize-= 2; // Increase font size by 2px
+        document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
+    });
 </script>
 
 </body>

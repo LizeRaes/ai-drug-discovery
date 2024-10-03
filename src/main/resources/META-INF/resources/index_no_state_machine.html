@@ -22,6 +22,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            font-size: 13px;
         }
 
         header {
@@ -120,6 +121,40 @@
             margin-left: 10px;
             cursor: pointer;
         }
+
+        .top-bar {
+            width: 100%;
+            background-color: #333;
+            padding: 10px;
+            height: 45px;
+            display: flex;
+            justify-content: flex-end; /* Aligns the button to the right */
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Style for the button inside the bar */
+        .top-bar button {
+            background-color: #4a70f8;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+
+        /* Style for the icon in the button */
+        .top-bar button i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+
+        /* Hover effect */
+        .top-bar button:hover {
+            background-color: #e67e22;
+        }
     </style>
 </head>
 <body>
@@ -128,6 +163,15 @@
     <img src="images/image.png" alt="Antibody Image">
     AI Antibody Drug Researcher
 </header>
+
+<div class="top-bar">
+    <button id="increaseFontButton">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+    <button id="decreaseFontButton">
+        <i class="bi bi-arrow-down"></i>
+    </button>
+</div>
 
 <div class="container">
     <!-- Left section with user/system messages -->
@@ -288,21 +332,21 @@
         }
     });
 
-    // Base64 encoded audio string (short example of a base64-encoded WAV file)
-    const base64Audio = "UklGRmQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";  // Replace this with your own base64 string
+    // Initial font size
+    let currentFontSize = 13;
 
-    document.getElementById('playAudioButton').addEventListener('click', function () {
-        // Get the audio element
-        const audioPlayer = document.getElementById('audioPlayer');
+    // Event listener for the button
+    document.getElementById('increaseFontButton').addEventListener('click', function () {
+        console.log("hety");
+        currentFontSize += 2; // Increase font size by 2px
+        document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
+    });
 
-        // Set the audio source using base64 string
-        audioPlayer.src = "data:audio/wav;base64," + base64Audio;
-
-        // Display the audio player (optional, if you want it hidden initially)
-        audioPlayer.style.display = 'block';
-
-        // Play the audio
-        audioPlayer.play();
+    // Event listener for the button
+    document.getElementById('decreaseFontButton').addEventListener('click', function () {
+        console.log("hety");
+        currentFontSize-= 2; // Increase font size by 2px
+        document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
     });
 </script>
 
