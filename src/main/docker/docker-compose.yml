@@ -8,7 +8,21 @@ services:
 
   grafana:
     image: grafana/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - ./grafana-data:/var/lib/grafana
     ports:
       - "3000:3000"
+    depends_on:
+      - prometheus
+
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+    environment:
+      QDRANT__STORAGE__ROOT_PATH: "/qdrant/storage"
