@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s # How often to scrape targets by default.
+
+scrape_configs:
+  - job_name: 'ai-drug-discovery'
+    metrics_path: '/q/metrics'
+    static_configs:
+      - targets: ['host.docker.internal:8080'] # Replace with your Quarkus app's hostname and port.
