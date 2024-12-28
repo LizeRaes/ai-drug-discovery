@@ -44,6 +44,31 @@
             width: auto;
         }
 
+        .toolbar {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .toolbar .toolbar-buttons button {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toolbar .toolbar-buttons button:hover {
+            background: #e9ecef;
+        }
+
         .container {
             display: flex;
             flex: 1;
@@ -123,6 +148,45 @@
         }
 
     </style>
+    <style>
+        #logContainer {
+            height: 90vh;
+            overflow-y: scroll;
+            background-color: black;
+            color: #a9a9a9;
+            font-family: monospace;
+            padding: 10px;
+        }
+
+        .log-entry {
+            display: flex;
+            margin-bottom: 10px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+        }
+
+        /* Icon side with fixed width */
+        .log-icon-side {
+            width: 50px;
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0; /* Prevent shrinking */
+            flex-grow: 0;   /* Prevent growing */
+        }
+
+        .log-text {
+            flex-grow: 1;
+            padding: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .log-icon-side i {
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
 
@@ -132,13 +196,21 @@
     <span style="font-size: 9px;">(state machine version)</span>
 </header>
 
-<div class="top-bar">
-    <button id="increaseFontButton">
-        <i class="bi bi-arrow-up"></i>
-    </button>
-    <button id="decreaseFontButton">
-        <i class="bi bi-arrow-down"></i>
-    </button>
+<div class="toolbar">
+    <div class="toolbar-buttons">
+        <button id="increaseFontButton">
+            <i class="bi bi-arrow-up"></i>
+        </button>
+        <button id="decreaseFontButton">
+            <i class="bi bi-arrow-down"></i>
+        </button>
+        <button id="themeToggleButton">
+            <i class="bi bi-brightness-high"></i> Toggle Theme
+        </button>
+    </div>
+    <div class="search-bar">
+        <input type="text" placeholder="Search..." id="searchInput" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+    </div>
 </div>
 
 <div class="container">
@@ -186,7 +258,7 @@
     <!-- Right section with fullscreen iFrame -->
     <div class="logs" id="logsArea">
         <!-- iFrame takes up the entire logsArea -->
-        <iframe src="web-logger/logger.html" title="Colonne Droite"></iframe>
+        <div id="logContainer"></div>
     </div>
 </div>
 
@@ -316,6 +388,84 @@
         currentFontSize-= 2; // Increase font size by 2px
         document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
     });
+</script>
+<script>
+    const logContainer = document.getElementById('logContainer');
+    const logs_socket = new WebSocket('ws://localhost:8080/logs');
+
+    // Function to get the icon class based on color
+    const getIconClass = (color) => {
+        const iconMap = {
+            yellow: 'bi-tools',
+            red: 'bi-file-earmark'
+        };
+        return iconMap[color] || 'bi-info-circle';
+    };
+
+    // Function to return the full block color when needed
+    const fullBlockColor = (color) => {
+        if (color === 'purple') {
+            return "#2a056c"; // Apply the full purple background for purple logs
+        }
+        return ""; // No change for other colors
+    };
+
+    // Function to return lighter color
+    const lightenColor = (color) => {
+        const colorMap = {
+            yellow: "#f7d778f0",
+            '#ffae42': "#f7d778f0",
+            red: "#479973",
+            '#ff4c4c': "#479973",
+        };
+        return colorMap[color] || "#bcbdbe";
+    };
+
+    logs_socket.onmessage = (event) => {
+        const { color, message } = JSON.parse(event.data);  // Destructure log message
+
+        // Create log entry
+        const logElement = document.createElement('div');
+        logElement.className = 'log-entry';
+
+        // Check if the color is purple and apply full block background if true
+        const backgroundColor = fullBlockColor(color);
+        if (backgroundColor) {
+            logElement.style.backgroundColor = backgroundColor; // Apply purple background for purple logs
+        }
+
+        // For non-purple logs, create the icon side and log text side
+        if (color !== 'purple') {
+            // Icon side
+            const logIconSide = document.createElement('div');
+            logIconSide.className = 'log-icon-side';
+            logIconSide.style.backgroundColor = lightenColor(color); // Icon background color
+            logIconSide.innerHTML = `<i class="bi ${getIconClass(color)}"></i>`;
+
+            // Log text side
+            const logTextElement = document.createElement('div');
+            logTextElement.className = 'log-text';
+            logTextElement.textContent = message;
+
+            // Append icon and text to log entry
+            logElement.append(logIconSide, logTextElement);
+        } else {
+            // For purple logs, we don't want to divide the entry or add an icon, so just add the text
+            const logTextElement = document.createElement('div');
+            logTextElement.className = 'log-text';
+            logTextElement.textContent = message;
+
+            logElement.appendChild(logTextElement);
+        }
+
+        logContainer.appendChild(logElement);
+
+        // Scroll to the latest log
+        logContainer.scrollTop = logContainer.scrollHeight;
+    };
+
+    logs_socket.onerror = (error) => console.error('WebSocket Error:', error);
+    logs_socket.onclose = () => console.log('WebSocket connection closed');
 </script>
 
 </body>
