@@ -44,6 +44,31 @@
             width: auto;
         }
 
+        .toolbar {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .toolbar .toolbar-buttons button {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toolbar .toolbar-buttons button:hover {
+            background: #e9ecef;
+        }
+
         .container {
             display: flex;
             flex: 1;
@@ -169,13 +194,15 @@
     AI Antibody Drug Researcher
 </header>
 
-<div class="top-bar">
-    <button id="increaseFontButton">
-        <i class="bi bi-arrow-up"></i>
-    </button>
-    <button id="decreaseFontButton">
-        <i class="bi bi-arrow-down"></i>
-    </button>
+<div class="toolbar">
+    <div class="toolbar-buttons">
+        <button id="increaseFontButton">
+            <i class="bi bi-arrow-up"></i> A
+        </button>
+        <button id="decreaseFontButton">
+            <i class="bi bi-arrow-down"></i> A
+        </button>
+    </div>
 </div>
 
 <div class="container">
