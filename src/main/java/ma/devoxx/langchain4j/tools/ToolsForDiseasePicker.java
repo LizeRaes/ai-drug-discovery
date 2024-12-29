@@ -21,7 +21,7 @@ public class ToolsForDiseasePicker implements Serializable {
     }
 
     @Tool("store the disease name")
-    void storeDiseaseName(String name) {
+    public void storeDiseaseName(String name) {
         Logger.getLogger(ToolsForDiseasePicker.class.getName()).info("storeDiseaseName() called with name='" + name + "'");
         ResearchProject myResearchProject = customResearchProject.getResearchProject();
         myResearchProject.setName(name);

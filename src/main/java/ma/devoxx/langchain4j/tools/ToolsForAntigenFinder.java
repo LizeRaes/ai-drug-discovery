@@ -22,14 +22,14 @@ public class ToolsForAntigenFinder implements Serializable {
     }
 
     @Tool("find sequence for antigen name")
-    String findSequenceForAntigen(String antigenName) {
+    public String findSequenceForAntigen(String antigenName) {
         Logger.getLogger(ToolsForAntigenFinder.class.getName()).info("findSequenceForAntigen() called with antigenName='" + antigenName + "'");
         PublicProteinDatabase db = new PublicProteinDatabase();
         return db.retrieveSequences(antigenName);
     }
 
     @Tool("store antigen name and antigen sequence")
-    void storeAntigenInfo(String antigenName, String antigenSequence) {
+    public void storeAntigenInfo(String antigenName, String antigenSequence) {
         Logger.getLogger(ToolsForAntigenFinder.class.getName()).info("storeAntigenInfo() called with antigenName='" + antigenName + "' and AntigenSequence='" + antigenSequence + "'");
         customResearchProject.getResearchProject().setAntigenInfo(antigenName, antigenSequence);
         customResearchState.getResearchState().currentStep = ResearchState.Step.FIND_KNOWN_ANTIBODIES;
