@@ -22,7 +22,7 @@ public class ToolsForKnownAntibodyFinder implements Serializable {
     }
 
     @Tool("")
-    void storeAntibody(String antibodyName, String bindingAffinity, String specificity, String stability, String toxicity, String immunogenicity) {
+    public void storeAntibody(String antibodyName, String bindingAffinity, String specificity, String stability, String toxicity, String immunogenicity) {
         Logger.getLogger(ToolsForKnownAntibodyFinder.class.getName()).info("storeAntibody() called with antibodyName='" + antibodyName + "', bindingAffinity='" + bindingAffinity + "', specificity='" + specificity + "', stability='" + stability + "', toxicity='" + toxicity + "', immunogenicity='" + immunogenicity + "'");
         customResearchProject.getResearchProject().existingAntibodies.add(new Antibody(antibodyName, bindingAffinity, specificity, stability, toxicity, immunogenicity));
         customResearchState.getResearchState().currentStep = ResearchState.Step.FIND_KNOWN_CDRS;
