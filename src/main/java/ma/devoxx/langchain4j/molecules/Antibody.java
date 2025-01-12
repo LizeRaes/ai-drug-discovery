@@ -23,10 +23,8 @@ public class Antibody {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(antibodyName);
-        sb.append("\n\nCDRs \n").append(cdrs);
-        sb.append("\n\nCharacteristics \n").append(characteristics);
-        return sb.toString();
+        return antibodyName +
+                "\n\nCDRs \n" + cdrs +
+                "\n\nCharacteristics \n" + characteristics;
     }
 }

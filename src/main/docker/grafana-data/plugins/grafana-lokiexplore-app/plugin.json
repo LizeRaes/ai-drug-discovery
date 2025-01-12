@@ -1,0 +1,93 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "autoEnabled": true,
+  "dependencies": {
+    "grafanaDependency": "\u003e=11.3.0",
+    "plugins": []
+  },
+  "extensions": {
+    "addedLinks": [
+      {
+        "description": "Open current query in the Explore Logs view",
+        "targets": [
+          "grafana/dashboard/panel/menu",
+          "grafana/explore/toolbar/action"
+        ],
+        "title": "Open in Explore Logs"
+      }
+    ],
+    "extensionPoints": [
+      {
+        "id": "grafana-lokiexplore-app/metric-exploration/v1"
+      },
+      {
+        "id": "grafana-lokiexplore-app/toolbar-open-related/v1",
+        "title": "Open related signals like metrics/traces/profiles"
+      }
+    ]
+  },
+  "id": "grafana-lokiexplore-app",
+  "includes": [
+    {
+      "action": "datasources:explore",
+      "addToNav": true,
+      "defaultNav": true,
+      "name": "Logs",
+      "path": "/a/grafana-lokiexplore-app/explore",
+      "type": "page"
+    }
+  ],
+  "info": {
+    "author": {
+      "name": "Grafana"
+    },
+    "build": {
+      "time": 1732219578279,
+      "repo": "https://github.com/grafana/explore-logs",
+      "branch": "main",
+      "hash": "eb2effa22a252a175601aad740c37de1f3dd2515",
+      "build": 1243
+    },
+    "description": "Query-less exploration of log data stored in Loki",
+    "keywords": [
+      "app",
+      "loki",
+      "explore",
+      "logs"
+    ],
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/grafana/explore-logs"
+      },
+      {
+        "name": "Report bug",
+        "url": "https://github.com/grafana/explore-logs/issues/new"
+      }
+    ],
+    "logos": {
+      "large": "img/logo.svg",
+      "small": "img/logo.svg"
+    },
+    "screenshots": [
+      {
+        "name": "patterns",
+        "path": "img/patterns.png"
+      },
+      {
+        "name": "fields",
+        "path": "img/fields.png"
+      },
+      {
+        "name": "table",
+        "path": "img/table.png"
+      }
+    ],
+    "updated": "2024-11-21",
+    "version": "1.0.4"
+  },
+  "name": "Explore Logs",
+  "preload": true,
+  "roles": [],
+  "type": "app"
+}

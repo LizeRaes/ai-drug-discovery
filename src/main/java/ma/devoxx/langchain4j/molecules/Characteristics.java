@@ -16,12 +16,10 @@ public class Characteristics {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{Binding Affinity=").append(bindingAffinity).append("}");
-        sb.append("\n{Specificity=").append(specificity).append("}");
-        sb.append("\n{Stability=").append(stability).append("}");
-        sb.append("\n{Toxicity=").append(toxicity).append("}");
-        sb.append("\n{Immunogenicity=").append(immunogenicity).append("}");
-        return sb.toString();
+        return "{Binding Affinity=" + bindingAffinity + "}" +
+                "\n{Specificity=" + specificity + "}" +
+                "\n{Stability=" + stability + "}" +
+                "\n{Toxicity=" + toxicity + "}" +
+                "\n{Immunogenicity=" + immunogenicity + "}";
     }
 }
