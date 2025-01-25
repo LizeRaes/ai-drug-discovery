@@ -196,11 +196,14 @@
 
 <div class="toolbar">
     <div class="toolbar-buttons">
-        <button id="increaseFontButton">
-            <i class="bi bi-arrow-up"></i> A
+        <button id="increaseFontButton" class="badge text-dark">
+            <i class="bi bi-zoom-in"></i>
         </button>
-        <button id="decreaseFontButton">
-            <i class="bi bi-arrow-down"></i> A
+        <button id="decreaseFontButton" class="badge text-dark">
+            <i class="bi bi-zoom-out"></i>
+        </button>
+        <button id="restoreButton" class="restore badge text-bg-success">
+            <i class="bi bi-arrow-counterclockwise"></i> Restore
         </button>
     </div>
 </div>
@@ -368,16 +371,30 @@
 
     // Event listener for the button
     document.getElementById('increaseFontButton').addEventListener('click', function () {
-        console.log("hety");
-        currentFontSize += 2; // Increase font size by 2px
-        document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
+        currentFontSize = parseFloat(currentFontSize) + 2; // Increase font size by 2px
+        applyFontSize(currentFontSize);
     });
 
     // Event listener for the button
     document.getElementById('decreaseFontButton').addEventListener('click', function () {
-        console.log("hety");
-        currentFontSize-= 2; // Increase font size by 2px
-        document.body.style.fontSize = currentFontSize + "px"; // Apply new font size to body
+        currentFontSize = parseFloat(currentFontSize) - 2; // Increase font size by 2px
+        applyFontSize(currentFontSize);
+    });
+
+    // Function to apply the font size
+    function applyFontSize(fontSize) {
+        document.body.style.fontSize = `${fontSize}px`; // Apply new font size to body
+        document.getElementById("inputMessage").style.fontSize = `${fontSize}px`;
+        sessionStorage.setItem('fontSize', fontSize);
+    }
+
+    // Check if a font size is saved in sessionStorage
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedFontSize = sessionStorage.getItem('fontSize');
+        if (savedFontSize) {
+            applyFontSize(savedFontSize);
+            currentFontSize = savedFontSize; // Set the dropdown to the saved value
+        }
     });
 </script>
 <script>
