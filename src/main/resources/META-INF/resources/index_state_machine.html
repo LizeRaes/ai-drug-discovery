@@ -54,18 +54,18 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .toolbar button {
+        .toolbar .toolbar-buttons button {
             background: #f8f9fa;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 8px 15px;
             font-size: 14px;
+            margin-right: 10px;
             cursor: pointer;
             transition: background 0.2s;
-            margin-left: 10px; /* Add space between buttons */
         }
 
-        .toolbar button:hover {
+        .toolbar .toolbar-buttons button:hover {
             background: #e9ecef;
         }
 
@@ -202,15 +202,17 @@
 </header>
 
 <div class="toolbar">
-    <button id="increaseFontButton" class="badge text-dark">
-        <i class="bi bi-zoom-in"></i>
-    </button>
-    <button id="decreaseFontButton" class="badge text-dark">
-        <i class="bi bi-zoom-out"></i>
-    </button>
-    <button id="restoreButton" class="restore badge text-bg-success">
-        <i class="bi bi-arrow-counterclockwise"></i> Restore
-    </button>
+    <div class="toolbar-buttons">
+        <button id="increaseFontButton" class="badge text-dark">
+            <i class="bi bi-zoom-in"></i>
+        </button>
+        <button id="decreaseFontButton" class="badge text-dark">
+            <i class="bi bi-zoom-out"></i>
+        </button>
+        <button id="restoreButton" class="restore badge text-bg-success">
+            <i class="bi bi-arrow-counterclockwise"></i> Restore
+        </button>
+    </div>
 </div>
 
 <div class="container">

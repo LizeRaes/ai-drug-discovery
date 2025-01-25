@@ -48,7 +48,7 @@
             background-color: #ffffff;
             padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             border-bottom: 1px solid #ddd;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -67,6 +67,11 @@
 
         .toolbar .toolbar-buttons button:hover {
             background: #e9ecef;
+        }
+
+        /* Style for the separated button */
+        .toolbar .restore {
+            margin-left: auto; /* Push this button to the far right */
         }
 
         .container {
