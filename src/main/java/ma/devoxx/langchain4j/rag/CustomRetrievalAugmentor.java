@@ -112,7 +112,7 @@ public class CustomRetrievalAugmentor {
         QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 
         // Create content aggregator
-        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.4);
+        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.3);
 
         // Create query compressor
         QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);

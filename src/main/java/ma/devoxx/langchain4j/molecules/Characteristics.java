@@ -22,4 +22,26 @@ public class Characteristics {
                 "\n{Toxicity=" + toxicity + "}" +
                 "\n{Immunogenicity=" + immunogenicity + "}";
     }
+
+    public void setBindingAffinity(String bindingAffinity) {
+        this.bindingAffinity = bindingAffinity;
+    }
+
+    public void setSpecificity(String specificity) {
+        this.specificity = specificity;
+    }
+
+    public void setStability(String stability) {
+        this.stability = stability;
+    }
+
+    public void setToxicity(String toxicity) {
+        this.toxicity = toxicity;
+    }
+
+    public void setImmunogenicity(String immunogenicity) {
+        this.immunogenicity = immunogenicity;
+    }
+
+
 }

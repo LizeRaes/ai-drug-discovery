@@ -88,8 +88,7 @@ class StateMachineTest {
         Mockito.when(knownAntibodyFinder.getAntibodies(1, "EGFRvIII", DISEASE_NAME))
                 .thenAnswer((Answer<String>) invocationOnMock -> {
                     if (callTools) {
-                        toolsForKnownAntibodyFinder.storeAntibody("BsAbs", "bindingAffinity1",
-                                "specificity1", "stability1", "toxicity1", "immunogenicity");
+                        toolsForKnownAntibodyFinder.storeAntibody("BsAbs");
                     }
                     return answer;
                 });

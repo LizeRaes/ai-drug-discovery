@@ -17,10 +17,14 @@ public interface CharacteristicsMeasurer {
     {{CDRs}}
     
     Proposed to target the antigen:
-    {{antigen}}
+    {{antigenSequence}}
     
     Measure the binding affinity, specificity, stability, toxicity, and immunogenicity of the antibody, 
     and store the measurement values.
+    
+    Also return to the user the url to '.pbd' structure file of the antigen {{antigenName}}, and mention this was found with AlphaFold.
+    
+    At the end as a reminder, tell the user the new antibodies target the antigen {{antigenName}}.
     """)
-    String measureCharacteristics(@V("antibodyName") String antibodyName,@V("CDRs") String CDRs, @V("antigen") String antigen);
+    String measureCharacteristics(@V("antibodyName") String antibodyName,@V("CDRs") String CDRs, @V("antigenSequence") String antigenSequence, @V("antigenName") String antigenName);
 }

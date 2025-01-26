@@ -33,6 +33,9 @@ public class StateMachine {
     KnownAntibodyFinder knownAntibodyFinder;
 
     @Inject
+    KnownAntibodyCharacteristicsFinder knownAntibodyCharacteristicsFinderFinder;
+
+    @Inject
     CdrFinder cdrFinder;
 
     @Inject
@@ -88,10 +91,12 @@ public class StateMachine {
                 String answer = knownAntibodyFinder.getAntibodies(userId, customResearchProject.getResearchProject().antigenName, customResearchProject.getResearchProject().disease);
                 // if we didn't move to step 4, no antibodies were found
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
+                    // TODO give it a retry
                     messageConsumer.accept(answer);
                     messageConsumer.accept("ERROR: no antibodies were found for this antigen. Please reload the page and start over.");
                     return;
                 }
+                knownAntibodyCharacteristicsFinderFinder.getAntibodyCharacteristics(userId, customResearchProject.getResearchProject().antigenName,  customResearchProject.getResearchProject().disease, customResearchProject.getResearchProject().existingAntibodies.toString());
                 // we ask for the user's input at this point
                 // TODO make layout better (in line with what comes out of LLM)
                 messageConsumer.accept("We found the following antibodies:\n\n"
@@ -103,6 +108,7 @@ public class StateMachine {
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                 logger.info("******************** STEP 4 *********************");
                 String answer = cdrFinder.getCdrs(userId, userMessage);
+
                 messageConsumer.accept(answer);
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                     // still deciding on which antibodies to proceed with
@@ -123,7 +129,7 @@ public class StateMachine {
                 logger.info("******************** STEP 6 *********************");
                 for (Antibody antibody : customResearchProject.getResearchProject().getNewAntibodiesWithCdrs()) {
                     messageConsumer.accept("Measuring characteristics for " + antibody.antibodyName + "...");
-                    messageConsumer.accept(measureCharacteristics.measureCharacteristics(antibody.antibodyName, antibody.cdrs, customResearchProject.getResearchProject().antigenSequence));
+                    messageConsumer.accept(measureCharacteristics.measureCharacteristics(antibody.antibodyName, antibody.cdrs, customResearchProject.getResearchProject().antigenSequence, customResearchProject.getResearchProject().antigenName));
                 }
                 messageConsumer.accept("All characteristics were measured. Do you want to publish the results of this research in Nature or in the New York Times?");
                 return;

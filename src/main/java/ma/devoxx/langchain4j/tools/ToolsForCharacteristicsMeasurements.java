@@ -2,6 +2,7 @@ package ma.devoxx.langchain4j.tools;
 
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
+import ma.devoxx.langchain4j.dbs.PublicProteinDatabase;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
@@ -22,6 +23,23 @@ public class ToolsForCharacteristicsMeasurements implements Serializable {
     public ToolsForCharacteristicsMeasurements(CustomResearchProject customResearchProject, CustomResearchState customResearchState) {
         this.customResearchProject = customResearchProject;
         this.customResearchState = customResearchState;
+    }
+
+    @Tool
+    public String getUniProtId(String antigenName) {
+        logger.info("getUrlToPbdStructureFile() called with antigenName="+ antigenName + "'");
+        String antigenUniProtId = PublicProteinDatabase.getUniProtId(antigenName);
+        logger.info("Antigen UniProt ID: " + antigenUniProtId);
+        return antigenUniProtId;
+    }
+
+    @Tool
+    public String getUrlToPbdStructureFile(String antigenUnitProtId) {
+        logger.info("getUrlToPbdStructureFile() called with antigenUnitProtId="+ antigenUnitProtId + "'");
+        // TODO Mohamed call to AlphaFold with P00533
+        // field to extract example: "pdbUrl": "https://alphafold.ebi.ac.uk/files/AF-Q26674-F1-model_v4.pdb"
+        String pdbUrl = "https://alphafold.ebi.ac.uk/files/AF-P00533-F1-model_v4.pdb";
+        return pdbUrl;
     }
 
     @Tool
