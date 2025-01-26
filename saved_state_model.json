@@ -1,0 +1,47 @@
+{
+  "customResearchProject": {
+    "researchProject": {
+      "antigenName": "EGFRvIII",
+      "antigenSequence": "Light chain: DIELTQSPASLSVATGEKVTIRCMTSTDIDDDMNWYQQKPGEPPKFLISEGNTLRPGVPSRFSSSGTGTDFVFTIENTLSEDVGDYYCLQSFNVPLTFGCGTKLEIK\nHeavy chain: QVKLQQSGGGLVKPGASLKLSCVTSGFTFRKFGMSWVRQTSDKCLEWVASISTGGYNTYYSDNVKGRFTISRENAKNTLYLQMSSLKSEDTALYYCTRGYSSTSYAMDYWGQGTTVTVSGIEGR\nCDR-L1: \nCDR-L2: \nCDR-L3: \nCDR-H1: \nCDR-H2: \nCDR-H3: \n",
+      "disease": "GBM",
+      "existingAntibodies": [
+        {
+          "antibodyName": "EGFRvIII mAb",
+          "cdrs": "CDR_L1, CDR_L2, CDR_L3, CDR_H1, CDR_H2, CDR_H3",
+          "characteristics": {
+            "bindingAffinity": "",
+            "immunogenicity": "",
+            "specificity": "",
+            "stability": "",
+            "toxicity": ""
+          }
+        }
+      ],
+      "newAntibodies": [
+        {
+          "antibodyName": "Antibody_AlphaProteo",
+          "cdrs": "CDR-L1: DUMMY, CDR-L2: HGT, CDR-L3: VQYAQFFWT, CDR-H1: GYSSTSDFA, CDR-H2: TSYSGNT, CDR-H3: VTAGRGFPY"
+        },
+        {
+          "antibodyName": "Antibody_AnthropicClaude",
+          "cdrs": "CDR-L1: DIELTQSPASLSVATGEKVTIR, CDR-L2: CMTSTDIDDDMNWYQQKPGEP, CDR-L3: PKLISEGNTLRPGVPSRFSSSGTGTDFVFTIEN, CDR-H1: TLSEDVGDYYCLQSFNVPLTF, CDR-H2: GCGTKLEIKQVKLQQSGGGLVKPGASLKLSCVTSGFTFRK, CDR-H3: FGMSWVRQTSDKCLEWVASISTGGYNTYYSDNVKGRFTISRENAKNTLYLQMSSLKSEDTALYYCTRGYSSTSYAMDYWGQGTTVTVSGIEGR"
+        }
+      ],
+      "newAntibodiesWithCdrs": [
+        {
+          "antibodyName": "Antibody_AlphaProteo",
+          "cdrs": "CDR-L1: DUMMY, CDR-L2: HGT, CDR-L3: VQYAQFFWT, CDR-H1: GYSSTSDFA, CDR-H2: TSYSGNT, CDR-H3: VTAGRGFPY"
+        },
+        {
+          "antibodyName": "Antibody_AnthropicClaude",
+          "cdrs": "CDR-L1: DIELTQSPASLSVATGEKVTIR, CDR-L2: CMTSTDIDDDMNWYQQKPGEP, CDR-L3: PKLISEGNTLRPGVPSRFSSSGTGTDFVFTIEN, CDR-H1: TLSEDVGDYYCLQSFNVPLTF, CDR-H2: GCGTKLEIKQVKLQQSGGGLVKPGASLKLSCVTSGFTFRK, CDR-H3: FGMSWVRQTSDKCLEWVASISTGGYNTYYSDNVKGRFTISRENAKNTLYLQMSSLKSEDTALYYCTRGYSSTSYAMDYWGQGTTVTVSGIEGR"
+        }
+      ]
+    }
+  },
+  "customResearchState": {
+    "researchState": {
+      "currentStep": "MEASURE_CHARACTERISTICS"
+    }
+  }
+}

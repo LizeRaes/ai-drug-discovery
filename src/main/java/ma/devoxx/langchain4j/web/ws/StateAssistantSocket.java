@@ -2,6 +2,8 @@ package ma.devoxx.langchain4j.web.ws;
 
 import io.quarkus.websockets.next.*;
 import jakarta.inject.Inject;
+import jakarta.json.bind.Jsonb;
+import ma.devoxx.langchain4j.domain.Message;
 import ma.devoxx.langchain4j.domain.StateMachine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +18,19 @@ public class StateAssistantSocket {
     @Inject
     StateMachine stateMachine;
 
+    @Inject
+    Jsonb jsonb;
+
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
-        System.out.println("Session opened, ID: " + connection.id());
-        stateMachine.init();
-        refreshUser();
-        connection.sendTextAndAwait("Hi, I’m here to assist you with your antibody research today.");
+        try {
+            System.out.println("Session opened, ID: " + connection.id());
+            sendJsonMessage(connection, Message.aiMessage("Hi, I’m here to assist you with your antibody research today."));
+            stateMachine.init(m -> sendJsonMessage(connection, m));
+            refreshUser();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     @OnTextMessage
@@ -32,7 +41,11 @@ public class StateAssistantSocket {
             return;
         }
 
-        stateMachine.run(userId, userMessage, connection::sendTextAndAwait);
+        stateMachine.run(userId, userMessage, m -> sendJsonMessage(connection, m));
+    }
+
+    private void sendJsonMessage(WebSocketConnection connection, Message message) {
+        connection.sendTextAndAwait(jsonb.toJson(message));
     }
 
     @OnClose

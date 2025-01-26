@@ -2,17 +2,15 @@ package ma.devoxx.langchain4j.dbs;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import ma.devoxx.langchain4j.Constants;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchProject;
 import ma.devoxx.langchain4j.state.ResearchState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 @QuarkusTest
 class StateSaverTest {
@@ -33,7 +31,7 @@ class StateSaverTest {
 
         stateSaver.save(customResearchProject, customResearchState);
 
-        Files.exists(Path.of(StateSaver.FILE_NAME));
+        Files.exists(Constants.MAIN_STATE_FILE_PATH);
     }
 
     @Test
@@ -44,10 +42,5 @@ class StateSaverTest {
                 conversationState.getCustomResearchState().getResearchState().currentStep);
         Assertions.assertEquals("antigen_name",
                 conversationState.getCustomResearchProject().getResearchProject().antigenName);
-    }
-
-    @BeforeAll
-    static void teardown() throws IOException {
-        Files.delete(Path.of(StateSaver.FILE_NAME));
     }
 }
