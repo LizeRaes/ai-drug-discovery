@@ -1,12 +1,13 @@
 package ma.devoxx.langchain4j.state;
 
+import lombok.Setter;
 import ma.devoxx.langchain4j.molecules.Antibody;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Setter
 public class ResearchProject implements Serializable {
 
     public String disease;

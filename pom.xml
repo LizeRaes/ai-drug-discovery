@@ -66,6 +66,10 @@
             <artifactId>quarkus-mutiny</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-jsonb</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-anthropic</artifactId>
             <version>${quarkus-langchain4j.version}</version>
