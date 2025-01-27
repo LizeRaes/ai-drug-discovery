@@ -63,11 +63,15 @@ public class StateMachine {
     List<ChatMessage> messages;
 
     public void init(Consumer<Message> messageConsumer) {
-        messages = stateManager.loadChatMessage("");
+        messages = stateManager.loadChatMessage();
         if (messages.isEmpty()) {
             customResearchState.getResearchState().moveToStep(ResearchState.Step.DEFINE_DISEASE);
             stateSaver.save(customResearchProject, customResearchState);
         } else {
+            var state = stateSaver.load();
+            customResearchState.getResearchState()
+                    .moveToStep(state.customResearchState.getResearchState().currentStep);
+            customResearchProject.setResearchProject(state.customResearchProject.getResearchProject());
             messages.forEach(message -> {
                 if (message.type().equals(ChatMessageType.USER)) {
                     messageConsumer.accept(Message.userMessage(((UserMessage) message).singleText()));

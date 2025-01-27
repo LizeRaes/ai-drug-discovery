@@ -30,10 +30,10 @@ public class HistoryResource {
         try {
             Files.copy(
                     new File(messagesFileName),
-                    new File(directory.concat("/messages").concat(name).concat(".json")));
+                    new File(directory.concat("/messages/").concat(name).concat(".json")));
             Files.copy(
                     new File(stateFileName),
-                    new File(directory.concat("/states").concat(name).concat(".json")));
+                    new File(directory.concat("/states/").concat(name).concat(".json")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

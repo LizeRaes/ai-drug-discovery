@@ -10,7 +10,6 @@ import ma.devoxx.langchain4j.state.CustomResearchState;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 @ApplicationScoped
@@ -32,9 +31,9 @@ public class StateSaver {
         }
     }
 
-    public ConversationState load(String path) {
+    public ConversationState load() {
         try {
-            return jsonb.fromJson(Files.readString(Path.of(path)), ConversationState.class);
+            return jsonb.fromJson(Files.readString(Constants.MAIN_STATE_FILE_PATH), ConversationState.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

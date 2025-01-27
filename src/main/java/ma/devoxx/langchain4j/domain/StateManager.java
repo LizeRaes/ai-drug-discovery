@@ -16,8 +16,11 @@ import java.util.List;
 @ApplicationScoped
 public class StateManager {
 
-    public List<ChatMessage> loadChatMessage(String name) {
+    public List<ChatMessage> loadChatMessage() {
         try {
+            if (!Files.exists(Constants.MAIN_MESSAGES_FILE_PATH)) {
+                return List.of();
+            }
             String conversationJson = Files.readString(Constants.MAIN_MESSAGES_FILE_PATH);
             ChatMessageJsonCodecFactory chatMessageJsonCodecFactory = new QuarkusChatMessageJsonCodecFactory();
             ChatMessageJsonCodec codec = chatMessageJsonCodecFactory.create();
@@ -25,9 +28,5 @@ public class StateManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public List<ChatMessage> loadChatMessage() {
-        return loadChatMessage(null);
     }
 }

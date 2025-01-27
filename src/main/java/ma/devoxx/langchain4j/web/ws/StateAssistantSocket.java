@@ -35,11 +35,10 @@ public class StateAssistantSocket {
     public void onOpen(WebSocketConnection connection) {
         try {
             this.connection = connection;
+            refreshUser();
             System.out.println("Session opened, ID: " + connection.id());
             init();
-            refreshUser();
         } catch (Exception e) {
-            e.printStackTrace();
             logger.warn(e.getMessage());
         }
     }
