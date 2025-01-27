@@ -23,8 +23,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .catch(error => {
-                alert("An error occurs during loading a history !")
+                alert("An error occurs during loading the history !")
             });
     });
 
+    document.getElementById("saveButton").addEventListener("click", function () {
+        const saveInput = document.getElementById('saveInput').innerText;
+
+        // Perform the REST call
+        fetch(`http://localhost:8080/history/load/${saveInput}`, {
+            method: "POST"
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("History saved !")
+                } else {
+                    alert("History not saved !")
+                }
+            })
+            .catch(error => {
+                alert("An error occurs during saving the history !")
+            });
+    });
 });
