@@ -3,7 +3,9 @@ package ma.devoxx.langchain4j.tools;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.model.anthropic.AnthropicChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.service.AiServices;
 import jakarta.enterprise.context.ApplicationScoped;
+import ma.devoxx.langchain4j.aiservices.ClaudeAbGenerator;
 import ma.devoxx.langchain4j.molecules.Antibody;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
@@ -43,10 +45,12 @@ public class ToolsForNewAntibodyFinder implements Serializable {
                     .logRequests(false)
                     .logResponses(false)
                     .build();
-            String answer = model.generate("Propose CDRs for a new antibody for antigen; " + antigenSequence + ". " +
-                    "You can base yourself on insights gained from these known antibodies " + previousAntibodies + "." +
-                    "The CDRs should be in the format CDR-L1, CDR-L2, CDR-L3, CDR-H1, CDR-H2, CDR-H3." +
-                    "Please give 3 lines of explanation for why you chose these CDRs.");
+
+            ClaudeAbGenerator claudeAbGenerator = AiServices.builder(ClaudeAbGenerator.class)
+                    .chatLanguageModel(model)
+                    .build();
+
+            String answer = claudeAbGenerator.generateNewAbSuggestion(antigenSequence, previousAntibodies);
             Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("Anthropic model returned: " + answer);
             return answer;
         } catch (Exception e) {

@@ -107,7 +107,7 @@ public class CustomRetrievalAugmentor {
 
         // 3. Create sql database content retriever.
          SqlDatabaseContentRetriever sequenceDbContentRetriever = new SequenceDbContentRetriever().get(chatModel);
-         retrieverToDescription.put(sequenceDbContentRetriever, "protein database");
+         retrieverToDescription.put(sequenceDbContentRetriever, "Public protein database with sequences of all known proteins");
 
         QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 

@@ -14,8 +14,11 @@ import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
         retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
 public interface AntigenFinder {
     @SystemMessage("""
-    You search through sources for a suitable antigen (characteristic protein) for the given disease and then determine it's sequence (the sequence for the antigen. a disease has no sequence and is no protein.)
-    Then you call storeAntigenInfo with the antigen name and sequence (only light chain and heavy chain, omit the empty CDRs.
+    First you search through scientific literature for a suitable antigen (characteristic protein) 
+    for the given disease. 
+    Once you have this antigen, you search it's sequence in the public protein database.
+    (note: you search the sequence for the antigen, not for the disease name (A disease has no sequence and is no protein.))
+    Then you call storeAntigenInfo with the antigen name and sequence (only light chain and heavy chain, omit the empty CDRs).
     """)
     @UserMessage("Find a suitable antigen for {{diseaseName}}")
     String determineAntigenInfo(@V("diseaseName") String diseaseName);
