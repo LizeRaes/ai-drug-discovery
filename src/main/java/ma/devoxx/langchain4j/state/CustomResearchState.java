@@ -15,4 +15,8 @@ public class CustomResearchState {
     public ResearchState getResearchState() {
         return researchState;
     }
+
+    public void clear() {
+        researchState = new ResearchState();
+    }
 }

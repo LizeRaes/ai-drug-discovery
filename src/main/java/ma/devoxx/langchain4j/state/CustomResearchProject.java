@@ -16,4 +16,8 @@ public class CustomResearchProject {
         return researchProject;
     }
 
+    public void clear() {
+        researchProject = new ResearchProject();
+    }
+
 }

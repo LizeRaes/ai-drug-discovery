@@ -7,6 +7,8 @@ import jakarta.json.bind.Jsonb;
 import ma.devoxx.langchain4j.Constants;
 import ma.devoxx.langchain4j.domain.Message;
 import ma.devoxx.langchain4j.domain.StateMachine;
+import ma.devoxx.langchain4j.state.CustomResearchProject;
+import ma.devoxx.langchain4j.state.CustomResearchState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,12 @@ public class StateAssistantSocket {
     StateMachine stateMachine;
 
     @Inject
+    CustomResearchProject customResearchProject;
+
+    @Inject
+    CustomResearchState cusomResearchState;
+
+    @Inject
     Jsonb jsonb;
 
     @OnOpen
@@ -40,7 +48,7 @@ public class StateAssistantSocket {
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
-        deleteStateFiles(connection.id());
+
     }
 
     public void init() {
@@ -67,10 +75,14 @@ public class StateAssistantSocket {
 
     @OnClose
     void onClose(WebSocketConnection connection) {
+        System.out.println("Session closed, ID: " + connection.id());
         final String sessionId = connection.id();
+
 
         // release some resources
         deleteStateFiles(sessionId);
+        customResearchProject.clear();
+        cusomResearchState.clear();
 
         logger.info("Session closed, ID: {}", sessionId);
     }
