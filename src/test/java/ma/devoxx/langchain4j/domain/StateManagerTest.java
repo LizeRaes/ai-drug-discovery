@@ -17,7 +17,7 @@ class StateManagerTest {
 
     @Test
     void test() {
-        List<ChatMessage> messages = stateManager.loadChatMessage("");
+        List<ChatMessage> messages = stateManager.loadChatMessage();
 
         assertEquals(7, messages.size());
     }

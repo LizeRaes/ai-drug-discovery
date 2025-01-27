@@ -36,7 +36,7 @@ class StateSaverTest {
 
     @Test
     void test_load() {
-        var conversationState = stateSaver.load("src/test/resources/saved_state.json");
+        var conversationState = stateSaver.load();
 
         Assertions.assertEquals(ResearchState.Step.FIND_ANTIGEN,
                 conversationState.getCustomResearchState().getResearchState().currentStep);
