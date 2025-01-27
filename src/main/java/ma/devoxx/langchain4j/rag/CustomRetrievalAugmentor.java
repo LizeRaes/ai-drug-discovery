@@ -103,7 +103,7 @@ public class CustomRetrievalAugmentor {
         ContentRetriever webSearchContentRetriever = WebSearchContentRetriever.builder()
                 .webSearchEngine(webSearchEngine)
                 .build();
-        //retrieverToDescription.put(webSearchContentRetriever, "Web search");
+        retrieverToDescription.put(webSearchContentRetriever, "Web search");
 
         // 3. Create sql database content retriever.
          SqlDatabaseContentRetriever sequenceDbContentRetriever = new SequenceDbContentRetriever().get(chatModel);
@@ -120,7 +120,7 @@ public class CustomRetrievalAugmentor {
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
                 .queryRouter(queryRouter)
                 .queryTransformer(queryTransformer)
-                .contentAggregator(contentAggregator)
+                //.contentAggregator(contentAggregator)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(
                                 PromptTemplate.from("{{userMessage}}\n" +
