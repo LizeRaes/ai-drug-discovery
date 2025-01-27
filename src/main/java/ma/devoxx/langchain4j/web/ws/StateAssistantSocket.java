@@ -1,19 +1,18 @@
 package ma.devoxx.langchain4j.web.ws;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.websockets.next.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
-import jakarta.websocket.Session;
+import ma.devoxx.langchain4j.Constants;
 import ma.devoxx.langchain4j.domain.Message;
 import ma.devoxx.langchain4j.domain.StateMachine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @ApplicationScoped
 @WebSocket(path = "/my-websocket-state")
@@ -41,6 +40,7 @@ public class StateAssistantSocket {
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
+        deleteStateFiles(connection.id());
     }
 
     public void init() {
@@ -70,8 +70,35 @@ public class StateAssistantSocket {
         final String sessionId = connection.id();
 
         // release some resources
+        deleteStateFiles(sessionId);
 
         logger.info("Session closed, ID: {}", sessionId);
+    }
+
+    private void deleteStateFiles(String sessionId) {
+        try {
+            Path filePath = Constants.MAIN_STATE_FILE_PATH;
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                System.out.println("Main State file deleted successfully: " + filePath);
+            } else {
+                System.out.println("Main State File does not exist: " + filePath);
+            }
+        } catch (IOException e) {
+            logger.error("Error deleting state file: " + e.getMessage());
+        }
+        try {
+            Path filePath = Constants.MAIN_MESSAGES_FILE_PATH;
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                System.out.println("Main Messages file deleted successfully: " + filePath);
+            } else {
+                System.out.println("Main Messages File does not exist: " + filePath);
+            }
+        } catch (IOException e) {
+            logger.error("Error deleting messages file: " + e.getMessage());
+        }
+
     }
 
     public void refreshUser() {
