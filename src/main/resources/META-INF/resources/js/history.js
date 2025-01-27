@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("restoreButton").addEventListener("click", function () {
+        const messageArea = document.getElementById('messageArea');
+        messageArea.innerHTML = "";
+
         // Perform the REST call
         fetch(`http://localhost:8080/history/load/${selectedValue}`, {
             method: "POST"

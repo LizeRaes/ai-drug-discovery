@@ -1,17 +1,27 @@
 package ma.devoxx.langchain4j.web.ws;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.websockets.next.*;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
+import jakarta.websocket.Session;
 import ma.devoxx.langchain4j.domain.Message;
 import ma.devoxx.langchain4j.domain.StateMachine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+@ApplicationScoped
 @WebSocket(path = "/my-websocket-state")
 public class StateAssistantSocket {
 
     private static final Logger logger = LoggerFactory.getLogger(StateAssistantSocket.class);
+
+    WebSocketConnection connection;
 
     private Integer userId;
 
@@ -24,12 +34,20 @@ public class StateAssistantSocket {
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
         try {
+            this.connection = connection;
             System.out.println("Session opened, ID: " + connection.id());
-            sendJsonMessage(connection, Message.aiMessage("Hi, I’m here to assist you with your antibody research today."));
-            stateMachine.init(m -> sendJsonMessage(connection, m));
+            init();
             refreshUser();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.warn(e.getMessage());
+        }
+    }
+
+    public void init() {
+        if (connection.isOpen()) {
+            sendJsonMessage(connection, Message.aiMessage("Hi, I’m here to assist you with your antibody research today."));
+            stateMachine.init(m -> sendJsonMessage(connection, m));
         }
     }
 
