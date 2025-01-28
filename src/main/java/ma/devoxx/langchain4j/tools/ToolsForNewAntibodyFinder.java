@@ -5,6 +5,7 @@ import dev.langchain4j.model.anthropic.AnthropicChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.ClaudeAbGenerator;
 import ma.devoxx.langchain4j.molecules.Antibody;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
@@ -16,14 +17,13 @@ import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ToolsForNewAntibodyFinder implements Serializable {
+
+    @Inject
     CustomResearchProject customResearchProject;
+    @Inject
     CustomResearchState customResearchState;
-
-
-    public ToolsForNewAntibodyFinder(CustomResearchProject customResearchProject, CustomResearchState customResearchState) {
-        this.customResearchProject = customResearchProject;
-        this.customResearchState = customResearchState;
-    }
+    @Inject
+    ClaudeAbGenerator claudeAbGenerator;
 
     // sadly AlphaProteo is not available at the moment, so we return a dummy
     @Tool("propose new antibody for a given antigen sequence using AlphaProteo")
@@ -39,17 +39,6 @@ public class ToolsForNewAntibodyFinder implements Serializable {
     String designNewAntibodyViaAnthropicClaude(String antigenSequence, String previousAntibodies) {
         Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("designNewAntibodyViaAnthropicClaude() called with antigenSequence='" + antigenSequence + "'");
         try{
-            ChatLanguageModel model = AnthropicChatModel.builder()
-                    .apiKey(System.getenv("ANTHROPIC_API_KEY"))
-                    .modelName("claude-3-haiku-20240307")
-                    .logRequests(false)
-                    .logResponses(false)
-                    .build();
-
-            ClaudeAbGenerator claudeAbGenerator = AiServices.builder(ClaudeAbGenerator.class)
-                    .chatLanguageModel(model)
-                    .build();
-
             String answer = claudeAbGenerator.generateNewAbSuggestion(antigenSequence, previousAntibodies);
             Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("Anthropic model returned: " + answer);
             return answer;
