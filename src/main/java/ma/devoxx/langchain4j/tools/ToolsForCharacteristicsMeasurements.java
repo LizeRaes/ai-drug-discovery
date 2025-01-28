@@ -2,32 +2,36 @@ package ma.devoxx.langchain4j.tools;
 
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import ma.devoxx.langchain4j.client.AlphaFoldProxy;
+import ma.devoxx.langchain4j.client.AlphaFoldResponse;
 import ma.devoxx.langchain4j.dbs.PublicProteinDatabase;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
 import ma.devoxx.langchain4j.state.ResearchState;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ToolsForCharacteristicsMeasurements implements Serializable {
+
+    @Inject
     CustomResearchProject customResearchProject;
+    @Inject
     CustomResearchState customResearchState;
+    @RestClient
+    AlphaFoldProxy alphaFoldProxy;
 
     private static final Logger logger = Logger.getLogger(ToolsForCharacteristicsMeasurements.class.getName());
     private static final Random random = new Random();
 
-
-    public ToolsForCharacteristicsMeasurements(CustomResearchProject customResearchProject, CustomResearchState customResearchState) {
-        this.customResearchProject = customResearchProject;
-        this.customResearchState = customResearchState;
-    }
-
     @Tool
     public String getUniProtId(String antigenName) {
-        logger.info("getUrlToPbdStructureFile() called with antigenName="+ antigenName + "'");
+        logger.info("getUniProtId() called with antigenName="+ antigenName + "'");
         String antigenUniProtId = PublicProteinDatabase.getUniProtId(antigenName);
         logger.info("Antigen UniProt ID: " + antigenUniProtId);
         return antigenUniProtId;
@@ -36,10 +40,9 @@ public class ToolsForCharacteristicsMeasurements implements Serializable {
     @Tool
     public String getUrlToPbdStructureFile(String antigenUnitProtId) {
         logger.info("getUrlToPbdStructureFile() called with antigenUnitProtId="+ antigenUnitProtId + "'");
-        // TODO Mohamed call to AlphaFold with P00533
         // field to extract example: "pdbUrl": "https://alphafold.ebi.ac.uk/files/AF-Q26674-F1-model_v4.pdb"
-        String pdbUrl = "https://alphafold.ebi.ac.uk/files/AF-P00533-F1-model_v4.pdb";
-        return pdbUrl;
+        List<AlphaFoldResponse> response = alphaFoldProxy.getPrediction("P00533", "AIzaSyCeurAJz7ZGjPQUtEaerUkBZ3TaBkXrY94");
+        return response.get(0).getPdbUrl();
     }
 
     @Tool
