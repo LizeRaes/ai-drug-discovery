@@ -102,8 +102,12 @@
 
         .logs {
             width: 50%;
-            padding: 0;
-            margin: 0;
+            border-right: 2px solid black;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto; /* Allow scrolling if messages overflow */
         }
 
         /* User messages */
@@ -155,12 +159,10 @@
     </style>
     <style>
         #logContainer {
-            height: 90vh;
             overflow-y: scroll;
             background-color: black;
             color: #a9a9a9;
             font-family: monospace;
-            padding: 10px;
         }
 
         .log-entry {
@@ -257,11 +259,7 @@
         </audio>
     </div>
 
-    <!-- Right section with fullscreen iFrame -->
-    <div class="logs" id="logsArea">
-        <!-- iFrame takes up the entire logsArea -->
-        <div id="logContainer"></div>
-    </div>
+    <div id="logContainer" class="logs"></div>
 </div>
 
 <!-- Input text area with send and mic button -->
