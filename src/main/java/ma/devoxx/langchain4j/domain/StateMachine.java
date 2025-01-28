@@ -110,9 +110,8 @@ public class StateMachine {
                     logger.info(notification);
                     messageConsumer.accept(Message.aiMessage(notification));
                     return;
-                } else {
-                    stateSaver.save(customResearchProject, customResearchState);
                 }
+                stateSaver.save(customResearchProject, customResearchState);
 
                 String result = "**I found antigen:** " + customResearchProject.getResearchProject().antigenName + "\n\n"
                         + "**With sequence:**\n" + customResearchProject.getResearchProject().antigenSequence;
@@ -130,9 +129,9 @@ public class StateMachine {
                     messageConsumer.accept(Message.aiMessage(answer));
                     messageConsumer.accept(Message.aiMessage("ERROR: no antibodies were found for this antigen. Please reload the page and start over."));
                     return;
-                } else {
-                    stateSaver.save(customResearchProject, customResearchState);
                 }
+                stateSaver.save(customResearchProject, customResearchState);
+
                 knownAntibodyCharacteristicsFinderFinder.getAntibodyCharacteristics(userId, customResearchProject.getResearchProject().antigenName,  customResearchProject.getResearchProject().disease, customResearchProject.getResearchProject().existingAntibodies.toString());
                 // we ask for the user's input at this point
                 // TODO make layout better (in line with what comes out of LLM)
@@ -148,11 +147,11 @@ public class StateMachine {
                 String answer = cdrFinder.getCdrs(userId, userMessage);
 
                 messageConsumer.accept(Message.aiMessage(answer));
+                stateSaver.save(customResearchProject, customResearchState);
+
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                     // still deciding on which antibodies to proceed with
                     return;
-                } else {
-                    stateSaver.save(customResearchProject, customResearchState);
                 }
             }
 
