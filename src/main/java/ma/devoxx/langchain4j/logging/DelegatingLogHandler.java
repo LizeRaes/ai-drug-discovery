@@ -25,7 +25,8 @@ public class DelegatingLogHandler extends ExtHandler {
     protected void doPublish(ExtLogRecord record) {
         String formattedTimestamp = formatTimestamp(record.getInstant());
         String logMessage = buildLogMessage(record, formattedTimestamp);
-        LoggerMessage loggerMessage = new LoggerMessage(determineLogColor(record.getLoggerName(), record.getMessage()), logMessage);
+        LoggerMessage loggerMessage = new LoggerMessage(
+                determineLogColor(record.getLoggerName(), record.getMessage()), logMessage);
 
         webSocketLogger.logMessage(loggerMessage);
     }
@@ -35,17 +36,31 @@ public class DelegatingLogHandler extends ExtHandler {
     }
 
     // Builds the log message with timestamp, level, message, and optional stack trace
-    private String buildLogMessage(ExtLogRecord record, String formattedTimestamp) {
-        String basicMessage = String.format("[%s] [%s] %s",
-                formattedTimestamp,
-                record.getLevel(),
-                record.getMessage());
+    public String buildLogMessage(ExtLogRecord record, String formattedTimestamp) {
+        String basicMessage;
+        if (record.getParameters() != null && record.getParameters().length > 0) {
+            Object[] allParams = combineArrays(new Object[]{
+                    formattedTimestamp, record.getLevel()}, record.getParameters());
+            basicMessage = String.format("[%s] [%s] " + record.getMessage(), allParams);
+        } else {
+            basicMessage = String.format("[%s] [%s] %s",
+                    formattedTimestamp,
+                    record.getLevel(),
+                    record.getMessage());
+        }
 
         // Append stack trace if an exception is present
         if (record.getThrown() != null) {
             basicMessage += "\n" + getStackTraceAsString(record.getThrown());
         }
         return basicMessage;
+    }
+
+    private static Object[] combineArrays(Object[] first, Object[] second) {
+        Object[] result = new Object[first.length + second.length];
+        System.arraycopy(first, 0, result, 0, first.length);
+        System.arraycopy(second, 0, result, first.length, second.length);
+        return result;
     }
 
     // Converts a stack trace to a string
