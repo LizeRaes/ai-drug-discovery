@@ -39,9 +39,19 @@ public class DelegatingLogHandler extends ExtHandler {
     public String buildLogMessage(ExtLogRecord record, String formattedTimestamp) {
         String basicMessage;
         if (record.getParameters() != null && record.getParameters().length > 0) {
-            Object[] allParams = combineArrays(new Object[]{
-                    formattedTimestamp, record.getLevel()}, record.getParameters());
-            basicMessage = String.format("[%s] [%s] " + record.getMessage(), allParams);
+            String formattedMessage = String.format(record.getMessage(), record.getParameters());
+
+            // Prefix assignment
+            String prefix = "DEFAULT: ";
+            if (formattedMessage.contains("POST")) {
+                prefix = "USER: ";
+                formattedMessage = extractLastUserQuestion(formattedMessage);
+            } else if (formattedMessage.contains("status code")) {
+                prefix = "AI MODEL: ";
+                formattedMessage = extractLastAssistantResponse(formattedMessage);
+            }
+
+            basicMessage = String.format("[%s] [%s] " + prefix + formattedMessage, formattedTimestamp, record.getLevel());
         } else {
             basicMessage = String.format("[%s] [%s] %s",
                     formattedTimestamp,
@@ -54,6 +64,51 @@ public class DelegatingLogHandler extends ExtHandler {
             basicMessage += "\n" + getStackTraceAsString(record.getThrown());
         }
         return basicMessage;
+    }
+    public String extractLastUserQuestion(String response) {
+        try {
+            // Split based on "role": "user"
+            String[] parts = response.split("\"user\"");
+            if (parts.length > 1) {
+                String lastUserPart = parts[parts.length - 1];
+                int contentStart = lastUserPart.indexOf("\"content\"") + 10;
+                if (contentStart == 9) return ""; // Fail-safe
+
+                int contentEnd = lastUserPart.indexOf("}", contentStart);
+                if (contentEnd == -1) return lastUserPart.substring(contentStart).trim(); // If no proper closing
+
+                return lastUserPart.substring(contentStart, contentEnd).trim();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    // Extracts the last assistant response by splitting on "role": "assistant"
+    public String extractLastAssistantResponse(String response) {
+        try {
+            // Split the entire response based on "role": "assistant"
+            String[] parts = response.split("\"assistant\"");
+
+            if (parts.length > 1) {
+                // Get the last part (last assistant response)
+                String lastAssistantPart = parts[parts.length - 1];
+
+                // Find the start of "content":
+                int contentStart = lastAssistantPart.indexOf("\"content\"") + 10; // Move past "content":
+                if (contentStart == 9) return response; // Fail-safe (indexOf returns -1)
+
+                // Extract substring from "content": until the next '}'
+                int contentEnd = lastAssistantPart.indexOf("}", contentStart);
+                if (contentEnd == -1) return response; // Fail-safe
+
+                return lastAssistantPart.substring(contentStart, contentEnd).trim();
+            } else { return response; }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response; // Return original if extraction fails
     }
 
     private static Object[] combineArrays(Object[] first, Object[] second) {

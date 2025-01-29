@@ -57,7 +57,7 @@ public class StateMachine {
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.DEFINE_DISEASE) {
                 logger.info("IN STEP 1 (define target disease)");
                 String answer = diseasePicker.answer(userId, userMessage);
-                logger.info("*** Model Answer ***: " + answer);
+//                logger.info("*** Model Answer ***: " + answer);
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.DEFINE_DISEASE) {
                     // disease was not finally decided on yet
                     messageConsumer.accept(answer);
