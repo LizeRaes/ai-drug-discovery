@@ -41,7 +41,7 @@ public class ToolsForCharacteristicsMeasurements implements Serializable {
     public String getUrlToPbdStructureFile(String antigenUnitProtId) {
         logger.info("getUrlToPbdStructureFile() called with antigenUnitProtId="+ antigenUnitProtId + "'");
         // field to extract example: "pdbUrl": "https://alphafold.ebi.ac.uk/files/AF-Q26674-F1-model_v4.pdb"
-        List<AlphaFoldResponse> response = alphaFoldProxy.getPrediction("P00533", "AIzaSyCeurAJz7ZGjPQUtEaerUkBZ3TaBkXrY94");
+        List<AlphaFoldResponse> response = alphaFoldProxy.getPrediction(antigenUnitProtId, "123");
         return response.get(0).getPdbUrl();
     }
 
