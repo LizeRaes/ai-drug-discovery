@@ -5,11 +5,10 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
-import ma.devoxx.langchain4j.domain.StateMemoryProvider;
 import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 
 @ApplicationScoped
-@RegisterAiService(tools = ToolsForDiseasePicker.class, chatMemoryProviderSupplier = StateMemoryProvider.class)
+@RegisterAiService(tools = ToolsForDiseasePicker.class)
 public interface DiseasePicker {
     @SystemMessage("""
     You are a helpful antibody drug research assistant. If the user asks, help them to choose the best disease for antibody research based on their questions.
