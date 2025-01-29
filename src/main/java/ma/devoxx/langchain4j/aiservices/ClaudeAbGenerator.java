@@ -4,9 +4,10 @@ import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
+import ma.devoxx.langchain4j.aiservices.claude.AnthropicModelSupplier;
 
 @ApplicationScoped
-@RegisterAiService(modelName = "test")
+@RegisterAiService(chatLanguageModelSupplier = AnthropicModelSupplier.class)
 public interface ClaudeAbGenerator {
     @UserMessage("""
             Propose CDRs for a new antibody for antigen {{antigenSequence}}
