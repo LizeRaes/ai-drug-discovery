@@ -7,7 +7,18 @@ public class Characteristics {
     public String toxicity;
     public String immunogenicity;
 
+    public Characteristics() {
+    }
+
     public Characteristics(String bindingAffinity, String specificity, String stability, String toxicity, String immunogenicity) {
+        this.bindingAffinity = bindingAffinity;
+        this.specificity = specificity;
+        this.stability = stability;
+        this.toxicity = toxicity;
+        this.immunogenicity = immunogenicity;
+    }
+
+    public void setCharacteristics(String bindingAffinity, String specificity, String stability, String toxicity, String immunogenicity) {
         this.bindingAffinity = bindingAffinity;
         this.specificity = specificity;
         this.stability = stability;

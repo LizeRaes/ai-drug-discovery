@@ -5,6 +5,9 @@
         public String cdrs;
         public Characteristics characteristics;
 
+        public Antibody() {
+        }
+
         public Antibody(String antibodyName) {
             this.antibodyName = antibodyName;
         }
