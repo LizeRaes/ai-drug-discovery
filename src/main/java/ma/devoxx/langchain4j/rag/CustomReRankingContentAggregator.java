@@ -29,13 +29,15 @@ public class CustomReRankingContentAggregator implements ContentAggregator {
 
     private final ScoringModel scoringModel;
     private final Function<Map<Query, Collection<List<Content>>>, Query> querySelector;
-    private final Double minScore;
+    //private final Double minScore;
+    private final int topN;
 
     public CustomReRankingContentAggregator(ScoringModel scoringModel,
-                                            Double minScore) {
+                                            int topN) {
         this.scoringModel = scoringModel;
         this.querySelector = DEFAULT_QUERY_SELECTOR;
-        this.minScore = minScore;
+        this.topN = topN;
+//        this.minScore = minScore;
     }
 
     @Override
@@ -75,7 +77,7 @@ public class CustomReRankingContentAggregator implements ContentAggregator {
 
         List<TextSegment> segments = contents.stream()
                 .map(Content::textSegment)
-                .peek(textSegment -> logger.info("used segment : {}", textSegment.text()))
+                .peek(textSegment -> logger.info("SEGMENT FOR RERANKING : {}", textSegment.text()))
                 .collect(Collectors.toList());
 
         List<Double> scores = scoringModel.scoreAll(segments, query.text()).content();
@@ -85,11 +87,21 @@ public class CustomReRankingContentAggregator implements ContentAggregator {
             segmentToScore.put(segments.get(i), scores.get(i));
         }
 
+        // if we want retained segments to have a minimum score
+//        return segmentToScore.entrySet().stream()
+//                .filter(entry -> minScore == null || entry.getValue() >= minScore)
+//                .sorted(Map.Entry.<TextSegment, Double>comparingByValue().reversed())
+//                .map(Map.Entry::getKey)
+//                .peek(textSegment -> logger.info("aggregated segment : {}", textSegment.text()))
+//                .map(Content::from)
+//                .collect(Collectors.toList());
+
+        // if we want to keep the top N segments
         return segmentToScore.entrySet().stream()
-                .filter(entry -> minScore == null || entry.getValue() >= minScore)
-                .sorted(Map.Entry.<TextSegment, Double>comparingByValue().reversed())
+                .sorted(Map.Entry.<TextSegment, Double>comparingByValue().reversed()) // Sort by score descending
+                .limit(topN) // Keep only the top N segments
+                .peek(entry -> logger.info("RETAINED SEGMENT AFTER RERANKING (score {}: '{}'", entry.getValue(), entry.getKey().text()))
                 .map(Map.Entry::getKey)
-                .peek(textSegment -> logger.info("aggregated segment : {}", textSegment.text()))
                 .map(Content::from)
                 .collect(Collectors.toList());
     }

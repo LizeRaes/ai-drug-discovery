@@ -112,7 +112,7 @@ public class CustomRetrievalAugmentor {
         QueryRouter queryRouter = new LanguageModelQueryRouter(chatModel, retrieverToDescription);
 
         // Create content aggregator
-        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 0.3);
+        ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 5);
 
         // Create query compressor
         QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
@@ -120,7 +120,7 @@ public class CustomRetrievalAugmentor {
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
                 .queryRouter(queryRouter)
                 .queryTransformer(queryTransformer)
-                //.contentAggregator(contentAggregator)
+                .contentAggregator(contentAggregator)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(
                                 PromptTemplate.from("{{userMessage}}\n" +
