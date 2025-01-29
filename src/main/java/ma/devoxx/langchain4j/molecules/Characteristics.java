@@ -27,12 +27,14 @@ public class Characteristics {
     }
 
     public String toString() {
-        return "{Binding Affinity=" + bindingAffinity + "}" +
-                "\n{Specificity=" + specificity + "}" +
-                "\n{Stability=" + stability + "}" +
-                "\n{Toxicity=" + toxicity + "}" +
-                "\n{Immunogenicity=" + immunogenicity + "}";
+        return "**Characteristics:**\n"
+                + "- **Binding Affinity**: " + bindingAffinity + "\n"
+                + "- **Specificity**: " + specificity + "\n"
+                + "- **Stability**: " + stability + "\n"
+                + "- **Toxicity**: " + toxicity + "\n"
+                + "- **Immunogenicity**: " + immunogenicity;
     }
+
 
     public void setBindingAffinity(String bindingAffinity) {
         this.bindingAffinity = bindingAffinity;

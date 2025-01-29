@@ -80,8 +80,8 @@ public class StateMachine {
                     return;
                 }
 
-                String result = "I found antigen : " + customResearchProject.getResearchProject().antigenName + "\n" +
-                        "with sequence : " + customResearchProject.getResearchProject().antigenSequence;
+                 String result = "**I found antigen:** " + customResearchProject.getResearchProject().antigenName + "\n\n"
+                        + "**With sequence:**\n" + customResearchProject.getResearchProject().antigenSequence;
                 messageConsumer.accept(result.replace("\n", "\n\n"));
             }
 

@@ -30,7 +30,7 @@ public class ToolsForAntigenFinder implements Serializable {
     }
 
     @Tool("store antigen name and antigen sequence")
-    public void storeAntigenInfo(String antigenName, @P("Light Chain and Heavy Chain only")String antigenSequence) {
+    public void storeAntigenInfo(String antigenName, @P("Light Chain and Heavy Chain only, markdown format")String antigenSequence) {
         Logger.getLogger(ToolsForAntigenFinder.class.getName()).info("storeAntigenInfo() called with antigenName='" + antigenName + "' and AntigenSequence='" + antigenSequence + "'");
         customResearchProject.getResearchProject().setAntigenInfo(antigenName, antigenSequence);
         customResearchState.getResearchState().currentStep = ResearchState.Step.FIND_KNOWN_ANTIBODIES;
