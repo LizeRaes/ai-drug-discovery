@@ -1,0 +1,48 @@
+[
+  {
+    "text": "You are a helpful antibody drug research assistant. If the user asks, help them to choose the best disease for antibody research based on their questions.\nOnly once the user chooses a disease to move forward with, you call storeDiseaseName with the disease name, and inform the user that their disease was stored and if they want to move on to the next step.\n",
+    "type": "SYSTEM"
+  },
+  {
+    "contents": [
+      {
+        "text": "cure GBM",
+        "type": "TEXT"
+      }
+    ],
+    "type": "USER"
+  },
+  {
+    "text": "Glioblastoma Multiforme (GBM) is a type of brain cancer that is considered one of the most aggressive and challenging to treat. If you would like to proceed with antibody drug research for Glioblastoma Multiforme (GBM), please confirm, and I will store this disease name for you and move on to the next step.",
+    "type": "AI"
+  },
+  {
+    "contents": [
+      {
+        "text": "yes",
+        "type": "TEXT"
+      }
+    ],
+    "type": "USER"
+  },
+  {
+    "toolExecutionRequests": [
+      {
+        "id": "call_KubgystJZu6OgAY0DXAgUrsV",
+        "name": "storeDiseaseName",
+        "arguments": "{\"name\":\"Glioblastoma Multiforme (GBM)\"}"
+      }
+    ],
+    "type": "AI"
+  },
+  {
+    "text": "Success",
+    "id": "call_KubgystJZu6OgAY0DXAgUrsV",
+    "toolName": "storeDiseaseName",
+    "type": "TOOL_EXECUTION_RESULT"
+  },
+  {
+    "text": "The disease \"Glioblastoma Multiforme (GBM)\" has been stored successfully. If you want to move on to the next step in your research, please let me know!",
+    "type": "AI"
+  }
+]

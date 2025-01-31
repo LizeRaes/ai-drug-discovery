@@ -1,27 +1,61 @@
 package ma.devoxx.langchain4j.web.ws;
 
 import io.quarkus.websockets.next.*;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.json.bind.Jsonb;
+import ma.devoxx.langchain4j.Constants;
+import ma.devoxx.langchain4j.domain.Message;
 import ma.devoxx.langchain4j.domain.StateMachine;
+import ma.devoxx.langchain4j.state.CustomResearchProject;
+import ma.devoxx.langchain4j.state.CustomResearchState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+@ApplicationScoped
 @WebSocket(path = "/my-websocket-state")
 public class StateAssistantSocket {
 
     private static final Logger logger = LoggerFactory.getLogger(StateAssistantSocket.class);
+
+    WebSocketConnection connection;
 
     private Integer userId;
 
     @Inject
     StateMachine stateMachine;
 
+    @Inject
+    CustomResearchProject customResearchProject;
+
+    @Inject
+    CustomResearchState cusomResearchState;
+
+    @Inject
+    Jsonb jsonb;
+
     @OnOpen
     public void onOpen(WebSocketConnection connection) {
-        System.out.println("Session opened, ID: " + connection.id());
-        stateMachine.init();
-        refreshUser();
-        connection.sendTextAndAwait("Hi, I’m here to assist you with your antibody research today.");
+        try {
+            this.connection = connection;
+            refreshUser();
+            System.out.println("Session opened, ID: " + connection.id());
+            init();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+
+    }
+
+    public void init() {
+        if (connection.isOpen()) {
+            sendJsonMessage(connection, Message.aiMessage("Hi, I’m here to assist you with your antibody research today."));
+            stateMachine.init(m -> sendJsonMessage(connection, m));
+        }
     }
 
     @OnTextMessage
@@ -32,16 +66,51 @@ public class StateAssistantSocket {
             return;
         }
 
-        stateMachine.run(userId, userMessage, connection::sendTextAndAwait);
+        stateMachine.run(userId, userMessage, m -> sendJsonMessage(connection, m));
+    }
+
+    private void sendJsonMessage(WebSocketConnection connection, Message message) {
+        connection.sendTextAndAwait(jsonb.toJson(message));
     }
 
     @OnClose
     void onClose(WebSocketConnection connection) {
+        System.out.println("Session closed, ID: " + connection.id());
         final String sessionId = connection.id();
 
+
         // release some resources
+        deleteStateFiles(sessionId);
+        customResearchProject.clear();
+        cusomResearchState.clear();
 
         logger.info("Session closed, ID: {}", sessionId);
+    }
+
+    private void deleteStateFiles(String sessionId) {
+        try {
+            Path filePath = Constants.MAIN_STATE_FILE_PATH;
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                System.out.println("Main State file deleted successfully: " + filePath);
+            } else {
+                System.out.println("Main State File does not exist: " + filePath);
+            }
+        } catch (IOException e) {
+            logger.error("Error deleting state file: " + e.getMessage());
+        }
+        try {
+            Path filePath = Constants.MAIN_MESSAGES_FILE_PATH;
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                System.out.println("Main Messages file deleted successfully: " + filePath);
+            } else {
+                System.out.println("Main Messages File does not exist: " + filePath);
+            }
+        } catch (IOException e) {
+            logger.error("Error deleting messages file: " + e.getMessage());
+        }
+
     }
 
     public void refreshUser() {

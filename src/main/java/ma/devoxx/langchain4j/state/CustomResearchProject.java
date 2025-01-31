@@ -1,7 +1,9 @@
 package ma.devoxx.langchain4j.state;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.Setter;
 
+@Setter
 @ApplicationScoped
 public class CustomResearchProject {
     ResearchProject researchProject;
@@ -12,6 +14,10 @@ public class CustomResearchProject {
 
     public ResearchProject getResearchProject() {
         return researchProject;
+    }
+
+    public void clear() {
+        researchProject = new ResearchProject();
     }
 
 }
