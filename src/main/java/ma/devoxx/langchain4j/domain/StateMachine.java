@@ -7,7 +7,6 @@ import dev.langchain4j.data.message.UserMessage;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import ma.devoxx.langchain4j.aiservices.*;
-import ma.devoxx.langchain4j.dbs.StateSaver;
 import ma.devoxx.langchain4j.molecules.Antibody;
 import ma.devoxx.langchain4j.state.CustomResearchProject;
 import ma.devoxx.langchain4j.state.CustomResearchState;
@@ -23,9 +22,6 @@ import java.util.function.Consumer;
 public class StateMachine {
 
     private static final Logger logger = LoggerFactory.getLogger(StateMachine.class);
-
-    @Inject
-    StateSaver stateSaver;
 
     @Inject
     CustomResearchState customResearchState;
@@ -66,12 +62,7 @@ public class StateMachine {
         messages = stateManager.loadChatMessage();
         if (messages.isEmpty()) {
             customResearchState.getResearchState().moveToStep(ResearchState.Step.DEFINE_DISEASE);
-            stateSaver.save(customResearchProject, customResearchState);
         } else {
-            var state = stateSaver.load();
-            customResearchState.getResearchState()
-                    .moveToStep(state.customResearchState.getResearchState().currentStep);
-            customResearchProject.setResearchProject(state.customResearchProject.getResearchProject());
             messages.forEach(message -> {
                 if (message.type().equals(ChatMessageType.USER)) {
                     messageConsumer.accept(Message.userMessage(((UserMessage) message).singleText()));
@@ -92,7 +83,6 @@ public class StateMachine {
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.DEFINE_DISEASE) {
                     // disease was not finally decided on yet
                     messageConsumer.accept(Message.aiMessage(answer));
-                    stateSaver.save(customResearchProject, customResearchState);
                     return;
                 }
             }
@@ -111,12 +101,10 @@ public class StateMachine {
                     messageConsumer.accept(Message.aiMessage(notification));
                     return;
                 }
-                stateSaver.save(customResearchProject, customResearchState);
 
                 String result = "**I found antigen:** " + customResearchProject.getResearchProject().antigenName + "\n\n"
                         + "**With sequence:**\n" + customResearchProject.getResearchProject().antigenSequence;
-                messageConsumer.accept(Message.aiMessage(result.replace("\n", "\n\n")));                stateSaver.save(customResearchProject, customResearchState);
-                stateSaver.save(customResearchProject, customResearchState);
+                messageConsumer.accept(Message.aiMessage(result.replace("\n", "\n\n")));
             }
 
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_ANTIBODIES) {
@@ -130,7 +118,6 @@ public class StateMachine {
                     messageConsumer.accept(Message.aiMessage("ERROR: no antibodies were found for this antigen. Please reload the page and start over."));
                     return;
                 }
-                stateSaver.save(customResearchProject, customResearchState);
 
                 knownAntibodyCharacteristicsFinderFinder.getAntibodyCharacteristics(userId, customResearchProject.getResearchProject().antigenName,  customResearchProject.getResearchProject().disease, customResearchProject.getResearchProject().existingAntibodies.toString());
                 // we ask for the user's input at this point
@@ -138,7 +125,6 @@ public class StateMachine {
                 messageConsumer.accept(Message.aiMessage("We found the following antibodies:\n\n"
                         + customResearchProject.getResearchProject().printAntibodies() +
                         "\n\nWhich antibodies would you like to proceed with?"));
-                stateSaver.save(customResearchProject, customResearchState);
                 return;
             }
 
@@ -147,7 +133,6 @@ public class StateMachine {
                 String answer = cdrFinder.getCdrs(userId, userMessage);
 
                 messageConsumer.accept(Message.aiMessage(answer));
-                stateSaver.save(customResearchProject, customResearchState);
 
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                     // still deciding on which antibodies to proceed with
@@ -161,7 +146,6 @@ public class StateMachine {
                 // we ask for confirmation here bcs it's costly calculations / experiments
                 String answer = newAntibodyFinder.getAntibodies(customResearchProject.getResearchProject().printAntigenInfo(), customResearchProject.getResearchProject().printExistingAntibodiesWithCDR());
                 messageConsumer.accept(Message.aiMessage(answer));
-                stateSaver.save(customResearchProject, customResearchState);
                 return;
             }
 
@@ -172,7 +156,6 @@ public class StateMachine {
                     messageConsumer.accept(Message.aiMessage(measureCharacteristics.measureCharacteristics(antibody.antibodyName, antibody.cdrs, customResearchProject.getResearchProject().antigenSequence, customResearchProject.getResearchProject().antigenName)));
                 }
                 messageConsumer.accept(Message.aiMessage("All characteristics were measured. Do you want to publish the results of this research in Nature or in the New York Times?"));
-                stateSaver.save(customResearchProject, customResearchState);
                 return;
             }
 
@@ -181,7 +164,6 @@ public class StateMachine {
                 // give this AiService a clean memory
                 String answer = articlePublisher.publishArticle(userId + 1, userMessage, customResearchProject.getResearchProject().toString(), "Mohamed Software and Lize Dev");
                 messageConsumer.accept(Message.aiMessage(answer));
-                stateSaver.save(customResearchProject, customResearchState);
                 return;
             }
 

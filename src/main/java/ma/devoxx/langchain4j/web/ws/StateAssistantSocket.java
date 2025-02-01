@@ -33,7 +33,7 @@ public class StateAssistantSocket {
     CustomResearchProject customResearchProject;
 
     @Inject
-    CustomResearchState cusomResearchState;
+    CustomResearchState customResearchState;
 
     @Inject
     Jsonb jsonb;
@@ -78,39 +78,10 @@ public class StateAssistantSocket {
         System.out.println("Session closed, ID: " + connection.id());
         final String sessionId = connection.id();
 
-
-        // release some resources
-        deleteStateFiles(sessionId);
         customResearchProject.clear();
-        cusomResearchState.clear();
+        customResearchState.clear();
 
         logger.info("Session closed, ID: {}", sessionId);
-    }
-
-    private void deleteStateFiles(String sessionId) {
-        try {
-            Path filePath = Constants.MAIN_STATE_FILE_PATH;
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
-                System.out.println("Main State file deleted successfully: " + filePath);
-            } else {
-                System.out.println("Main State File does not exist: " + filePath);
-            }
-        } catch (IOException e) {
-            logger.error("Error deleting state file: " + e.getMessage());
-        }
-        try {
-            Path filePath = Constants.MAIN_MESSAGES_FILE_PATH;
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
-                System.out.println("Main Messages file deleted successfully: " + filePath);
-            } else {
-                System.out.println("Main Messages File does not exist: " + filePath);
-            }
-        } catch (IOException e) {
-            logger.error("Error deleting messages file: " + e.getMessage());
-        }
-
     }
 
     public void refreshUser() {

@@ -5,14 +5,13 @@ import dev.langchain4j.data.message.ChatMessageJsonCodec;
 import dev.langchain4j.spi.data.message.ChatMessageJsonCodecFactory;
 import io.quarkiverse.langchain4j.QuarkusChatMessageJsonCodecFactory;
 import jakarta.enterprise.context.ApplicationScoped;
-import lombok.extern.slf4j.Slf4j;
 import ma.devoxx.langchain4j.Constants;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-@Slf4j
+
 @ApplicationScoped
 public class StateManager {
 

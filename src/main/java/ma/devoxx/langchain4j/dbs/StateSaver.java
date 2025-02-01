@@ -10,6 +10,7 @@ import ma.devoxx.langchain4j.state.CustomResearchState;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 @ApplicationScoped
@@ -18,22 +19,21 @@ public class StateSaver {
     @Inject
     Jsonb jsonb;
 
-    public void save(CustomResearchProject project, CustomResearchState state) {
+    public void save(CustomResearchProject project, CustomResearchState state, Path path) {
         try {
-            ConversationState conversationState = ConversationState.builder()
-                    .customResearchProject(project)
-                    .customResearchState(state)
-                    .build();
-            Files.writeString(Constants.MAIN_STATE_FILE_PATH, jsonb.toJson(conversationState),
+            ConversationState conversationState = new ConversationState();
+            conversationState.setCustomResearchProject(project);
+            conversationState.setCustomResearchState(state);
+            Files.writeString(path, jsonb.toJson(conversationState),
                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public ConversationState load() {
+    public ConversationState load(Path path) {
         try {
-            return jsonb.fromJson(Files.readString(Constants.MAIN_STATE_FILE_PATH), ConversationState.class);
+            return jsonb.fromJson(Files.readString(path), ConversationState.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

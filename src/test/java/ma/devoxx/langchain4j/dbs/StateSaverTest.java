@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 @QuarkusTest
 class StateSaverTest {
@@ -29,18 +30,18 @@ class StateSaverTest {
         researchProject.setAntigenName("antigen_name");
         customResearchProject.setResearchProject(researchProject);
 
-        stateSaver.save(customResearchProject, customResearchState);
+        stateSaver.save(customResearchProject, customResearchState, Constants.MAIN_STATE_FILE_PATH);
 
         Files.exists(Constants.MAIN_STATE_FILE_PATH);
     }
 
     @Test
     void test_load() {
-        var conversationState = stateSaver.load();
+        var conversationState = stateSaver.load(Path.of("src/main/resources/dbs/history/states/step3.json"));
 
-        Assertions.assertEquals(ResearchState.Step.FIND_ANTIGEN,
+        Assertions.assertEquals(ResearchState.Step.FIND_KNOWN_CDRS,
                 conversationState.getCustomResearchState().getResearchState().currentStep);
-        Assertions.assertEquals("antigen_name",
+        Assertions.assertEquals("EGFRvIII",
                 conversationState.getCustomResearchProject().getResearchProject().antigenName);
     }
 }

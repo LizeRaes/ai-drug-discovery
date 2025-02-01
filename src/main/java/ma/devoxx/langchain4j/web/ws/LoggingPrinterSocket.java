@@ -59,7 +59,7 @@ public class LoggingPrinterSocket {
                         .subscribe()
                         .with(
                                 success -> LOGGER.log(Level.FINEST, "Message sent successfully"),
-                                failure -> LOGGER.warning("Failed to send message")
+                                failure -> LOGGER.warning("Failed to send message" + failure.getMessage())
                         );
 
             }

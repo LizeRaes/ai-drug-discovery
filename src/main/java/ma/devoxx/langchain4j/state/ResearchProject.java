@@ -1,13 +1,12 @@
 package ma.devoxx.langchain4j.state;
 
-import lombok.Setter;
 import ma.devoxx.langchain4j.molecules.Antibody;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
+
 public class ResearchProject implements Serializable {
 
     public String disease;
@@ -118,5 +117,45 @@ public class ResearchProject implements Serializable {
             }
         }
         return newAntibodiesWithCdrs.toArray(new Antibody[0]);
+    }
+
+    public String getDisease() {
+        return disease;
+    }
+
+    public void setDisease(String disease) {
+        this.disease = disease;
+    }
+
+    public String getAntigenName() {
+        return antigenName;
+    }
+
+    public void setAntigenName(String antigenName) {
+        this.antigenName = antigenName;
+    }
+
+    public String getAntigenSequence() {
+        return antigenSequence;
+    }
+
+    public void setAntigenSequence(String antigenSequence) {
+        this.antigenSequence = antigenSequence;
+    }
+
+    public List<Antibody> getExistingAntibodies() {
+        return existingAntibodies;
+    }
+
+    public void setExistingAntibodies(List<Antibody> existingAntibodies) {
+        this.existingAntibodies = existingAntibodies;
+    }
+
+    public List<Antibody> getNewAntibodies() {
+        return newAntibodies;
+    }
+
+    public void setNewAntibodies(List<Antibody> newAntibodies) {
+        this.newAntibodies = newAntibodies;
     }
 }
