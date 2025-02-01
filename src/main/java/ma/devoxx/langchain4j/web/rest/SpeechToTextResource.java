@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.jboss.logging.Logger;
 
 @Path("/audio")
-public class SpeechToTextResource {
+public class    SpeechToTextResource {
 
     private static final Logger LOGGER = Logger.getLogger(SpeechToTextResource.class);
     private static final String API_KEY = System.getenv("GEMINI_TOKEN");
@@ -30,7 +30,7 @@ public class SpeechToTextResource {
                 SystemMessage.from("repeat the text from the audio message"),
                 new UserMessage(AudioContent.from(base64, "audio/mp3")));
 
-        String message = response.content().text();
+            String message = response.content().text();
 
         LOGGER.info("Audio convert. Text = " + message);
 

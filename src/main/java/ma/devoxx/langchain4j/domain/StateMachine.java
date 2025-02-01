@@ -57,7 +57,6 @@ public class StateMachine {
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.DEFINE_DISEASE) {
                 logger.info("IN STEP 1 (define target disease)");
                 String answer = diseasePicker.answer(userId, userMessage);
-//                logger.info("*** Model Answer ***: " + answer);
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.DEFINE_DISEASE) {
                     // disease was not finally decided on yet
                     messageConsumer.accept(answer);
@@ -69,9 +68,7 @@ public class StateMachine {
                 // else: model has set diseaseName and currentStep = 2 when decided on disease
                 logger.info("******************** STEP 2 *********************");
                 messageConsumer.accept("Finding antigen info for " + customResearchProject.getResearchProject().disease + "...");
-
                 String answer = antigenFinder.determineAntigenInfo(customResearchProject.getResearchProject().disease);
-
                 // if something went wrong with the antigenFinder
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_ANTIGEN) {
                     String notification = "UNEXPECTED STEP 2: failed at finding antigen name or sequence. Current state: " + customResearchState.getResearchState().currentStep;
@@ -79,7 +76,6 @@ public class StateMachine {
                     messageConsumer.accept(notification);
                     return;
                 }
-
                  String result = "**I found antigen:** " + customResearchProject.getResearchProject().antigenName + "\n\n"
                         + "**With sequence:**\n" + customResearchProject.getResearchProject().antigenSequence;
                 messageConsumer.accept(result.replace("\n", "\n\n"));
@@ -108,7 +104,6 @@ public class StateMachine {
             if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                 logger.info("******************** STEP 4 *********************");
                 String answer = cdrFinder.getCdrs(userId, userMessage);
-
                 messageConsumer.accept(answer);
                 if (customResearchState.getResearchState().currentStep == ResearchState.Step.FIND_KNOWN_CDRS) {
                     // still deciding on which antibodies to proceed with

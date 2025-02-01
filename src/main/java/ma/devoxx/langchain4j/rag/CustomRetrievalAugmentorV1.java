@@ -30,7 +30,7 @@ import java.util.List;
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 
 @Startup
-@Named("step1")
+@Named("basic")
 @ApplicationScoped
 public class CustomRetrievalAugmentorV1 implements CustomRetrievalAugmentor {
 

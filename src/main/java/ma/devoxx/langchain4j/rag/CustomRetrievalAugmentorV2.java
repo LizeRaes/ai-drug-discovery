@@ -21,6 +21,7 @@ import dev.langchain4j.rag.content.injector.DefaultContentInjector;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.content.retriever.WebSearchContentRetriever;
+import dev.langchain4j.rag.query.router.DefaultQueryRouter;
 import dev.langchain4j.rag.query.router.LanguageModelQueryRouter;
 import dev.langchain4j.rag.query.router.QueryRouter;
 import dev.langchain4j.rag.query.transformer.CompressingQueryTransformer;
@@ -47,7 +48,7 @@ import java.util.Map;
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 
 @Startup
-@Named("step2")
+@Named("advanced")
 @ApplicationScoped
 public class CustomRetrievalAugmentorV2 implements CustomRetrievalAugmentor  {
 
@@ -90,13 +91,10 @@ public class CustomRetrievalAugmentorV2 implements CustomRetrievalAugmentor  {
                 .apiKey(System.getenv("OPENAI_API_KEY"))
                 .build();
 
-        // Default QueryRouter that uses all documents and websearch
-        // QueryRouter queryRouter = new DefaultQueryRouter(literatureDocsRetreiver, webSearchContentRetriever);
-
-        // OR Smart QueryRouter that uses all documents, websearch, and database
+        // Smart QueryRouter that uses all documents, websearch, and database
         Map<ContentRetriever, String> retrieverToDescription = new HashMap<>();
 
-        // 1. Create document content retriever
+        // 1. Create document content retriever (EmbeddingStoreContentRetriever).
         List<Document> documents = loadDocuments(toPath("docs"), glob("*.txt"));
         ContentRetriever literatureDocsRetriever = createContentRetriever(documents);
         retrieverToDescription.put(literatureDocsRetriever, "Scientific literature on diseases, antigens and antibody solutions");
@@ -120,8 +118,8 @@ public class CustomRetrievalAugmentorV2 implements CustomRetrievalAugmentor  {
         QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
 
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
-                .queryRouter(queryRouter)
                 .queryTransformer(queryTransformer)
+                .queryRouter(queryRouter)
                 .contentAggregator(contentAggregator)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(
@@ -131,6 +129,7 @@ public class CustomRetrievalAugmentorV2 implements CustomRetrievalAugmentor  {
                                         "{{contents}}"))
                         .build())
                 .build();
+
         return retrievalAugmentor;
     }
 }
