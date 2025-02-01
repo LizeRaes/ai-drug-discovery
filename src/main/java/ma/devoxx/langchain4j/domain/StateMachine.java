@@ -58,7 +58,11 @@ public class StateMachine {
 
     List<ChatMessage> messages;
 
-    public void init(Consumer<Message> messageConsumer) {
+    public void init() {
+        customResearchState.getResearchState().moveToStep(ResearchState.Step.DEFINE_DISEASE);
+    }
+
+    public void loadState(Consumer<Message> messageConsumer) {
         messages = stateManager.loadChatMessage();
         if (messages.isEmpty()) {
             customResearchState.getResearchState().moveToStep(ResearchState.Step.DEFINE_DISEASE);
@@ -119,7 +123,7 @@ public class StateMachine {
                     return;
                 }
 
-                knownAntibodyCharacteristicsFinderFinder.getAntibodyCharacteristics(userId, customResearchProject.getResearchProject().antigenName,  customResearchProject.getResearchProject().disease, customResearchProject.getResearchProject().existingAntibodies.toString());
+                knownAntibodyCharacteristicsFinderFinder.getAntibodyCharacteristics(userId, customResearchProject.getResearchProject().antigenName, customResearchProject.getResearchProject().disease, customResearchProject.getResearchProject().existingAntibodies.toString());
                 // we ask for the user's input at this point
                 // TODO make layout better (in line with what comes out of LLM)
                 messageConsumer.accept(Message.aiMessage("We found the following antibodies:\n\n"

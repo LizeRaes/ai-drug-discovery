@@ -63,7 +63,7 @@ public class HistoryResource {
             state.setResearchState(saveState.getCustomResearchState().getResearchState());
             project.setResearchProject(saveState.getCustomResearchProject().getResearchProject());
 
-            stateAssistantSocket.init();
+            stateAssistantSocket.loadState();
         } catch (IOException e) {
             log.warning("No file found. " + e.getMessage());
         }

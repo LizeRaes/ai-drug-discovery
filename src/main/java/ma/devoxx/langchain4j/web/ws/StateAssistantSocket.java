@@ -54,7 +54,13 @@ public class StateAssistantSocket {
     public void init() {
         if (connection.isOpen()) {
             sendJsonMessage(connection, Message.aiMessage("Hi, I’m here to assist you with your antibody research today."));
-            stateMachine.init(m -> sendJsonMessage(connection, m));
+            stateMachine.init();
+        }
+    }
+
+    public void loadState() {
+        if (connection.isOpen()) {
+            stateMachine.loadState(m -> sendJsonMessage(connection, m));
         }
     }
 

@@ -63,12 +63,7 @@ class StateMachineTest {
 
     @Test
     void test_init() {
-        stateMachine.init(new Consumer<Message>() {
-            @Override
-            public void accept(Message s) {
-
-            }
-        });
+        stateMachine.init();
 
         assertEquals(ResearchState.Step.DEFINE_DISEASE, researchState.currentStep);
     }
@@ -117,7 +112,7 @@ class StateMachineTest {
         String firstMessage = "Hello";
         String expectedMessage = "Hello! How can I assist you today with antibody drug research?";
         configureDiseasePicker(firstMessage, expectedMessage, false);
-        stateMachine.init(message -> assertNull(message));
+        stateMachine.init();
 
         stateMachine.run(USER_ID, firstMessage, message -> assertEquals(expectedMessage, message));
 
@@ -132,12 +127,7 @@ class StateMachineTest {
                 "Current state: FIND_ANTIGEN";
         configureDiseasePicker(firstMessage, expectedMessage, true);
         configureAntigenFinder(expectedMessage, false);
-        stateMachine.init(new Consumer<Message>() {
-            @Override
-            public void accept(Message s) {
-
-            }
-        });
+        stateMachine.init();
         Consumer<Message> consumer = Mockito.mock(Consumer.class);
 
         stateMachine.run(USER_ID, firstMessage, consumer);
@@ -174,12 +164,7 @@ class StateMachineTest {
                 \s""";
         configureAntigenFinder(expectedMessage, true);
         configureKnownAntibodyFinder("Not found", false);
-        stateMachine.init(new Consumer<Message>() {
-            @Override
-            public void accept(Message s) {
-
-            }
-        });
+        stateMachine.init();
         Consumer<Message> consumer = Mockito.mock(Consumer.class);
         String expectedMessage2 = """
                 I found antigen : EGFRvIII
@@ -242,12 +227,7 @@ class StateMachineTest {
 
                 """;
 
-        stateMachine.init(new Consumer<Message>() {
-            @Override
-            public void accept(Message s) {
-
-            }
-        });
+        stateMachine.init();
         stateMachine.run(USER_ID, "I want to cure disease1", consumer);
 
        // Mockito.verify(consumer).accept("Finding antigen info for disease1...");
