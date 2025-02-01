@@ -3,7 +3,6 @@ package ma.devoxx.langchain4j.dbs;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Singleton;
-import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocuments;
 

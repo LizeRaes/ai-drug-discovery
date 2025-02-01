@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
+import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentorV2;
 
 import java.util.function.Supplier;
 
