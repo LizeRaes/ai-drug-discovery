@@ -31,6 +31,7 @@ import dev.langchain4j.web.search.WebSearchEngine;
 import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import ma.devoxx.langchain4j.dbs.SequenceDbContentRetriever;
 
 import java.net.URISyntaxException;
@@ -47,6 +48,7 @@ import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.load
 
 @Startup
 @ApplicationScoped
+@Named("step2")
 public class CustomRetrievalAugmentor {
 
     @Inject

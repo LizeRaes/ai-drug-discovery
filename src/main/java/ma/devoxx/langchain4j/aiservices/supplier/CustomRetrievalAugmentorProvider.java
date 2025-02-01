@@ -3,6 +3,7 @@ package ma.devoxx.langchain4j.aiservices.supplier;
 import dev.langchain4j.rag.RetrievalAugmentor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import ma.devoxx.langchain4j.rag.CustomRetrievalAugmentor;
 
 import java.util.function.Supplier;
@@ -11,6 +12,7 @@ import java.util.function.Supplier;
 public class CustomRetrievalAugmentorProvider implements Supplier<RetrievalAugmentor> {
 
     @Inject
+    @Named("step1")
     CustomRetrievalAugmentor augmentor;
 
     @Override
