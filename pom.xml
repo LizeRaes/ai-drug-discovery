@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.devoxx</groupId>
     <artifactId>devoxx-ma</artifactId>
@@ -14,7 +15,7 @@
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.15.2</quarkus.platform.version>
-        <quarkus-langchain4j.version>0.23.3</quarkus-langchain4j.version>
+        <quarkus-langchain4j.version>0.24.0.CR1</quarkus-langchain4j.version>
         <langchain4j-embeddings.version>1.0.0-alpha1</langchain4j-embeddings.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
@@ -36,6 +37,24 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-websockets</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.langchain4j</groupId>
+            <artifactId>quarkus-langchain4j-testing-scorer-junit5</artifactId>
+            <version>${quarkus-langchain4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.langchain4j</groupId>
+            <artifactId>quarkus-langchain4j-testing-scorer-semantic-similarity</artifactId>
+            <version>${quarkus-langchain4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-embeddings-bge-small-en-v15</artifactId>
+            <version>1.0.0-alpha1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

@@ -2,11 +2,13 @@ package ma.devoxx.langchain4j.web.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.runtime.util.StringUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
+import kotlin.text.StringsKt;
 import ma.devoxx.langchain4j.logging.LoggerMessage;
 import org.jboss.logmanager.ExtLogRecord;
 
@@ -41,30 +43,31 @@ public class LoggingPrinterSocket {
     }
 
     public void broadcast(ExtLogRecord record) {
-        sessions.forEach(session -> {
-            if (session.isOpen()) {
-                Uni.createFrom().item(() -> formatMessage(record))
-                        .onItem()
-                        .transformToUni(msg -> {
-                            CompletableFuture<Void> future = new CompletableFuture<>();
-                            session.getAsyncRemote().sendText(msg, result -> {
-                                if (result.isOK()) {
-                                    future.complete(null);
-                                } else {
-                                    future.completeExceptionally(result.getException());
-                                }
-                            });
-                            return Uni.createFrom().future(future);
-                        })
-                        .subscribe()
-                        .with(
-                                success -> LOGGER.log(Level.FINEST, "Message sent successfully"),
-                                failure -> LOGGER.warning("Failed to send message")
-                        );
+        if (!StringUtil.isNullOrEmpty(record.getMessage())) {
+            sessions.forEach(session -> {
+                if (session.isOpen()) {
+                    Uni.createFrom().item(() -> formatMessage(record))
+                            .onItem()
+                            .transformToUni(msg -> {
+                                CompletableFuture<Void> future = new CompletableFuture<>();
+                                session.getAsyncRemote().sendText(msg, result -> {
+                                    if (result.isOK()) {
+                                        future.complete(null);
+                                    } else {
+                                        future.completeExceptionally(result.getException());
+                                    }
+                                });
+                                return Uni.createFrom().future(future);
+                            })
+                            .subscribe()
+                            .with(
+                                    success -> LOGGER.log(Level.FINEST, "Message sent successfully"),
+                                    failure -> LOGGER.log(Level.FINEST, "Failed to send message")
+                            );
 
-            }
-        });
-
+                }
+            });
+        }
     }
 
     public String formatMessage(ExtLogRecord record) {

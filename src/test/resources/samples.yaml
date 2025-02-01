@@ -1,0 +1,15 @@
+- name: Sample1
+  parameters:
+    - "cure GBM"
+  expected-output: |
+    Glioblastoma Multiforme (GBM) is an aggressive form of brain cancer known for its resistance to conventional 
+    therapies. Antibody-based research could potentially provide innovative treatments by targeting specific 
+    pathways or markers associated with GBM.
+    Would you like to select GBM as the disease to focus your antibody research on?
+- name: Sample2
+  parameters:
+    - "cure covid19"
+  expected-output: |
+    If you are considering directing antibody research towards COVID-19, it's a prevalent global health issue with 
+    ongoing studies focused on neutralizing the SARS-CoV-2 virus. 
+    Would you like to proceed with COVID-19 for antibody research?

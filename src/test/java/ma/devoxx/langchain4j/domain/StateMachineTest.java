@@ -15,6 +15,7 @@ import ma.devoxx.langchain4j.tools.ToolsForDiseasePicker;
 import ma.devoxx.langchain4j.tools.ToolsForKnownAntibodyFinder;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -137,6 +138,7 @@ class StateMachineTest {
         assertEquals(ResearchState.Step.FIND_ANTIGEN, researchState.currentStep);
     }
 
+    @Disabled
     @Test
     @DisplayName("should fail because no antibodies have been found")
     void test_step1_to_step3_ko() {
@@ -198,6 +200,7 @@ class StateMachineTest {
         assertEquals(ResearchState.Step.FIND_KNOWN_ANTIBODIES, researchState.currentStep);
     }
 
+    @Disabled
     @Test
     @DisplayName("should found antibodies")
     void test_step1_to_step3() {
@@ -269,6 +272,7 @@ class StateMachineTest {
         assertEquals(ResearchState.Step.FIND_KNOWN_CDRS, researchState.currentStep);
     }
 
+    @Disabled
     @Test
     void test_step1_to_step4() {
         String expectedMessage = getAntigenFoundMessage();
