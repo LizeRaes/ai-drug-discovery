@@ -102,8 +102,12 @@
 
         .logs {
             width: 50%;
-            padding: 0;
-            margin: 0;
+            border-right: 2px solid black;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto; /* Allow scrolling if messages overflow */
         }
 
         /* User messages */
@@ -151,19 +155,17 @@
             margin-left: 10px;
             cursor: pointer;
         }
+
     </style>
     <style>
         #logContainer {
-            height: 90vh;
             overflow-y: scroll;
             background-color: black;
             color: #a9a9a9;
             font-family: monospace;
-            padding: 10px;
         }
 
         .log-entry {
-            display: flex;
             margin-bottom: 10px;
             background-color: #1e1e1e;
             border-radius: 5px;
@@ -189,6 +191,7 @@
 
         .log-icon-side i {
             font-size: 24px;
+            color: black;
         }
     </style>
 </head>
@@ -207,9 +210,9 @@
         <button id="decreaseFontButton" class="badge text-dark">
             <i class="bi bi-zoom-out"></i>
         </button>
-        <button id="restoreButton" class="restore badge text-bg-success">
-            <i class="bi bi-arrow-counterclockwise"></i> Restore
-        </button>
+<!--        <button id="restoreButton" class="restore badge text-bg-success">-->
+<!--            <i class="bi bi-arrow-counterclockwise"></i> Restore-->
+<!--        </button>-->
     </div>
 </div>
 
@@ -255,10 +258,7 @@
         </audio>
     </div>
 
-    <!-- Right section with fullscreen iFrame -->
-    <div class="logs" id="logsArea">
-        <div id="logContainer"></div>
-    </div>
+    <div id="logContainer" class="logs"></div>
 </div>
 
 <!-- Input text area with send and mic button -->
@@ -318,6 +318,14 @@
         newMessage.classList.add('user1-msg');
         newMessage.textContent = inputMessageText;
 
+        const t =getTime();
+        const time = document.createElement('a');
+        time.href = "#";
+        time.setAttribute('data-timestamp', t);
+        time.textContent = t
+        time.addEventListener("click", timeScroll);
+
+        messageArea.appendChild(time);
         messageArea.appendChild(newMessage);
 
         // Clear input after sending
@@ -440,6 +448,7 @@
         // Create log entry
         const logElement = document.createElement('div');
         logElement.className = 'log-entry';
+        logElement.setAttribute("data-timestamp", getTime());
 
         // Check if the color is purple and apply full block background if true
         const backgroundColor = fullBlockColor(color);
@@ -479,6 +488,45 @@
 
     logs_socket.onerror = (error) => console.error('WebSocket Error:', error);
     logs_socket.onclose = () => console.log('WebSocket connection closed');
+</script>
+<script>
+    let getTime = function () {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    }
+    let timeScroll = function() {
+        const allDivs = Array.from(document.querySelectorAll('.log-entry'));
+        const currentTimestamp = this.getAttribute('data-timestamp');
+
+        // Convert time string (HH:mm:ss) to minutes for comparison
+        const toMinutes = time => {
+            const [hours, minutes, seconds] = time.split(':').map(Number);
+            return (hours * 60 + minutes) * 60 + seconds;
+        };
+
+        const currentMinutes = toMinutes(currentTimestamp);
+
+        // Find the closest timestamp greater than the current one
+        let closestDiv = null;
+        let minDifference = Infinity;
+
+        allDivs.forEach(div => {
+            const divTimestamp = div.getAttribute('data-timestamp');
+            const divMinutes = toMinutes(divTimestamp);
+            const difference = divMinutes - currentMinutes;
+
+            if (difference > 0 && difference < minDifference) {
+                minDifference = difference;
+                closestDiv = div;
+            }
+        });
+
+        // Scroll to the closest div
+        if (closestDiv) {
+            closestDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+
 </script>
 
 </body>
