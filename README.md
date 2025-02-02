@@ -7,6 +7,13 @@ You can see the logs next to the chatbot, and see which tools are called, which 
 
 This project uses LangChain4j, Quarkus <https://quarkus.io/> and SQLite.
 
+## Prerequisites
+
+- JDK 17 or higher
+- Maven
+- SQLite
+- Docker Desktop (Optional, used to start observability tools)
+
 ## Running the application in dev mode
 
 First, you have to configure 3 env variables :
@@ -26,9 +33,9 @@ In terminal, run `quarkus dev` or `./mvnw quarkus:dev` in the project root direc
 
 > Make sure that mvnw is executable after pulling the repo, if not run `chmod +x mvnw`
 
-Then open the application at `localhost:8080/index_state_machine.html` in your browser.
+Then open the application at `localhost:8080` in your browser.
 
-Or at `localhost:8080/index_no_state_machine.html` for the version where the LLM decides on the state transitions.
+Or at `localhost:8080` for the version where the LLM decides on the state transitions.
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
@@ -62,7 +69,7 @@ or even needed to be measured in the lab (how about steered by robotics, program
 - Integration with diverse LLMs (OpenAI GPT-4, Anthropic Claude-3.5, Google Gemini)
 - State Machine behavior (not specific to LangChain4j)
 - GuardRails
-- Observability (via Quarkus dev UI)
+- Observability (via Quarkus dev UI and Prometheus/Grafana)
 
 ## Packaging and executables
 
