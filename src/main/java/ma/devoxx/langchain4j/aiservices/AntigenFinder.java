@@ -10,8 +10,7 @@ import ma.devoxx.langchain4j.tools.ToolsForAntigenFinder;
 
 @ApplicationScoped
 @RegisterAiService(
-        tools = ToolsForAntigenFinder.class,
-        retrievalAugmentor = CustomRetrievalAugmentorProvider.class)
+        tools = ToolsForAntigenFinder.class)
 public interface AntigenFinder {
     @SystemMessage("""
     First you search through scientific literature for a suitable antigen (characteristic protein) 

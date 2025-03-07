@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public class CustomRetrievalAugmentorProvider implements Supplier<RetrievalAugmentor> {
 
     @Inject
-    @Named("basic")
+    @Named("advanced")
     CustomRetrievalAugmentor augmentor;
 
     @Override

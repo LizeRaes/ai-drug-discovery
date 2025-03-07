@@ -115,10 +115,10 @@ public class CustomRetrievalAugmentorV2 implements CustomRetrievalAugmentor  {
         ContentAggregator contentAggregator = new CustomReRankingContentAggregator(scoringModel, 5);
 
         // Create query compressor
-        QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
+//        QueryTransformer queryTransformer = new CompressingQueryTransformer(chatModel);
 
         this.retrievalAugmentor = DefaultRetrievalAugmentor.builder()
-                .queryTransformer(queryTransformer)
+//                .queryTransformer(queryTransformer)
                 .queryRouter(queryRouter)
                 .contentAggregator(contentAggregator)
                 .contentInjector(DefaultContentInjector.builder()

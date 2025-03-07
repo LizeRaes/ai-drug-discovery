@@ -72,15 +72,15 @@ class StateMachineTest {
     private void configureAntigenFinder(String response, boolean callTool) {
         ToolsForAntigenFinder toolsForAntigenFinder =
                 new ToolsForAntigenFinder(customResearchProject, customResearchState);
-        Mockito.when(antigenFinder.determineAntigenInfo(DISEASE_NAME))
-                .thenAnswer((Answer<String>) invocationOnMock -> {
-                    if (callTool) {
-                        // EGFRvIII was found using RAG
-                        String sequence = toolsForAntigenFinder.findSequenceForAntigen(ANTIGEN_NAME);
-                        toolsForAntigenFinder.storeAntigenInfo(ANTIGEN_NAME, sequence);
-                    }
-                    return response;
-                });
+//        Mockito.when(antigenFinder.determineAntigenInfo(DISEASE_NAME))
+//                .thenAnswer((Answer<String>) invocationOnMock -> {
+//                    if (callTool) {
+//                        // EGFRvIII was found using RAG
+//                        String sequence = toolsForAntigenFinder.findSequenceForAntigen(ANTIGEN_NAME);
+//                        toolsForAntigenFinder.storeAntigenInfo(ANTIGEN_NAME, sequence);
+//                    }
+//                    return response;
+//                });
     }
 
     private void configureKnownAntibodyFinder(String answer, boolean callTools) {
