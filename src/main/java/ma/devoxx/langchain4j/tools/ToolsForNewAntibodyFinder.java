@@ -2,7 +2,7 @@ package ma.devoxx.langchain4j.tools;
 
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.model.anthropic.AnthropicChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.service.AiServices;
 import jakarta.enterprise.context.ApplicationScoped;
 import ma.devoxx.langchain4j.aiservices.ClaudeAbGenerator;
@@ -39,7 +39,7 @@ public class ToolsForNewAntibodyFinder implements Serializable {
     String designNewAntibodyViaAnthropicClaude(String antigenSequence, String previousAntibodies) {
         Logger.getLogger(ToolsForNewAntibodyFinder.class.getName()).info("designNewAntibodyViaAnthropicClaude() called with antigenSequence='" + antigenSequence + "'");
         try{
-            ChatLanguageModel model = AnthropicChatModel.builder()
+            ChatModel model = AnthropicChatModel.builder()
                     .apiKey(System.getenv("ANTHROPIC_API_KEY"))
                     .modelName("claude-3-haiku-20240307")
                     .logRequests(false)
@@ -47,7 +47,7 @@ public class ToolsForNewAntibodyFinder implements Serializable {
                     .build();
 
             ClaudeAbGenerator claudeAbGenerator = AiServices.builder(ClaudeAbGenerator.class)
-                    .chatLanguageModel(model)
+                    .chatModel(model)
                     .build();
 
             String answer = claudeAbGenerator.generateNewAbSuggestion(antigenSequence, previousAntibodies);

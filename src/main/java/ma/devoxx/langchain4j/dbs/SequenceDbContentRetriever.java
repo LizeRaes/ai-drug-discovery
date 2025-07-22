@@ -1,7 +1,7 @@
 package ma.devoxx.langchain4j.dbs;
 
 import dev.langchain4j.experimental.rag.content.retriever.sql.SqlDatabaseContentRetriever;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
@@ -17,12 +17,12 @@ import java.sql.Statement;
 
 public class SequenceDbContentRetriever {
 
-    public SqlDatabaseContentRetriever get(ChatLanguageModel chatLanguageModel) {
+    public SqlDatabaseContentRetriever get(ChatModel chatLanguageModel) {
         DataSource dataSource = createDataSource();
 
         return SqlDatabaseContentRetriever.builder()
                 .dataSource(dataSource)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatLanguageModel)
                 .build();
     }
 
